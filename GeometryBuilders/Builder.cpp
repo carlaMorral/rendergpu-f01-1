@@ -4,16 +4,14 @@ Builder::Builder(GLWidget *glWid)
 {
     glWidget = glWid;
     scene = glWidget->getScene();
-
+    vwr = make_shared<VirtualWorldReader>(scene);
 }
 
 void Builder::newObjFromFile()
 {
     QString fileName = QFileDialog::getOpenFileName();
     if (!fileName.isNull()) {
-            auto obj = make_shared<Object>(100000, fileName);
-            scene->addObject(obj);
-            scene->camera->actualitzaCamera(scene->capsaMinima);
+            shared_ptr<Object> obj = vwr->readBrObject(fileName);
             emit newObj(obj);
     }
 }
@@ -25,8 +23,14 @@ void Builder::newVirtualScene() {
     // Nomes hi hauran fitxers de tipus BoundaryObject.
     // Usa el ConfigMappingReader i la teva SceneFactoryVirtual
     // per a construir l'escena tal i com feies a la practica 1
-
-     emit newScene(scene);
+    QString fileName = QFileDialog::getOpenFileName();
+    if (!fileName.isNull()) {
+        QString configMapping = "mapping_" + fileName;
+        shared_ptr<ConfigMappingReader> mr = make_shared<ConfigMappingReader>(configMapping);
+        map = make_shared<Mapping>(mr);
+        vwr->readScene(fileName, map);
+    }
+    emit newScene(scene);
 }
 
 
