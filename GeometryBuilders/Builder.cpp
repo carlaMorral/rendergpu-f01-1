@@ -5,6 +5,7 @@ Builder::Builder(GLWidget *glWid)
     glWidget = glWid;
     scene = glWidget->getScene();
     vwr = make_shared<VirtualWorldReader>(scene);
+    rdr = make_shared<RealDataReader>(scene);
 }
 
 void Builder::newObjFromFile()
@@ -26,7 +27,7 @@ void Builder::newVirtualScene() {
     QString fileName = QFileDialog::getOpenFileName();
     if (!fileName.isNull()) {
         QString configMapping = "mapping_" + fileName;
-        shared_ptr<ConfigMappingReader> mr = make_shared<ConfigMappingReader>(configMapping);
+        shared_ptr<ConfigMappingReader> mr = make_shared<ConfigMappingReader>(configMapping, Scene::VIRTUALWORLD);
         map = make_shared<Mapping>(mr);
         vwr->readScene(fileName, map);
     }
@@ -40,8 +41,15 @@ void Builder::newDataScene()
     // del configMapping i el fitxer .txt que conté les dades
     // Utilitza el ConfigMappingReader i la teva SceneFactoryData per a llegir els fitxers
     // i crear l'escena corresponent.
-
-    // Opcionalment pots crear un dialeg per posar els valors del mapping
+    QString fileName = QFileDialog::getOpenFileName();
+    if (!fileName.isNull()) {
+        QString configMapping = "mapping_" + fileName;
+        shared_ptr<ConfigMappingReader> mr = make_shared<ConfigMappingReader>(configMapping, Scene::REALDATA);
+        map = make_shared<Mapping>(mr);
+        vwr->readScene(fileName, map);
+    }
     emit newScene(scene);
+    // Opcionalment pots crear un dialeg per posar els valors del mapping
+    //TODO: If fitxer mapping not found, diàleg?
 }
 

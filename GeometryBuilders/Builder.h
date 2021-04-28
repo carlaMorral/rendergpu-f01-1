@@ -6,6 +6,7 @@
 
 #include "Mapping.h"
 #include "DataService/VirtualWorldReader.h"
+#include "DataService/RealDataReader.h"
 #include "DataService/ConfigMappingReader.h"
 
 class Builder : public QObject {
@@ -15,6 +16,7 @@ class Builder : public QObject {
     GLWidget *glWidget;
     shared_ptr<Mapping> map;
     shared_ptr<VirtualWorldReader> vwr;
+    shared_ptr<RealDataReader> rdr;
     shared_ptr<ConfigMappingReader> mapping;
 
 public:

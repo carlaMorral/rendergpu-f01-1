@@ -13,6 +13,7 @@ CONFIG += c++11
 
 SOURCES += \
     DataService/ConfigMappingReader.cpp \
+    DataService/RealDataReader.cpp \
     DataService/VirtualWorldReader.cpp \
     Geometry/Animation.cpp \
     Geometry/Cara.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
     Geometry/Light.cpp \
     Geometry/Material.cpp \
     Geometry/Object.cpp \
+    Geometry/ScaleTG.cpp \
     Geometry/Scene.cpp \
     Geometry/TG.cpp \
     Geometry/TranslateTG.cpp \
@@ -33,6 +35,7 @@ SOURCES += \
 
 HEADERS += \
     DataService/ConfigMappingReader.h \
+    DataService/RealDataReader.h \
     DataService/VirtualWorldReader.h \
     Geometry/Animation.h \
     Geometry/Cara.h \
@@ -41,6 +44,7 @@ HEADERS += \
     Geometry/Light.h \
     Geometry/Material.h \
     Geometry/Object.h \
+    Geometry/ScaleTG.h \
     Geometry/Scene.h \
     Geometry/TG.h \
     Geometry/TranslateTG.h \

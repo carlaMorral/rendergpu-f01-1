@@ -26,6 +26,12 @@ using namespace Common;
 class Scene {
 
 public:
+    typedef enum
+    {
+       VIRTUALWORLD,
+       REALDATA
+    } DATA_TYPES;
+
 
     vector<shared_ptr<Object>> objects;
     vector<shared_ptr<Light>>  lights;
