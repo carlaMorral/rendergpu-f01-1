@@ -9,7 +9,9 @@ Scene::Scene() {
     capsaMinima.a = 2;
     capsaMinima.h = 2;
     capsaMinima.p = 2;
-    lightAmbientGlobal = vec3(0.2, 0.2, 0.2);
+    lightAmbientGlobal = vec3(1, 1, 1);
+    shared_ptr<Light> l = make_shared<Light>(LightType::Puntual, vec3(1,1,1), vec3(1,1,1), vec3(1,1,1));
+    addLight(l);
 }
 
 /**
@@ -33,9 +35,12 @@ void Scene::addObject(shared_ptr<Object> obj) {
  * @brief Scene::toGPU
  */
 void Scene::toGPU(shared_ptr<QGLShaderProgram> p) {
+    cout << "toGPU" << endl;
     for(unsigned int i=0; i < objects.size(); i++){
         objects.at(i)->toGPU(p);
     }
+    lightsToGPU(p);
+    setAmbientToGPU(p);
 }
 
 /**
@@ -83,20 +88,20 @@ void Scene::setLightActual(shared_ptr<Light> l){
 void Scene::lightsToGPU(shared_ptr<QGLShaderProgram> program){
 
     // 1. Es declara un struct d'identificadors
-    struct gl_IdLight
+    struct stLight
     {
-     GLuint id_type;
-     GLuint id_ambient;
-     GLuint id_diffuse;
-     GLuint id_specular;
-     GLuint id_position;
-     GLuint id_direction;
-     GLuint id_coefficients;
-     GLuint id_angle;
+     GLuint type;
+     GLuint ambient;
+     GLuint diffuse;
+     GLuint specular;
+     GLuint coefficients;
+     GLuint position;
+     GLuint direction;
+     GLuint angle;
     };
 
     // vector de structs gl_IdLights
-    gl_IdLight gl_IdVectLights [MAX_LIGHTS];
+    stLight gl_IdVectLights [MAX_LIGHTS];
 
     for(uint i=0; i<MAX_LIGHTS && i<lights.size(); i++){
 
@@ -109,15 +114,15 @@ void Scene::lightsToGPU(shared_ptr<QGLShaderProgram> program){
         vec3 specular = lights.at(i)->getIs();
 
         // Variables nomes per alguns tipus de llums (inicialitzem a 0)
-        vec4 position = vec4(0);
-        vec3 coefficients = vec3(0);
-        vec3 direction = vec3(0);
+        vec3 position = vec3(0,0,0);
+        vec3 coefficients = vec3(0,0,0);
+        vec3 direction = vec3(0,0,0);
         float angle = 0;
 
         // Nomes per llums puntuals
         if (lights.at(i)->getTipusLight()==LightType::Puntual){
             std::shared_ptr<PointLight> pointlight = std::dynamic_pointer_cast<PointLight> (lights.at(i));
-            position = vec4(pointlight->getLightPosition());
+            position = vec3(pointlight->getLightPosition().x,pointlight->getLightPosition().y,pointlight->getLightPosition().z);
             coefficients = vec3(pointlight->getCoeficients());
         }
 
@@ -135,25 +140,25 @@ void Scene::lightsToGPU(shared_ptr<QGLShaderProgram> program){
         }
 
         // 3. obtencio dels identificadors de la GPU: Suposem i l'index de l'i-èssim element del vector
-        gl_IdVectLights[i].id_type = program->uniformLocation(QString("lights[%1].type").arg(i));
-        gl_IdVectLights[i].id_ambient = program->uniformLocation(QString("lights[%1].ambient").arg(i));
-        gl_IdVectLights[i].id_diffuse = program->uniformLocation(QString("lights[%1].diffuse").arg(i));
-        gl_IdVectLights[i].id_specular = program->uniformLocation(QString("lights[%1].specular").arg(i));
-        gl_IdVectLights[i].id_position = program->uniformLocation(QString("lights[%1].position").arg(i));
-        gl_IdVectLights[i].id_direction = program->uniformLocation(QString("lights[%1].direction").arg(i));
-        gl_IdVectLights[i].id_coefficients = program->uniformLocation(QString("lights[%1].coefficients").arg(i));
-        gl_IdVectLights[i].id_angle = program->uniformLocation(QString("lights[%1].angle").arg(i));
+        gl_IdVectLights[i].type = program->uniformLocation(QString("lights[%1].type").arg(i));
+        gl_IdVectLights[i].ambient = program->uniformLocation(QString("lights[%1].ambient").arg(i));
+        gl_IdVectLights[i].diffuse = program->uniformLocation(QString("lights[%1].diffuse").arg(i));
+        gl_IdVectLights[i].specular = program->uniformLocation(QString("lights[%1].specular").arg(i));
+        gl_IdVectLights[i].position = program->uniformLocation(QString("lights[%1].position").arg(i));
+        gl_IdVectLights[i].direction = program->uniformLocation(QString("lights[%1].direction").arg(i));
+        gl_IdVectLights[i].coefficients = program->uniformLocation(QString("lights[%1].coefficients").arg(i));
+        gl_IdVectLights[i].angle = program->uniformLocation(QString("lights[%1].angle").arg(i));
 
 
         // 4. Bind de les zones de memòria que corresponen a la GPU als valors de la CPU
-        glUniform1i(gl_IdVectLights[i].id_type, type);
-        glUniform3fv(gl_IdVectLights[i].id_ambient, 1, ambient);
-        glUniform3fv(gl_IdVectLights[i].id_diffuse, 1, diffuse);
-        glUniform3fv(gl_IdVectLights[i].id_specular, 1, specular);
-        glUniform3fv(gl_IdVectLights[i].id_coefficients, 1, coefficients);
-        glUniform4fv(gl_IdVectLights[i].id_position, 1, position);
-        glUniform3fv(gl_IdVectLights[i].id_direction, 1, direction);
-        glUniform1f(gl_IdVectLights[i].id_angle, angle);
+        glUniform1i(gl_IdVectLights[i].type, type);
+        glUniform3fv(gl_IdVectLights[i].ambient, 1, ambient);
+        glUniform3fv(gl_IdVectLights[i].diffuse, 1, diffuse);
+        glUniform3fv(gl_IdVectLights[i].specular, 1, specular);
+        glUniform3fv(gl_IdVectLights[i].coefficients, 1, coefficients);
+        glUniform3fv(gl_IdVectLights[i].position, 1, position);
+        glUniform3fv(gl_IdVectLights[i].direction, 1, direction);
+        glUniform1f(gl_IdVectLights[i].angle, angle);
     }
 }
 
@@ -168,20 +173,17 @@ void Scene::addLight(shared_ptr<Light> l) {
 void Scene::setAmbientToGPU(shared_ptr<QGLShaderProgram> program){
 
        // 1. Es declara un struct d'identificadors
-       struct gl_IdGlobal{
-           GLuint id_global;
+       struct stGlobal{
+           GLuint globalLight;
        };
 
-       gl_IdGlobal gl_IdGlobalAmbientLight;
+       stGlobal gl_IdGlobalAmbientLight;
 
-       // 2. Creem la variable local globalLight
-       vec3 globalLight = vec3(lightAmbientGlobal);
+       // 2. obtencio de l'identificador de la GPU
+       gl_IdGlobalAmbientLight.globalLight = program->uniformLocation("globalAmbientLight.globalLight");
 
-       // 3. obtencio de l'identificador de la GPU
-       gl_IdGlobalAmbientLight.id_global = program->uniformLocation("globalAmbientLight.globalLight");
-
-       // 4. Bind de la zona de memòria que corresponen a la GPU al valor de la CPU
-       glUniform3fv(gl_IdGlobalAmbientLight.id_global, 1, globalLight);
+       // 3. Bind de la zona de memòria que corresponen a la GPU al valor de la CPU
+       glUniform3fv(gl_IdGlobalAmbientLight.globalLight, 1, lightAmbientGlobal);
 }
 
 /**

@@ -1,5 +1,6 @@
+#version 330
+
 layout (location = 0) in vec4 vPosition;
-layout (location = 1) in vec4 vColor;
 
 uniform mat4 model_view;
 uniform mat4 projection;
@@ -7,29 +8,28 @@ uniform mat4 projection;
 out vec4 color;
 
 // Struct que representa una llum amb tots els seus parametres
-struct Light{
+struct stLight{
     int type;
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
     vec3 coefficients;
-    vec4 position;
+    vec3 position;
     vec3 direction;
     float angle;
 };
 
 // Array d'objectes tipus Light
-uniform Light lights[10]; // Array de 10 elements. Aquest valor sempre ha de ser un numero. No pot ser una variable!
-
+uniform stLight lights[10]; // Array de 10 elements. Aquest valor sempre ha de ser un numero. No pot ser una variable!
 
 // Struct que representa la llum ambient global
-struct GlobalAmbientLight
+struct stGlobal
 {
-    vec4 globalLight;
+    vec3 globalLight;
 };
 
 // Llum ambient global
-uniform GlobalAmbientLight globalAmbientLight;
+uniform stGlobal globalAmbientLight;
 
 void main(void)
 {
@@ -37,6 +37,8 @@ void main(void)
     gl_Position = gl_Position/gl_Position.w;
 
     // Comprovem que el primer element de la llista de llums te el valor diffuse esperat
-    //color = globalAmbientLight.globalLight;
-    color = vColor;
+    //color = vec4(globalAmbientLight.globalLight);
+    //color = vec4(lights[0].ambient,1);
+    color = vec4(1,1,1,0);
 }
+
