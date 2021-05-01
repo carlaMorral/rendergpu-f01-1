@@ -21,8 +21,6 @@ public:
 
 protected:
 
-    vec4 position;
-
     vec3 coeficients;
 };
 

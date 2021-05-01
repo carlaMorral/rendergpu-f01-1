@@ -11,7 +11,6 @@ Scene::Scene() {
     capsaMinima.p = 2;
     lightAmbientGlobal = vec3(0.2, 0.2, 0.2);
 
-
 }
 
 /**

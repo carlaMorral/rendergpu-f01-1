@@ -1,5 +1,9 @@
 #include "Geometry/Light.h"
 
+Light::Light(LightType t) {
+    this->type = t;
+}
+
 /**
  * @brief Light::Light
  * @param t
@@ -84,4 +88,20 @@ LightType Light::getTipusLight() const
 void Light::setTipusLight(const LightType &value)
 {
     this->type = value;
+}
+
+/**
+ * @brief Light::getLightPosition
+ */
+vec4 Light::getLightPosition() {
+    // TO DO: A canviar a la fase 1 de la practica 2
+    return position;
+}
+
+/**
+ * @brief Light::setLightPosition
+ * @param v
+ */
+void Light::setLightPosition(vec4 v) {
+    this->position = v;
 }
