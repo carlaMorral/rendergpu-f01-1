@@ -140,7 +140,7 @@ void GLWidget::saveImage(){
 /** Metodes SLOTS que serveixen al builder per a actualitzar l'escena i els objectes */
 
 void GLWidget::updateObject(shared_ptr<Object> obj) {
-
+    cout << "Hola" <<endl;
     obj->toGPU(program);
 
     emit ObsCameraChanged(scene->camera);

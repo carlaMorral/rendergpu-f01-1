@@ -215,6 +215,30 @@ struct vec3 {
     friend vec3 operator * ( const GLfloat s, const vec3& v )
 	{ return v * s; }
 
+    vec3 operator / ( const vec3& v ) const
+    {
+        vec3 ret;
+        float epsilon = 0.001;
+        if(std::fabs(v.x) < epsilon){
+            ret.x = 0;
+        }else{
+            ret.x = x / v.x;
+        }
+
+        if(std::fabs(v.y) < epsilon){
+            ret.y= 0;
+        }else{
+            ret.y = y / v.y;
+        }
+
+        if(std::fabs(v.z) < epsilon){
+            ret.z = 0;
+        }else{
+            ret.z = z / v.z;
+        }
+        return *ret;
+    }
+
     vec3 operator / ( const GLfloat s ) const {
 #ifdef DEBUG
 	if ( std::fabs(s) < DivideByZeroTolerance ) {

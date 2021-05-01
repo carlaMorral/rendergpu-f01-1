@@ -73,4 +73,5 @@ DISTFILES += \
     libWin32/glut.dll \
     libWin32/glut.lib \
     libWin32/glut32.dll \
-    libWin32/glut32.lib
+    libWin32/glut32.lib \
+    resources/scenes/scene1.txt

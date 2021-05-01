@@ -14,7 +14,7 @@ void VirtualWorldReader::readScene(QString fileName, shared_ptr<Mapping> map) {
     QFile file(fileName);
 
     if(!file.open(QIODevice::ReadOnly)) {
-        std::cerr << "Error opening the file" << std::endl;
+        std::cerr << "Error opening the file " <<  fileName.toStdString() << std::endl;
         return;
     }
 
@@ -24,6 +24,7 @@ void VirtualWorldReader::readScene(QString fileName, shared_ptr<Mapping> map) {
         QString line = in.readLine();
         QStringList fields = line.split(",");
         readBrObject(fields[0]);
+        scene->camera->actualitzaCamera(scene->capsaMinima);
     }
     file.close();
 }
@@ -31,7 +32,6 @@ void VirtualWorldReader::readScene(QString fileName, shared_ptr<Mapping> map) {
 shared_ptr<Object> VirtualWorldReader::readBrObject (QString fileName) {
     auto obj = make_shared<Object>(100000, fileName);
     scene->addObject(obj);
-    scene->camera->actualitzaCamera(scene->capsaMinima);
     return obj;
 }
 

@@ -12,7 +12,7 @@ void RealDataReader::readFile(QString fileName, shared_ptr<Mapping> map) {
     mapping = map;
 
     if(!file.open(QIODevice::ReadOnly)) {
-        std::cerr << "Error opening the file" << std::endl;
+        std::cerr << "Error opening the file " <<  fileName.toStdString() << std::endl;
         return;
     }
 

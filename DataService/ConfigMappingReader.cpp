@@ -11,7 +11,7 @@ void ConfigMappingReader::readFile(QString fileName) {
     QFile file(fileName);
 
     if(!file.open(QIODevice::ReadOnly)) {
-        std::cerr << "Error opening the file" << std::endl;
+        std::cerr << "Error opening the file " << fileName.toStdString() << std::endl;
         return;
     }
 

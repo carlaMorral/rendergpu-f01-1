@@ -26,7 +26,7 @@ void Builder::newVirtualScene() {
     // per a construir l'escena tal i com feies a la practica 1
     QString fileName = QFileDialog::getOpenFileName();
     if (!fileName.isNull()) {
-        QString configMapping = "mapping_" + fileName;
+        QString configMapping = QString(fileName).replace(QString(".txt"), QString("_mapping.txt"));
         shared_ptr<ConfigMappingReader> mr = make_shared<ConfigMappingReader>(configMapping, Scene::VIRTUALWORLD);
         map = make_shared<Mapping>(mr);
         vwr->readScene(fileName, map);

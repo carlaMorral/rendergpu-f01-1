@@ -2,5 +2,9 @@
     <qresource prefix="/">
         <file>resources/fshader1.glsl</file>
         <file>resources/vshader1.glsl</file>
+        <file>resources/scenes/VW_Scene1_mapping.txt</file>
+        <file>resources/scenes/VW_Scene1.txt</file>
+        <file>resources/models/sphere0.mtl</file>
+        <file>resources/models/sphere0.obj</file>
     </qresource>
 </RCC>

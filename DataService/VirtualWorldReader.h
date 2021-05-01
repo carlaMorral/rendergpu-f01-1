@@ -24,7 +24,7 @@ public:
     shared_ptr<Object> readBrObject (QString fileName);
 
 private:
-    virtual void fileLineRead (QString lineReaded);
+    //virtual void fileLineRead (QString lineReaded);
 
     shared_ptr<Scene> scene;
     shared_ptr<Mapping> mapping;

@@ -15,6 +15,7 @@ vec3 Mapping::mapeigPunt(vec3 puntMonReal) {
       return (puntMonReal - Rmin) / (Rmax - Rmin) * (Vmax - Vmin) + Vmin;
 }
 
+
 //Aquesta es crida des de VirtualWorldReader
 float Mapping::mapeigValor(float valorMonReal) {
     // Es fa un mapejat (minR, maxR) -> (minV, maxV), però agafant l'eix amb menor diferèncie en cada cas!
