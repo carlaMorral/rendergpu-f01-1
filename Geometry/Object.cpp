@@ -11,6 +11,8 @@ Object::Object(int npoints, QObject *parent) : QObject(parent){
     points = new point4[numPoints];
     normals= new point4[numPoints];
     colors = new point4[numPoints];
+
+    material = make_shared<Material>(vec3(0.3f), vec3(1.0f, 0.1f, 0.1f), vec3(1.0f), vec3(0.0f), 20.0);
  }
 
 /**
@@ -22,6 +24,8 @@ Object::Object(int npoints, QString n) : numPoints(npoints){
     points = new point4[numPoints];
     normals= new point4[numPoints];
     colors = new point4[numPoints];
+
+    material = make_shared<Material>(vec3(0.3f), vec3(1.0f, 0.1f, 0.1f), vec3(1.0f), vec3(0.0f), 20.0);
 
     parseObjFile(n);
     make();
@@ -107,15 +111,14 @@ void Object::make(){
     static vec3  base_colors[] = {
         vec3( 1.0, 0.0, 0.0 ),
         vec3( 0.0, 1.0, 0.0 ),
-        vec3( 0.0, 0.0, 1.0 ),
-        vec3( 1.0, 1.0, 0.0 )
+        vec3( 0.0, 0.0, 1.0 )
     };
 
     Index = 0;
     for(unsigned int i=0; i<cares.size(); i++){
         for(unsigned int j=0; j<cares[i].idxVertices.size(); j++){
             points[Index] = vertexs[cares[i].idxVertices[j]];
-            colors[Index] = vec4(base_colors[j%4], 1.0);
+            colors[Index] = vec4(base_colors[j%3], 1.0);
             Index++;
         }
     }
