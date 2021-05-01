@@ -46,7 +46,7 @@ void Builder::newDataScene()
         QString configMapping = "mapping_" + fileName;
         shared_ptr<ConfigMappingReader> mr = make_shared<ConfigMappingReader>(configMapping, Scene::REALDATA);
         map = make_shared<Mapping>(mr);
-        vwr->readScene(fileName, map);
+        rdr->readFile(fileName, map);
     }
     emit newScene(scene);
     // Opcionalment pots crear un dialeg per posar els valors del mapping

@@ -219,19 +219,19 @@ struct vec3 {
     {
         vec3 ret;
         float epsilon = 0.001;
-        if(std::fabs(v.x) < epsilon){
+        if(std::abs(v.x) < epsilon){
             ret.x = 0;
         }else{
             ret.x = x / v.x;
         }
 
-        if(std::fabs(v.y) < epsilon){
+        if(std::abs(v.y) < epsilon){
             ret.y= 0;
         }else{
             ret.y = y / v.y;
         }
 
-        if(std::fabs(v.z) < epsilon){
+        if(std::abs(v.z) < epsilon){
             ret.z = 0;
         }else{
             ret.z = z / v.z;
