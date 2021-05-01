@@ -11,10 +11,7 @@ enum LightType {Puntual, Direccional, Spot};
 
 class Light {
     public:
-        Light(LightType l);
-
-        vec4 getLightPosition();
-        void setLightPosition(vec4 v);
+        Light(LightType t, vec3 Ia, vec3 Id, vec3 Is);
 
         vec3 getIa() const;
         void setIa(const vec3 &value);
@@ -25,10 +22,15 @@ class Light {
         vec3 getIs() const;
         void setIs(const vec3 &value);
 
-        vec3 getCoeficients() const;
-        void setCoeficients(const vec3 &value);
-
         LightType getTipusLight() const;
         void setTipusLight(const LightType &value);
+
+    protected:
+
+        vec3 ambient;
+        vec3 diffuse;
+        vec3 specular;
+
+        LightType type;
 };
 

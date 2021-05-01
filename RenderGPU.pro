@@ -15,10 +15,13 @@ SOURCES += \
     Geometry/Animation.cpp \
     Geometry/Cara.cpp \
     Geometry/ColorMapStatic.cpp \
+    Geometry/DirectionalLight.cpp \
     Geometry/Light.cpp \
     Geometry/Material.cpp \
     Geometry/Object.cpp \
+    Geometry/PointLight.cpp \
     Geometry/Scene.cpp \
+    Geometry/SpotLight.cpp \
     Geometry/TG.cpp \
     Geometry/TranslateTG.cpp \
     GeometryBuilders/Builder.cpp \
@@ -33,10 +36,13 @@ HEADERS += \
     Geometry/Cara.h \
     Geometry/ColorMap.h \
     Geometry/ColorMapStatic.h \
+    Geometry/DirectionalLight.h \
     Geometry/Light.h \
     Geometry/Material.h \
     Geometry/Object.h \
+    Geometry/PointLight.h \
     Geometry/Scene.h \
+    Geometry/SpotLight.h \
     Geometry/TG.h \
     Geometry/TranslateTG.h \
     GeometryBuilders/Builder.h \
