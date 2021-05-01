@@ -4,5 +4,6 @@
         <file>resources/vshader1.glsl</file>
         <file>resources/models/armadillo.obj</file>
         <file>resources/models/sphere0.obj</file>
+        <file>resources/vshader_test.vsh</file>
     </qresource>
 </RCC>
