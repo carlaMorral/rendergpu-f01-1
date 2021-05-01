@@ -13,6 +13,7 @@ class Light {
     public:
         Light(LightType t);
         Light(LightType t, vec3 Ia, vec3 Id, vec3 Is);
+        virtual ~Light() = default;
 
         vec3 getIa() const;
         void setIa(const vec3 &value);

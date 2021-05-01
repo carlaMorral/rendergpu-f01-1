@@ -37,5 +37,6 @@ void main(void)
     gl_Position = gl_Position/gl_Position.w;
 
     // Comprovem que el primer element de la llista de llums te el valor diffuse esperat
-    color = lights[0].diffuse;
+    //color = globalAmbientLight.globalLight;
+    color = vColor;
 }
