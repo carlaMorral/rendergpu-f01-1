@@ -3,9 +3,9 @@
 ConfigMappingReader::ConfigMappingReader(QString filename, Scene::DATA_TYPES dataType)
 {
   numProp = 0;
-  readFile(filename);
   this->dataType = dataType;
   usedPalettes = {};
+  readFile(filename);
 }
 
 void ConfigMappingReader::readFile(QString fileName) {

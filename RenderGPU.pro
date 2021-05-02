@@ -17,6 +17,7 @@ SOURCES += \
     DataService/VirtualWorldReader.cpp \
     Geometry/Animation.cpp \
     Geometry/Cara.cpp \
+    Geometry/FittedPlane.cpp \
     Geometry/Light.cpp \
     Geometry/Material.cpp \
     Geometry/Object.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     Geometry/Animation.h \
     Geometry/Cara.h \
     Geometry/ColorMap.h \
+    Geometry/FittedPlane.h \
     Geometry/Light.h \
     Geometry/Material.h \
     Geometry/Object.h \

@@ -45,6 +45,8 @@ void Builder::newDataScene()
     if (!fileName.isNull()) {
         QString configMapping = QString(fileName).replace(QString(".txt"), QString("_mapping.txt"));
         shared_ptr<ConfigMappingReader> mr = make_shared<ConfigMappingReader>(configMapping, Scene::REALDATA);
+        auto obj = make_shared<FittedPlane>(mr->Vxmin, mr->Vxmax, mr->Vzmin, mr->Vzmax, mr->dPlaBase);
+        scene->addObject(obj);
         map = make_shared<Mapping>(mr);
         rdr->readFile(fileName, map);
     }
