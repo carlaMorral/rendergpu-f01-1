@@ -18,6 +18,8 @@ using namespace Common;
 #include <QStringList>
 
 #include <Geometry/TG.h>
+#include <Geometry/TranslateTG.h>
+#include <Geometry/ScaleTG.h>
 #include <Geometry/Animation.h>
 #include <Geometry/Cara.h>
 
@@ -55,6 +57,7 @@ public:
 
     Object(const int npoints, QObject *parent = 0);
     Object(const int npoints, QString n);
+    Object(const int npoints, QString n, vec3 position, float scale);
     ~Object();
 
     void parseObjFile(const QString &fileName);
@@ -72,8 +75,9 @@ public:
 
     virtual void aplicaTG(shared_ptr<TG> tg);
 
+    void setPosition(vec3 position);
 
-
+    void setScale(float scale);
 private:
     void initTexture();
 };
