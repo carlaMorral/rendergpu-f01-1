@@ -82,7 +82,7 @@ void GLWidget::resizeGL(int width, int height) {
  * @brief GLWidget::initShadersGPU
  */
 void GLWidget::initShadersGPU(){
-    initShader("://resources/vshader_test.glsl", "://resources/fshader1.glsl");
+    initShader("://resources/vshader1.glsl", "://resources/fshader1.glsl");
 }
 
 QSize GLWidget::minimumSizeHint() const {
@@ -151,6 +151,8 @@ void GLWidget::updateObject(shared_ptr<Object> obj) {
 
 void GLWidget::updateScene(shared_ptr<Scene> sc) {
     // Control de la nova escena a la GPU
+
+    qDebug() << "updateScene";
 
     scene = sc;
     scene->toGPU(program);

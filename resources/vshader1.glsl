@@ -8,9 +8,15 @@ uniform mat4 projection;
 
 out vec4 color;
 
+struct Test {
+ int test1;
+ vec4 test2;
+};
+uniform Test test;
+
 void main()
 {
     gl_Position = projection*model_view*vPosition;
     gl_Position = gl_Position/gl_Position.w;
-    color = vColor;
+    color = test.test2;
 }

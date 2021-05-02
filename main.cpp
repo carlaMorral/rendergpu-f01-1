@@ -7,6 +7,8 @@ int main(int argc, char *argv[])
 
     MainWindow w;
 
+    qDebug() << "Starting.....";
+
     w.setWindowTitle("GiVD 2ona pràctica: GPU 2020-21");
     w.show();
 

@@ -35,12 +35,29 @@ void Scene::addObject(shared_ptr<Object> obj) {
  * @brief Scene::toGPU
  */
 void Scene::toGPU(shared_ptr<QGLShaderProgram> p) {
-    cout << "toGPU" << endl;
+
+    // ********** TEST ***************
+
+    qDebug() << "toGPU.....";
+    struct
+    {
+     GLuint test1;
+     GLuint test2;
+    } test;
+
+    test.test1 = p->uniformLocation(QString("test.test1"));
+    test.test2 = p->uniformLocation(QString("test.test2"));
+    glUniform1i(test.test1, 1);
+    glUniform4fv(test.test2, 1, vec4(1,0,1,1));
+
+    // ********** TEST END ***************
+
     for(unsigned int i=0; i < objects.size(); i++){
         objects.at(i)->toGPU(p);
     }
     lightsToGPU(p);
     setAmbientToGPU(p);
+
 }
 
 /**
