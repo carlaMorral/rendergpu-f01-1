@@ -44,21 +44,23 @@ void RealDataReader::dataFound(QStringList fields) {
     }
 
     shared_ptr<TG> mapeigRealAVirtual = mapping->getMapeigRealAVirtual();
-    vec3 puntBase = vec3(fields[1].toDouble(), 0.0, fields[2].toDouble());
-
+    vec4 puntBasev4 = mapeigRealAVirtual->getTG() * vec4(fields[1].toDouble(), 0.0, fields[2].toDouble(), 1);
+    vec3 puntBase = vec3(puntBasev4.x, puntBasev4.y, puntBasev4.z);
     for (int i=0; i<n; i++) {
 
         shared_ptr<Object> o;
 
+        //Valor de la propietat
+        float valor = fields[i+3].toFloat();
+
         //Escalat segons la propietat:
-        shared_ptr<ScaleTG> escalat = mapping->getEscalat(i, fields[i + 3].toFloat());
+        float escalat = mapping->getEscalat(i, valor);
 
-         // Construccio de l'objecte al Mon Virtual TODO: FET A P1 4.2 A:
-        o = make_shared<Object>(100000, mapping->getPropObjectFileName(i));
-        //(P1) o = ObjectFactory::getInstance().createObject(puntBase, fields[i + 3].toFloat(), mapeigRealAVirtual, escalat, mapping->getObjectTypeProp(i));
+        // Construccio de l'objecte al Mon Virtual:
+        o = make_shared<Object>(100000, mapping->getPropObjectFileName(i), puntBase, escalat);
 
-        // Construccio i assignacio del material
-        //(P1) o->setMaterial(mapping->mapeigMaterial(i, mapping->getColorMapProp(i), fields[3 + i].toDouble()));
+        //Asignació material:
+        vec3 color = mapping->getPaletteProp(i)->getColor(mapping->mapeigValorAUnit(i, valor));
 
         // Afegir objecte a l'escena
         scene->objects.push_back(o);

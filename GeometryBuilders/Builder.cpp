@@ -27,7 +27,7 @@ void Builder::newVirtualScene() {
     QString fileName = QFileDialog::getOpenFileName();
     if (!fileName.isNull()) {
         QString configMapping = QString(fileName).replace(QString(".txt"), QString("_mapping.txt"));
-        shared_ptr<ConfigMappingReader> mr = make_shared<ConfigMappingReader>(configMapping, Scene::VIRTUALWORLD);
+        shared_ptr<ConfigMappingReader> mr = make_shared<ConfigMappingReader>(configMapping, Scene::DATA_TYPES::VIRTUALWORLD);
         map = make_shared<Mapping>(mr);
         vwr->readScene(fileName, map);
     }
@@ -44,7 +44,7 @@ void Builder::newDataScene()
     QString fileName = QFileDialog::getOpenFileName();
     if (!fileName.isNull()) {
         QString configMapping = QString(fileName).replace(QString(".txt"), QString("_mapping.txt"));
-        shared_ptr<ConfigMappingReader> mr = make_shared<ConfigMappingReader>(configMapping, Scene::REALDATA);
+        shared_ptr<ConfigMappingReader> mr = make_shared<ConfigMappingReader>(configMapping, Scene::DATA_TYPES::REALDATA);
         map = make_shared<Mapping>(mr);
         rdr->readFile(fileName, map);
     }

@@ -3,9 +3,10 @@
 ConfigMappingReader::ConfigMappingReader(QString filename, Scene::DATA_TYPES dataType)
 {
   numProp = 0;
-  readFile(filename);
   this->dataType = dataType;
   usedPalettes = {};
+  readFile(filename);
+
 }
 
 void ConfigMappingReader::readFile(QString fileName) {
@@ -59,7 +60,7 @@ void ConfigMappingReader::limitsVirtualFound(QStringList fields) {
 
 void ConfigMappingReader::limitsRealFound(QStringList fields) {
     // limitsMonVirtual xmin xmax zmin zmax
-    if (this->dataType==Scene::DATA_TYPES::REALDATA) {
+    if (this->dataType==Scene::DATA_TYPES::REALDATA || this->dataType==Scene::REALDATA) {
         if (fields.size() != 5 ) {
             std::cerr << "Wrong limits format a1" << std::endl;
             return;

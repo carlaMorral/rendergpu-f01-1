@@ -10,6 +10,7 @@
 //#include "GeometryBuilders/ObjectFactory.h"
 #include "Geometry/TranslateTG.h"
 #include "Geometry/ScaleTG.h"
+#include "Geometry/Palette.h"
 
 #include <QString>
 
@@ -38,18 +39,16 @@ public:
     vec3 getVirtualMinCoord(){ return setup->Vmin; };
 
     shared_ptr<TG> getMapeigRealAVirtual();
-    shared_ptr<ScaleTG> getEscalat(int iProp, float valorMonReal);
-
-    //ColorMapStatic::COLOR_MAP_TYPES getColorMapProp(int i) {
-    //    return setup->props[i].second;
-    //}
+    float getEscalat(int iProp, float valorMonReal);
+    float mapeigValorAUnit(int iProp, float valorMonReal);
 
     QString getPropObjectFileName(int index){
         return setup->props[index].first;
     };
 
-    //shared_ptr<ColorMap> getColorMap(ColorMapStatic::COLOR_MAP_TYPES tCM);
-
+    shared_ptr<Palette> getPaletteProp(int i) {
+        return setup->props[i].second;
+    }
 private:
     shared_ptr<ConfigMappingReader> setup;
 };
