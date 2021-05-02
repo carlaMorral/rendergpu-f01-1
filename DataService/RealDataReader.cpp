@@ -44,7 +44,7 @@ void RealDataReader::dataFound(QStringList fields) {
     }
 
     shared_ptr<TG> mapeigRealAVirtual = mapping->getMapeigRealAVirtual();
-    vec4 puntBasev4 = mapeigRealAVirtual->getTG() * vec4(fields[1].toDouble(), 0.0, fields[2].toDouble(), 1);
+    vec4 puntBasev4 = mapeigRealAVirtual->getTG() * vec4(fields[1].toDouble(), 0.0, fields[2].toDouble(), 1.0);
     vec3 puntBase = vec3(puntBasev4.x, puntBasev4.y, puntBasev4.z);
     for (int i=0; i<n; i++) {
 

@@ -27,8 +27,9 @@ Object::Object(int npoints, QString n) : numPoints(npoints){
 }
 
 Object::Object(int npoints, QString n, vec3 position, float scale) : Object(npoints, n){
- setPosition(position);
- setScale(scale);
+    setPosition(position);
+    setScale(scale);
+
 }
 
 /**
@@ -297,13 +298,16 @@ void Object::aplicaTG(shared_ptr<TG> tg){
         }
     }else if(dynamic_pointer_cast<ScaleTG>(tg)){
         Capsa3D capsaMinima = calculCapsa3D();
+        vec3 centreCapsa(capsaMinima.pmin.x + capsaMinima.a/float(2), capsaMinima.pmin.y + capsaMinima.h/float(2), capsaMinima.pmin.z + capsaMinima.p/float(2));
         //Cal fer un cub unitari:
         //primer fem que sigui un cub (posem totes les arestes amb longitud igual que la més gran)
         //s'ha de dividir per aquesta mida per fer-lo unitari:
         float passarAUnitari(float(1) / max({capsaMinima.a, capsaMinima.h, capsaMinima.p}));
         for(int i = 0; i < vertexs.size(); i++){
+            this->vertexs[i] -= centreCapsa;
             this->vertexs[i] *= passarAUnitari;
             this->vertexs[i] = tg->getTG() * this->vertexs[i];
+            this->vertexs[i] += centreCapsa;
         }
     }
     make();
