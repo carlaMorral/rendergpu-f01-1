@@ -8,6 +8,7 @@
 #include "DataService/VirtualWorldReader.h"
 #include "DataService/RealDataReader.h"
 #include "DataService/ConfigMappingReader.h"
+#include "Geometry/FittedPlane.h"
 
 class Builder : public QObject {
         Q_OBJECT

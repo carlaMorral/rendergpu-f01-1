@@ -54,7 +54,6 @@ protected:
     shared_ptr<QOpenGLTexture> texture;
 
 public:
-
     Object(const int npoints, QObject *parent = 0);
     Object(const int npoints, QString n);
     Object(const int npoints, QString n, vec3 position, float scale);

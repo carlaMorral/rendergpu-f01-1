@@ -1,6 +1,5 @@
 #include "Geometry/Object.h"
 
-
 /**
  * @brief Object::Object
  * @param npoints
