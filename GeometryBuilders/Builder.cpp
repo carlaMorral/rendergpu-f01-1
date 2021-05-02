@@ -43,7 +43,7 @@ void Builder::newDataScene()
     // i crear l'escena corresponent.
     QString fileName = QFileDialog::getOpenFileName();
     if (!fileName.isNull()) {
-        QString configMapping = "mapping_" + fileName;
+        QString configMapping = QString(fileName).replace(QString(".txt"), QString("_mapping.txt"));
         shared_ptr<ConfigMappingReader> mr = make_shared<ConfigMappingReader>(configMapping, Scene::REALDATA);
         map = make_shared<Mapping>(mr);
         rdr->readFile(fileName, map);

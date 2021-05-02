@@ -6,8 +6,6 @@
 #include <string.h>
 
 #include "DataService/ConfigMappingReader.h"
-#include "Geometry/ColorMap.h"
-#include "Geometry/ColorMapStatic.h"
 #include "Geometry/Material.h"
 //#include "GeometryBuilders/ObjectFactory.h"
 #include "Geometry/TranslateTG.h"

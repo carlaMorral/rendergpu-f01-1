@@ -10,7 +10,8 @@
 #include <vector>
 #include "Geometry/Scene.h"
 #include "Geometry/Material.h"
-#include "Geometry/ColorMapStatic.h"
+#include "Geometry/Palette.h"
+#include "unordered_map"
 
 class ConfigMappingReader {
 public:
@@ -44,7 +45,10 @@ public:
     vec3                Rmin, Rmax, Vmin, Vmax, Rdiff, Vdiff;
     float               VminDiff, RminDiff;
     vector<pair<double, double>> propLimits;
-    vector<pair<QString, ColorMapStatic>> props; //TODO: Material? o variable estàtica?
+    vector<pair<QString, shared_ptr<Palette>>> props;
+
+private:
+    std::unordered_map<QString, shared_ptr<Palette>> usedPalettes;
 };
 
 

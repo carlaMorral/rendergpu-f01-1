@@ -8,6 +8,7 @@ Palette::Palette(QString fileName){
     }
     if(file.open(QFile::ReadOnly | QFile::Text)) {
         bool llegirColors = false;
+        size = 0;
         while(!file.atEnd()){
             QString line = file.readLine().trimmed();
             QStringList lineParts = line.split(QRegularExpression("\\s+"));
@@ -17,7 +18,11 @@ Palette::Palette(QString fileName){
                 }
                 qDebug() << line.remove(0, 1).trimmed();
             }else{//Parsegem colors:
-
+                float r = lineParts.at(0).toFloat();
+                float g = lineParts.at(1).toFloat();
+                float b = lineParts.at(2).toFloat();
+                colors.push_back(vec3(r,g,b));
+                size++;
             }
 
         }

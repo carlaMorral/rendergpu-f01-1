@@ -5,6 +5,7 @@ ConfigMappingReader::ConfigMappingReader(QString filename, Scene::DATA_TYPES dat
   numProp = 0;
   readFile(filename);
   this->dataType = dataType;
+  usedPalettes = {};
 }
 
 void ConfigMappingReader::readFile(QString fileName) {
@@ -41,7 +42,7 @@ void ConfigMappingReader::fileLineRead (QString lineReaded) {
 void ConfigMappingReader::limitsVirtualFound(QStringList fields) {
     // limitsMonVirtual xmin xmax zmin zmax
     if (fields.size() != 7 ) {
-        std::cerr << "Wrong limits format" << std::endl;
+        std::cerr << "Wrong limits format c1" << std::endl;
         return;
     }
     Vxmin = fields[1].toDouble();
@@ -60,7 +61,7 @@ void ConfigMappingReader::limitsRealFound(QStringList fields) {
     // limitsMonVirtual xmin xmax zmin zmax
     if (this->dataType==Scene::DATA_TYPES::REALDATA) {
         if (fields.size() != 5 ) {
-            std::cerr << "Wrong limits format" << std::endl;
+            std::cerr << "Wrong limits format a1" << std::endl;
             return;
         }
         Rxmin = fields[1].toDouble();
@@ -71,7 +72,7 @@ void ConfigMappingReader::limitsRealFound(QStringList fields) {
     } else {
         // limitsMonVirtual xmin xmax ymin ymax zmin zmax
         if (fields.size() != 7 ) {
-            std::cerr << "Wrong limits format" << std::endl;
+            std::cerr << "Wrong limits format b1" << std::endl;
             return;
         }
         Rxmin = fields[1].toDouble();
@@ -102,18 +103,21 @@ void ConfigMappingReader::baseFound(QStringList fields) {
 }
 
 void ConfigMappingReader::propFound(QStringList fields) {
-    //prop numProp vmin vmax tipusGizmo
+    //prop numProp vmin vmax .obj palette(.gpl)
 
     std::cerr<<"Prop found"<<std::endl;
-    if (fields.size() != 5) { //TODO CANVIAR PER AFEGIR COLORS MATERIALS
+    if (fields.size() != 6) {
         std::cerr << "Wrong propietat format config mapping" << std::endl;
         return;
     }
     numProp++;
     propLimits.push_back(std::make_pair(fields[2].toDouble(), fields[3].toDouble()));
-    QString fileName = fields[4];
-    // TODO COLORS MATERIALS
+    QString objFileName = fields[4];
+    QString palFileName = fields[5];
+    if(usedPalettes.find(palFileName) == usedPalettes.end()){
+        usedPalettes[palFileName] = make_shared<Palette>(palFileName);
+    }
 
-    props.push_back(std::make_pair(fileName, Material())); //TODO: no posar MATERIAL (si no color?)
+    props.push_back(std::make_pair(objFileName, usedPalettes[palFileName]));
 
 }
