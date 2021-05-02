@@ -44,7 +44,7 @@ public:
     vec3                Rmin, Rmax, Vmin, Vmax, Rdiff, Vdiff;
     float               VminDiff, RminDiff;
     vector<pair<double, double>> propLimits;
-    vector<pair<QString, Material>> props; //TODO: Material? o variable estàtica?
+    vector<pair<QString, ColorMapStatic>> props; //TODO: Material? o variable estàtica?
 };
 
 

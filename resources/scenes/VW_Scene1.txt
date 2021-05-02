@@ -1,2 +1,3 @@
 ://resources/models/sphere0.obj, 0, 0, 0, 1
-://resources/models/sphere0.obj, 1, 1, 1, 1
+://resources/models/sphere0.obj, 1, 0, 0, 1.5
+://resources/models/sphere0.obj, 2, 0, 0, 2

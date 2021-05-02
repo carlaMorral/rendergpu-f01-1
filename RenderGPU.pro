@@ -17,10 +17,10 @@ SOURCES += \
     DataService/VirtualWorldReader.cpp \
     Geometry/Animation.cpp \
     Geometry/Cara.cpp \
-    Geometry/ColorMapStatic.cpp \
     Geometry/Light.cpp \
     Geometry/Material.cpp \
     Geometry/Object.cpp \
+    Geometry/Palette.cpp \
     Geometry/ScaleTG.cpp \
     Geometry/Scene.cpp \
     Geometry/TG.cpp \
@@ -40,10 +40,10 @@ HEADERS += \
     Geometry/Animation.h \
     Geometry/Cara.h \
     Geometry/ColorMap.h \
-    Geometry/ColorMapStatic.h \
     Geometry/Light.h \
     Geometry/Material.h \
     Geometry/Object.h \
+    Geometry/Palette.h \
     Geometry/ScaleTG.h \
     Geometry/Scene.h \
     Geometry/TG.h \
