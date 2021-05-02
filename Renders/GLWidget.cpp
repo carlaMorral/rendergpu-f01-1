@@ -41,8 +41,8 @@ void GLWidget::initializeGL() {
 
     initShadersGPU();
 
-    // Creacio d'una Light per apoder modificar el seus valors amb la interficie
-    auto l  = make_shared<Light>(Puntual);
+    // Creacio d'una PointLight per a poder modificar el seus valors amb la interficie
+    shared_ptr<Light> l = dynamic_pointer_cast<Light>(make_shared<PointLight>(vec3(0,1,0), vec3(1,1,1), vec3(0,1,0), vec4(-25,25,25,1), vec3(0,0,1)));
     scene->addLight(l);
 
     scene->camera->init(this->size().width(), this->size().height(), scene->capsaMinima);
@@ -50,6 +50,11 @@ void GLWidget::initializeGL() {
     emit FrustumCameraChanged(scene->camera);
 
     glViewport(scene->camera->vp.pmin[0], scene->camera->vp.pmin[1], scene->camera->vp.a, scene->camera->vp.h);
+
+    // TODO: aquestes crides nomes per check que es fa be, treure un cop es faci merge amb pas 1!!!
+    scene->setAmbientToGPU(this->program);
+    scene->lightsToGPU(this->program);
+
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
@@ -82,7 +87,7 @@ void GLWidget::resizeGL(int width, int height) {
  * @brief GLWidget::initShadersGPU
  */
 void GLWidget::initShadersGPU(){
-    initShader("://resources/vshader1.glsl", "://resources/fshader1.glsl");
+    initShader("://resources/vshader_test.glsl", "://resources/fshader1.glsl");
 }
 
 QSize GLWidget::minimumSizeHint() const {

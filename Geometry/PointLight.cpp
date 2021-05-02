@@ -9,7 +9,6 @@ PointLight::PointLight(vec3 ambient, vec3 diffuse, vec3 specular, vec4 position,
  * @brief Light::getLightPosition
  */
 vec4 PointLight::getLightPosition() {
-    // TO DO: A canviar a la fase 1 de la practica 2
     return position;
 }
 

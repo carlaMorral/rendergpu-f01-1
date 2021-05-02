@@ -10,8 +10,6 @@ Scene::Scene() {
     capsaMinima.h = 2;
     capsaMinima.p = 2;
     lightAmbientGlobal = vec3(1, 1, 1);
-    shared_ptr<Light> l = make_shared<Light>(LightType::Puntual, vec3(1,1,1), vec3(1,1,1), vec3(1,1,1));
-    addLight(l);
 }
 
 /**
@@ -36,28 +34,11 @@ void Scene::addObject(shared_ptr<Object> obj) {
  */
 void Scene::toGPU(shared_ptr<QGLShaderProgram> p) {
 
-    // ********** TEST ***************
-
-    qDebug() << "toGPU.....";
-    struct
-    {
-     GLuint test1;
-     GLuint test2;
-    } test;
-
-    test.test1 = p->uniformLocation(QString("test.test1"));
-    test.test2 = p->uniformLocation(QString("test.test2"));
-    glUniform1i(test.test1, 1);
-    glUniform4fv(test.test2, 1, vec4(1,0,1,1));
-
-    // ********** TEST END ***************
-
     for(unsigned int i=0; i < objects.size(); i++){
         objects.at(i)->toGPU(p);
     }
     lightsToGPU(p);
     setAmbientToGPU(p);
-
 }
 
 /**
@@ -104,6 +85,8 @@ void Scene::setLightActual(shared_ptr<Light> l){
  */
 void Scene::lightsToGPU(shared_ptr<QGLShaderProgram> program){
 
+     qDebug() << "lightsToGPU()";
+
     // 1. Es declara un struct d'identificadors
     struct stLight
     {
@@ -120,7 +103,7 @@ void Scene::lightsToGPU(shared_ptr<QGLShaderProgram> program){
     // vector de structs gl_IdLights
     stLight gl_IdVectLights [MAX_LIGHTS];
 
-    for(uint i=0; i<MAX_LIGHTS && i<lights.size(); i++){
+    for(int i=0; i<MAX_LIGHTS && i<lights.size(); i++){
 
         // 2. Creem les variables per cada identificador
 
@@ -137,21 +120,21 @@ void Scene::lightsToGPU(shared_ptr<QGLShaderProgram> program){
         float angle = 0;
 
         // Nomes per llums puntuals
-        if (lights.at(i)->getTipusLight()==LightType::Puntual){
-            std::shared_ptr<PointLight> pointlight = std::dynamic_pointer_cast<PointLight> (lights.at(i));
+        if (lights[i]->getTipusLight()==LightType::Puntual){
+            std::shared_ptr<PointLight> pointlight = std::dynamic_pointer_cast<PointLight> (lights[i]);
             position = vec3(pointlight->getLightPosition().x,pointlight->getLightPosition().y,pointlight->getLightPosition().z);
             coefficients = vec3(pointlight->getCoeficients());
         }
 
         // Nomes per llums direccionals
-        if (lights.at(i)->getTipusLight()==LightType::Direccional){
-            std::shared_ptr<DirectionalLight> dirlight = std::dynamic_pointer_cast<DirectionalLight> (lights.at(i));
+        if (lights[i]->getTipusLight()==LightType::Direccional){
+            std::shared_ptr<DirectionalLight> dirlight = std::dynamic_pointer_cast<DirectionalLight> (lights[i]);
             direction = vec3(dirlight->getLightDirection());
         }
 
         // Nomes per llums spot
-        if (lights.at(i)->getTipusLight()==LightType::Spot){
-            std::shared_ptr<SpotLight> spotlight = std::dynamic_pointer_cast<SpotLight> (lights.at(i));
+        if (lights[i]->getTipusLight()==LightType::Spot){
+            std::shared_ptr<SpotLight> spotlight = std::dynamic_pointer_cast<SpotLight> (lights[i]);
             direction = vec3(spotlight->getLightDirection());
             angle = spotlight->getAngle();
         }
@@ -165,7 +148,6 @@ void Scene::lightsToGPU(shared_ptr<QGLShaderProgram> program){
         gl_IdVectLights[i].direction = program->uniformLocation(QString("lights[%1].direction").arg(i));
         gl_IdVectLights[i].coefficients = program->uniformLocation(QString("lights[%1].coefficients").arg(i));
         gl_IdVectLights[i].angle = program->uniformLocation(QString("lights[%1].angle").arg(i));
-
 
         // 4. Bind de les zones de memòria que corresponen a la GPU als valors de la CPU
         glUniform1i(gl_IdVectLights[i].type, type);
@@ -188,6 +170,8 @@ void Scene::addLight(shared_ptr<Light> l) {
  * @param program
  */
 void Scene::setAmbientToGPU(shared_ptr<QGLShaderProgram> program){
+
+        qDebug() << "setAmbientToGPU()";
 
        // 1. Es declara un struct d'identificadors
        struct stGlobal{

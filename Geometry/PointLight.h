@@ -8,7 +8,7 @@
 using namespace Common;
 
 
-class PointLight : Light
+class PointLight : public Light
 {
 public:
     PointLight(vec3 ambient, vec3 diffuse, vec3 specular, vec4 position, vec3 coeficients);

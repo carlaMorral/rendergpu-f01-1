@@ -7,11 +7,6 @@ uniform mat4 projection;
 
 out vec4 color;
 
-struct {
- int test1;
- vec4 test2;
-} uniform test;
-
 // Struct que representa una llum amb tots els seus parametres
 struct stLight{
     int type;
@@ -42,8 +37,7 @@ void main(void)
     gl_Position = gl_Position/gl_Position.w;
 
     // Comprovem que el primer element de la llista de llums te el valor diffuse esperat
-    //color = vec4(globalAmbientLight.globalLight);
-    //color = vec4(lights[0].ambient,1);
-    color = test.test2;
+    //color = vec4(globalAmbientLight.globalLight,1);
+    color = vec4(lights[0].specular,1);
 }
 
