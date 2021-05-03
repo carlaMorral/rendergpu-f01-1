@@ -18,7 +18,14 @@ public:
 
     void toGPU(shared_ptr<QGLShaderProgram> program);
 
-    vec3 diffuse, ambient, specular, k;
-    float shineness;
+    vec3 getAmbient() const;
+    vec3 getDiffuse() const;
+    vec3 getSpecular() const;
+    float getShininess() const;
+    vec3 getTransparency() const;
+
+protected:
+    vec3 diffuse, ambient, specular, transparency;
+    float shininess;
 };
 

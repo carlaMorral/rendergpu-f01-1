@@ -10,9 +10,13 @@ Object::Object(int npoints, QObject *parent) : QObject(parent){
     numPoints = npoints;
     points = new point4[numPoints];
     normals= new point4[numPoints];
-    colors = new point4[numPoints];
 
-    material = make_shared<Material>(vec3(0.3f), vec3(1.0f, 0.1f, 0.1f), vec3(1.0f), vec3(0.0f), 20.0);
+    vec3 ambient(1.0f, 0.0f, 0.0f);
+    vec3 diffuse(0.0f, 1.0f, 0.0f);
+    vec3 specular(0.0f, 0.0f, 1.0f);
+    vec3 transparency(1.0f, 1.0f, 0.0f);
+    float shininess = 20.0;
+    material = make_shared<Material>(ambient, diffuse, specular, transparency, shininess);
  }
 
 /**
@@ -23,9 +27,13 @@ Object::Object(int npoints, QObject *parent) : QObject(parent){
 Object::Object(int npoints, QString n) : numPoints(npoints){
     points = new point4[numPoints];
     normals= new point4[numPoints];
-    colors = new point4[numPoints];
 
-    material = make_shared<Material>(vec3(0.3f), vec3(1.0f, 0.1f, 0.1f), vec3(1.0f), vec3(0.0f), 20.0);
+    vec3 ambient(1.0f, 0.0f, 0.0f);
+    vec3 diffuse(0.0f, 1.0f, 0.0f);
+    vec3 specular(0.0f, 0.0f, 1.0f);
+    vec3 transparency(1.0f, 1.0f, 0.0f);
+    float shininess = 20.0;
+    material = make_shared<Material>(ambient, diffuse, specular, transparency, shininess);
 
     parseObjFile(n);
     make();
@@ -38,7 +46,6 @@ Object::Object(int npoints, QString n) : numPoints(npoints){
 Object::~Object(){
     delete points;
     delete normals;
-    delete colors;
 }
 
 /**
@@ -46,13 +53,37 @@ Object::~Object(){
  * @param pr
  */
 void Object::toGPU(shared_ptr<QGLShaderProgram> pr) {
-    // TO  DO: A modificar a la fase 1 de la practica 2
+
+    program = pr;
 
     qDebug() << "Obj to GPU.....";
 
-    program = pr;
-    // Creació d'un vertex array object
+    // Primer passarem el material
+    // 1. Declerem un struct amb la informacio del material
 
+    struct {
+        GLuint ambient;
+        GLuint diffuse;
+        GLuint specular;
+        GLuint transparency;
+        GLuint shininess;
+    } gl_IdMaterial;
+
+    // 2. Obtenim identificadors GPU
+    gl_IdMaterial.ambient = program->uniformLocation("material.ambient");
+    gl_IdMaterial.diffuse = program->uniformLocation("material.diffuse");
+    gl_IdMaterial.specular = program->uniformLocation("material.specular");
+    gl_IdMaterial.transparency = program->uniformLocation("material.transparency");
+    gl_IdMaterial.shininess = program->uniformLocation("material.shininess");
+
+    // 3. Bind de les zones de memòria de GPU a CPU
+    glUniform3fv(gl_IdMaterial.ambient, 1, this->material->getAmbient());
+    glUniform3fv(gl_IdMaterial.diffuse, 1, this->material->getDiffuse());
+    glUniform3fv(gl_IdMaterial.specular, 1, this->material->getSpecular());
+    glUniform3fv(gl_IdMaterial.transparency, 1, this->material->getTransparency());
+    glUniform1f(gl_IdMaterial.shininess, this->material->getShininess());
+
+    // Creació d'un vertex array object
     glGenVertexArrays( 1, &vao );
 
     // Creacio i inicialitzacio d'un vertex buffer object (VBO)
@@ -65,9 +96,8 @@ void Object::toGPU(shared_ptr<QGLShaderProgram> pr) {
     // TO  DO: A modificar a la fase 1 de la practica 2
     // Cal passar les normals a la GPU
 
-    glBufferData( GL_ARRAY_BUFFER, sizeof(point4)*Index + sizeof(point4)*Index, NULL, GL_STATIC_DRAW );
+    glBufferData( GL_ARRAY_BUFFER, sizeof(point4)*Index, NULL, GL_STATIC_DRAW );
     glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof(point4)*Index, points );
-    glBufferSubData( GL_ARRAY_BUFFER, sizeof(point4)*Index, sizeof(point4)*Index, colors );
 
     // set up vertex arrays
     glBindVertexArray( vao );
@@ -118,7 +148,6 @@ void Object::make(){
     for(unsigned int i=0; i<cares.size(); i++){
         for(unsigned int j=0; j<cares[i].idxVertices.size(); j++){
             points[Index] = vertexs[cares[i].idxVertices[j]];
-            colors[Index] = vec4(base_colors[j%3], 1.0);
             Index++;
         }
     }
