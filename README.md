@@ -10,16 +10,16 @@ Segona pràctica de GiVD 2020-21
 *(NOTA: Quines parts heu desenvolupat i qui ho ha fet de l'equip. Editeu la llista que teniu a continuació afegint darrera de cada punt, la/es persona/es que ha treballat en aquell punt.)*
 
 - Fase 1
-    - Adaptació a la lectura de fitxers de dades
-        - [ ] Objectes
-        - [ ] Escenes virtuals
-        - [ ] Escenes de dades Reals 
+    - Adaptació a la lectura de fitxers de dades: *Carla, Albert*
+        - [X] Objectes
+        - [X] Escenes virtuals
+        - [X] Escenes de dades Reals 
     - Material: *Martí*
-    - Light
-        - [ ] Puntual
-        - [ ] Direccional
-        - [ ] Spotlight
-        - [ ] Ambient Global
+    - Light: *Arnau*
+        - [X] Puntual
+        - [X] Direccional
+        - [X] Spotlight
+        - [X] Ambient Global
     - Shading
         - [ ] Phong
         - [ ] Gouraud
