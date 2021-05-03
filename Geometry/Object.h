@@ -22,6 +22,7 @@ using namespace Common;
 #include <Geometry/ScaleTG.h>
 #include <Geometry/Animation.h>
 #include <Geometry/Cara.h>
+#include <Geometry/Material.h>
 
 typedef vec4  point4;
 
@@ -44,8 +45,7 @@ protected:
     point4 *points;
     point4 *normals;
 
-    // Els colors s'usen en la primera execució però després son prescindibles
-    point4 *colors;
+    shared_ptr<Material> material;
 
     int Index; // index de control del numero de vertexs a passar a la GPU
 
