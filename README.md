@@ -59,9 +59,11 @@ Per a comprovar que el pas de les característiques del material de la CPU a la 
 
 - A cada atribut del material li hem assignat un valor força reconeixible, en el nostre cas, ambient = vermell, difus = verd, especular = blau, transparència = groc, i hem fixat shininess = 20.0.
 - Després hem fet cinc proves diferents, modificant el fitxer del vertex shader. En les quatre primeres hem assignat la component ambient, difusa, especular i de transparència com a color de l'objecte, i hem obtingut les pantalles següents:
+- 
 `ambient = (1, 0, 0)`        |  `diffuse = (0, 1, 0)`  
 :-------------------------:|:-------------------------:
 ![ambient](readmeFiles/fase1-pas2/ambient.png)  |  ![diffuse](readmeFiles/fase1-pas2/diffuse.png)
+
 `specular = (0, 0, 1)`        |  `transparency = (1, 1, 0)`  
 :-------------------------:|:-------------------------:
 ![specular](readmeFiles/fase1-pas2/specular.png)  |  ![transparency](readmeFiles/fase1-pas2/transparency.png)
