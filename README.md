@@ -39,17 +39,19 @@ Segona pràctica de GiVD 2020-21
     - [ ] Transparencias via environmental mapping.
 
 
-**Extensions**
+## Extensions
 
 *(NOTA: Les extensions de la pràctica que heu fet i que no surten a la llista anterior)*
 
-**Memòria**
+## Memòria
 
 *(NOTA: Explicació només dels diferents punts que heu desenvolupat i funcionen, detallant les estratègies que heu fet servir)*
 
-**Screenshots**
+## Screenshots
 
 *(NOTA: Per a cada pas de l'enunciat (del 1 al 6), incloure captures de pantalla de les proves que heu fet per a demostrar la funcionalitat de la vostra pràctica amb explicacions de la seva configuració i com les heu aconseguides)*
+
+### Pas 1
 
 ### Pas 2
 
@@ -67,9 +69,16 @@ Per a comprovar que el pas de les característiques del material de la CPU a la 
 
 - Finalment podem concloure que la informació del material es passa correctament a la GPU.
 
+### Pas 3
+
+### Pas 4
+
+### Pas 5
+
+### Pas 6
 
 *(NOTA2: Breu explicació, si cal, de com replicar els vostres resultats)*
 
-**Additional Information**
+## Additional Information
 
 *(NOTA: Hores de dedicació i problemes que heu tingut fent la pràctica)*
