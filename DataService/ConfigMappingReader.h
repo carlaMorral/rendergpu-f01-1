@@ -11,7 +11,7 @@
 #include "Geometry/Scene.h"
 #include "Geometry/Material.h"
 #include "Geometry/Palette.h"
-#include "unordered_map"
+
 
 class ConfigMappingReader {
 public:
@@ -48,7 +48,7 @@ public:
     vector<pair<QString, shared_ptr<Palette>>> props;
 
 private:
-    std::unordered_map<QString, shared_ptr<Palette>> usedPalettes;
+    std::map<QString, shared_ptr<Palette>> usedPalettes;
 };
 
 
