@@ -12,13 +12,18 @@
 #include <library/vec.h>
 #include <library/Common.h>
 
-
 #include <Geometry/Object.h>
-#include <Geometry/Light.h>
 #include <Renders/Camera.h>
+#include <Geometry/Light.h>
+#include <Geometry/PointLight.h>
+#include <Geometry/DirectionalLight.h>
+#include <Geometry/SpotLight.h>
 
 using namespace std;
 using namespace Common;
+
+// maxim nombre de llums que podem passar a la GPU (de moment 10)
+#define MAX_LIGHTS 10
 
 // Scene: contains all objects, lights to visualize the scene
 // the viewer is placed in the z+ axis
