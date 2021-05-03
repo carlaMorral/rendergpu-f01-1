@@ -1,7 +1,5 @@
 # RenderGPU
 Segona pràctica de GiVD 2020-21
-
-    Aquest és el model base del README.rst que haureu d'omplir com a documentació de la pràctica. De cara a la presentació d'qeust document, si us plau, esborreu les notes i aquest text. 
     
 **Abstract**
 
@@ -9,14 +7,14 @@ Segona pràctica de GiVD 2020-21
 
 **Features**
 
-*(NOTA: Quines parts heu desenvolupat i qui ho ha fet de l'equip. Editeu la llista que teniu a continuació afegint darrera de cada punt, la/es persona/es que ha treballat en aquell punt.) *
+*(NOTA: Quines parts heu desenvolupat i qui ho ha fet de l'equip. Editeu la llista que teniu a continuació afegint darrera de cada punt, la/es persona/es que ha treballat en aquell punt.)*
 
 - Fase 1
     - Adaptació a la lectura de fitxers de dades
         - [ ] Objectes
         - [ ] Escenes virtuals
         - [ ] Escenes de dades Reals 
-    - Material
+    - Material: *Martí*
     - Light
         - [ ] Puntual
         - [ ] Direccional
@@ -52,6 +50,23 @@ Segona pràctica de GiVD 2020-21
 **Screenshots**
 
 *(NOTA: Per a cada pas de l'enunciat (del 1 al 6), incloure captures de pantalla de les proves que heu fet per a demostrar la funcionalitat de la vostra pràctica amb explicacions de la seva configuració i com les heu aconseguides)*
+
+###Pas 2
+
+Per a comprovar que el pas de les característiques del material de la CPU a la GPU funciona hem dut a terme les següents comprovacions:
+
+- A cada atribut del material li hem assignat un valor força reconeixible, en el nostre cas, ambient = vermell, difus = verd, especular = blau, transparència = groc, i hem fixat shininess = 20.0.
+- Després hem fet cinc proves diferents, modificant el fitxer del vertex shader. En les quatre primeres hem assignat la component ambient, difusa, especular i de transparència com a color de l'objecte, i hem obtingut les pantalles següents:
+
+![ambient](readmeFiles/fase1-pas2/ambient.png)  |  ![diffuse](readmeFiles/fase1-pas2/diffuse.png) 
+![specular](readmeFiles/fase1-pas2/specular.png)  |  ![transparency](readmeFiles/fase1-pas2/transparency.png)
+
+- Per a veure que el float de shininess també es rebia bé a la GPU hem fet que el color de l'objecte vingués donat pel color `color = vec4(0,material.shininess/20.0, material.shininess/20.0, 1);`, és a dir, (0,1,1), i per tant hauriem de veure el color cyan:
+
+![shininess](readmeFiles/fase1-pas2/shininess.png)
+
+- Finalment podem concloure que la informació del material es passa correctament a la GPU.
+
 
 *(NOTA2: Breu explicació, si cal, de com replicar els vostres resultats)*
 

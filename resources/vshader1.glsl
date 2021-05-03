@@ -22,5 +22,5 @@ void main()
 {
     gl_Position = projection*model_view*vPosition;
     gl_Position = gl_Position/gl_Position.w;
-    color = vec4(material.ambient, 1);
+    color = vec4(0,material.shininess/20.0, material.shininess/20.0, 1);
 }
