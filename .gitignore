@@ -30,4 +30,8 @@
 *.exe
 *.out
 *.app
+
+#pro.user
+*.pro.user
+*.pro.user.*
 RenderGPU.pro.user

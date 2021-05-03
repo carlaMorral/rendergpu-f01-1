@@ -4,16 +4,15 @@ Builder::Builder(GLWidget *glWid)
 {
     glWidget = glWid;
     scene = glWidget->getScene();
-
+    vwr = make_shared<VirtualWorldReader>(scene);
+    rdr = make_shared<RealDataReader>(scene);
 }
 
 void Builder::newObjFromFile()
 {
     QString fileName = QFileDialog::getOpenFileName();
     if (!fileName.isNull()) {
-            auto obj = make_shared<Object>(100000, fileName);
-            scene->addObject(obj);
-            scene->camera->actualitzaCamera(scene->capsaMinima);
+            shared_ptr<Object> obj = vwr->readBrObject(fileName);
             emit newObj(obj);
     }
 }
@@ -25,8 +24,14 @@ void Builder::newVirtualScene() {
     // Nomes hi hauran fitxers de tipus BoundaryObject.
     // Usa el ConfigMappingReader i la teva SceneFactoryVirtual
     // per a construir l'escena tal i com feies a la practica 1
-
-     emit newScene(scene);
+    QString fileName = QFileDialog::getOpenFileName();
+    if (!fileName.isNull()) {
+        QString configMapping = QString(fileName).replace(QString(".txt"), QString("_mapping.txt"));
+        shared_ptr<ConfigMappingReader> mr = make_shared<ConfigMappingReader>(configMapping, Scene::DATA_TYPES::VIRTUALWORLD);
+        map = make_shared<Mapping>(mr);
+        vwr->readScene(fileName, map);
+    }
+    emit newScene(scene);
 }
 
 
@@ -36,8 +41,18 @@ void Builder::newDataScene()
     // del configMapping i el fitxer .txt que conté les dades
     // Utilitza el ConfigMappingReader i la teva SceneFactoryData per a llegir els fitxers
     // i crear l'escena corresponent.
+    QString fileName = QFileDialog::getOpenFileName();
+    if (!fileName.isNull()) {
+        QString configMapping = QString(fileName).replace(QString(".txt"), QString("_mapping.txt"));
+        shared_ptr<ConfigMappingReader> mr = make_shared<ConfigMappingReader>(configMapping, Scene::DATA_TYPES::REALDATA);
+        map = make_shared<Mapping>(mr);
 
-    // Opcionalment pots crear un dialeg per posar els valors del mapping
+        rdr->readFile(fileName, map);
+        auto obj = make_shared<FittedPlane>(mr->Vxmin, mr->Vxmax, mr->Vzmin, mr->Vzmax, mr->dPlaBase);
+        scene->addObject(obj);
+    }
     emit newScene(scene);
+    // Opcionalment pots crear un dialeg per posar els valors del mapping
+    //TODO: If fitxer mapping not found, diàleg?
 }
 
