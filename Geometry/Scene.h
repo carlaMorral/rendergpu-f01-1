@@ -12,9 +12,7 @@
 #include <library/vec.h>
 #include <library/Common.h>
 
-
 #include <Geometry/Object.h>
-#include <Geometry/Light.h>
 #include <Renders/Camera.h>
 #include <Geometry/Light.h>
 #include <Geometry/PointLight.h>

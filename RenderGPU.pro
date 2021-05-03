@@ -17,16 +17,12 @@ SOURCES += \
     DataService/VirtualWorldReader.cpp \
     Geometry/Animation.cpp \
     Geometry/Cara.cpp \
-    Geometry/ColorMapStatic.cpp \
     Geometry/DirectionalLight.cpp \
     Geometry/Light.cpp \
     Geometry/Material.cpp \
     Geometry/Object.cpp \
     Geometry/PointLight.cpp \
     Geometry/FittedPlane.cpp \
-    Geometry/Light.cpp \
-    Geometry/Material.cpp \
-    Geometry/Object.cpp \
     Geometry/Palette.cpp \
     Geometry/ScaleTG.cpp \
     Geometry/Scene.cpp \
@@ -48,16 +44,12 @@ HEADERS += \
     Geometry/Animation.h \
     Geometry/Cara.h \
     Geometry/ColorMap.h \
-    Geometry/ColorMapStatic.h \
     Geometry/DirectionalLight.h \
     Geometry/Light.h \
     Geometry/Material.h \
     Geometry/Object.h \
     Geometry/PointLight.h \
     Geometry/FittedPlane.h \
-    Geometry/Light.h \
-    Geometry/Material.h \
-    Geometry/Object.h \
     Geometry/Palette.h \
     Geometry/ScaleTG.h \
     Geometry/Scene.h \
