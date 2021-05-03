@@ -59,7 +59,7 @@ Per a comprovar que el pas de les característiques del material de la CPU a la 
 
 - A cada atribut del material li hem assignat un valor força reconeixible, en el nostre cas, ambient = vermell, difus = verd, especular = blau, transparència = groc, i hem fixat shininess = 20.0.
 - Després hem fet cinc proves diferents, modificant el fitxer del vertex shader. En les quatre primeres hem assignat la component ambient, difusa, especular i de transparència com a color de l'objecte, i hem obtingut les pantalles següents:
-- 
+
 `ambient = (1, 0, 0)`        |  `diffuse = (0, 1, 0)`  
 :-------------------------:|:-------------------------:
 ![ambient](readmeFiles/fase1-pas2/ambient.png)  |  ![diffuse](readmeFiles/fase1-pas2/diffuse.png)
@@ -70,6 +70,8 @@ Per a comprovar que el pas de les característiques del material de la CPU a la 
 
 - Per a veure que el float de shininess també es rebia bé a la GPU hem fet que el color de l'objecte vingués donat pel color `color = vec4(0,material.shininess/20.0, material.shininess/20.0, 1);`, és a dir, (0,1,1), i per tant hauriem de veure el color cyan:
 
+`shininess = 20.0`
+:-------------------------:
 ![shininess](readmeFiles/fase1-pas2/shininess.png)
 
 - Finalment podem concloure que la informació del material es passa correctament a la GPU.
