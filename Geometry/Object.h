@@ -3,10 +3,9 @@
 
 #include <QObject>
 #include <vector>
-#include <memory>
 
 #include <library/Common.h>
-using namespace Common;
+#include <memory>
 
 #include <QGLShaderProgram>
 #include <QOpenGLTexture>
@@ -23,6 +22,8 @@ using namespace Common;
 #include <Geometry/Animation.h>
 #include <Geometry/Cara.h>
 #include <Geometry/Material.h>
+
+using namespace Common;
 
 typedef vec4  point4;
 
