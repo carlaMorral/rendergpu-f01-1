@@ -4,11 +4,21 @@
 #include <QtWidgets>
 #include <Renders/GLWidget.h>
 
+#include "Mapping.h"
+#include "DataService/VirtualWorldReader.h"
+#include "DataService/RealDataReader.h"
+#include "DataService/ConfigMappingReader.h"
+#include "Geometry/FittedPlane.h"
+
 class Builder : public QObject {
         Q_OBJECT
 
     shared_ptr<Scene> scene;
     GLWidget *glWidget;
+    shared_ptr<Mapping> map;
+    shared_ptr<VirtualWorldReader> vwr;
+    shared_ptr<RealDataReader> rdr;
+    shared_ptr<ConfigMappingReader> mapping;
 
 public:
     Builder(GLWidget *glWid);

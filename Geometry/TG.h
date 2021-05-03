@@ -9,7 +9,8 @@ class TG
 public:
     mat4 matTG;
     TG();
-    ~TG();
+    TG(mat4 matTG);
+    virtual ~TG(){};
     virtual mat4 getTG();
 };
 
