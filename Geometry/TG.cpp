@@ -1,13 +1,15 @@
-#include "Geometry/TG.h"
+#include "TG.h"
+
+using namespace Common;
 
 TG::TG()
 {
-// matTG = mat4();
+ matTG = mat4(1.0f);
 }
 
-TG::~TG()
+TG::TG(mat4 matTG)
 {
-
+ this->matTG = matTG;
 }
 
 mat4 TG::getTG() {

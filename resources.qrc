@@ -5,5 +5,13 @@
         <file>resources/models/armadillo.obj</file>
         <file>resources/models/sphere0.obj</file>
         <file>resources/vshader_test.glsl</file>
+        <file>resources/scenes/VW_Scene1_mapping.txt</file>
+        <file>resources/scenes/VW_Scene1.txt</file>
+        <file>resources/models/sphere0.mtl</file>
+        <file>resources/models/sphere0.obj</file>
+        <file>resources/models/sphere1.obj</file>
+        <file>resources/scenes/RW_Scene1.txt</file>
+        <file>resources/scenes/RW_Scene1_mapping.txt</file>
+        <file>resources/palettes/palette1.gpl</file>
     </qresource>
 </RCC>

@@ -1,6 +1,5 @@
 #include "Geometry/Object.h"
 
-
 /**
  * @brief Object::Object
  * @param npoints
@@ -27,6 +26,11 @@ Object::Object(int npoints, QString n) : numPoints(npoints){
     make();
 }
 
+Object::Object(int npoints, QString n, vec3 position, float scale) : Object(npoints, n){
+    setPosition(position);
+    setScale(scale);
+
+}
 
 /**
  * @brief Object::~Object
@@ -273,6 +277,38 @@ Capsa3D Object::calculCapsa3D()
     return capsa;
 }
 
-void Object::aplicaTG(shared_ptr<TG> tg){
+void Object::setPosition(vec3 position){
+    Capsa3D capsaMinima = calculCapsa3D();
+    vec3 centreCapsa(capsaMinima.pmin.x + capsaMinima.a/float(2), capsaMinima.pmin.y + capsaMinima.h/float(2), capsaMinima.pmin.z + capsaMinima.p/float(2));
+    for(int i =0; i <vertexs.size(); i++){
+                this->vertexs[i] = this->vertexs[i] -centreCapsa + position;
+    }
+    make();
+}
 
+void Object::setScale(float scale){
+    shared_ptr<ScaleTG> scaleTG = make_shared<ScaleTG>(vec3(scale));
+    this->aplicaTG(scaleTG);
+}
+
+void Object::aplicaTG(shared_ptr<TG> tg){
+    if(dynamic_pointer_cast<TranslateTG>(tg)){
+        for(int i =0; i <vertexs.size(); i++){
+                    this->vertexs[i] = tg->getTG() * this->vertexs[i];
+        }
+    }else if(dynamic_pointer_cast<ScaleTG>(tg)){
+        Capsa3D capsaMinima = calculCapsa3D();
+        vec3 centreCapsa(capsaMinima.pmin.x + capsaMinima.a/float(2), capsaMinima.pmin.y + capsaMinima.h/float(2), capsaMinima.pmin.z + capsaMinima.p/float(2));
+        //Cal fer un cub unitari:
+        //primer fem que sigui un cub (posem totes les arestes amb longitud igual que la més gran)
+        //s'ha de dividir per aquesta mida per fer-lo unitari:
+        float passarAUnitari(float(1) / max({capsaMinima.a, capsaMinima.h, capsaMinima.p}));
+        for(int i = 0; i < vertexs.size(); i++){
+            this->vertexs[i] -= centreCapsa;
+            this->vertexs[i] *= passarAUnitari;
+            this->vertexs[i] = tg->getTG() * this->vertexs[i];
+            this->vertexs[i] += centreCapsa;
+        }
+    }
+    make();
 }
