@@ -18,6 +18,7 @@ Object::Object(int npoints, QObject *parent) : QObject(parent){
     material = make_shared<Material>(ambient, diffuse, specular, transparency, shininess);
  }
 
+
 /**
  * @brief Object::Object
  * @param npoints
@@ -41,7 +42,14 @@ Object::Object(int npoints, QString n) : numPoints(npoints){
 Object::Object(int npoints, QString n, vec3 position, float scale) : Object(npoints, n){
     setPosition(position);
     setScale(scale);
+}
 
+Object::Object(int npoints, QString n, vec3 position, float scale,shared_ptr<Material> material) : Object(npoints, n, position, scale){
+    setMaterial(material);
+}
+
+void Object::setMaterial(shared_ptr<Material> material){
+    this->material = material;
 }
 
 /**

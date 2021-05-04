@@ -58,6 +58,7 @@ public:
     Object(const int npoints, QObject *parent = 0);
     Object(const int npoints, QString n);
     Object(const int npoints, QString n, vec3 position, float scale);
+    Object(const int npoints, QString n, vec3 position, float scale, shared_ptr<Material> material);
     ~Object();
 
     void parseObjFile(const QString &fileName);
@@ -78,6 +79,8 @@ public:
     void setPosition(vec3 position);
 
     void setScale(float scale);
+
+    void setMaterial(shared_ptr<Material> material);
 private:
     void initTexture();
 };

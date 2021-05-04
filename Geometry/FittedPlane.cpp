@@ -33,6 +33,29 @@ FittedPlane::FittedPlane(int xmin, int xmax, int zmin, int zmax, int d) : Object
     cara_2->idxNormals.push_back(3);
     cares.push_back(*cara_2);
 
+    normalsVertexs.push_back(point4(0, -1, 0, 0));
+    normalsVertexs.push_back(point4(0, -1, 0, 0));
+    normalsVertexs.push_back(point4(0, -1, 0, 0));
+    normalsVertexs.push_back(point4(0, -1, 0, 0));
+
+    Cara *cara_3 = new Cara();
+    cara_3->idxVertices.push_back(2);
+    cara_3->idxVertices.push_back(1);
+    cara_3->idxVertices.push_back(0);
+    cara_3->idxNormals.push_back(6);
+    cara_3->idxNormals.push_back(5);
+    cara_3->idxNormals.push_back(4);
+    cares.push_back(*cara_3);
+
+    Cara *cara_4 = new Cara();
+    cara_4->idxVertices.push_back(3);
+    cara_4->idxVertices.push_back(2);
+    cara_4->idxVertices.push_back(0);
+    cara_4->idxNormals.push_back(7);
+    cara_4->idxNormals.push_back(6);
+    cara_4->idxNormals.push_back(4);
+    cares.push_back(*cara_4);
+
     make();
 }
 

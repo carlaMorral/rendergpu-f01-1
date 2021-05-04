@@ -16,7 +16,7 @@ Palette::Palette(QString fileName){
                 if(lineParts.at(0).compare("#", Qt::CaseInsensitive) == 0){
                     llegirColors = true;
                 }
-                qDebug() << line.remove(0, 1).trimmed();
+                //qDebug() << line.remove(0, 1).trimmed();
             }else{//Parsegem colors:
                 float r = lineParts.at(0).toFloat();
                 float g = lineParts.at(1).toFloat();
