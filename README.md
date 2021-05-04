@@ -86,7 +86,7 @@ Al igual que al cas anterior, hem realitzat comprovacions passant atributs arbit
 :-------------------------:|:-------------------------:|:-------------------------:
 ![ambient](readmeFiles/fase1-pas3/lights_test_red.png)  |  ![diffuse](readmeFiles/fase1-pas3/lights_test_green.png) |  ![diffuse](readmeFiles/fase1-pas3/lights_test_blue.png)
 
-Podem concloure també que la informació de les llums es passa correctament a la GPU.
+Hem realitzat també proves amb els altres atributs, tot i que només estem mostrant la component especular en aquesta memòria. Per tant, concloure també que la informació de les llums es passa correctament a la GPU.
 
 ### Pas 4
 
