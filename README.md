@@ -84,7 +84,7 @@ Al igual que al cas anterior, hem realitzat comprovacions passant atributs arbit
 
 `specular = (1, 0, 0)`        |  `specular = (0, 1, 0)`   |  `specular = (0, 0, 1)`  
 :-------------------------:|:-------------------------:|:-------------------------:
-![ambient](readmeFiles/fase1-pas3/lights_test_red.png)  |  ![diffuse](readmeFiles/fase1-pas3/lights_test_green.png). |  ![diffuse](readmeFiles/fase1-pas3/lights_test_blue.png)
+![ambient](readmeFiles/fase1-pas3/lights_test_red.png)  |  ![diffuse](readmeFiles/fase1-pas3/lights_test_green.png) |  ![diffuse](readmeFiles/fase1-pas3/lights_test_blue.png)
 
 Podem concloure també que la informació de les llums es passa correctament a la GPU.
 
