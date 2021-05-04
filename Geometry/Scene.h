@@ -9,8 +9,9 @@
 #include <string>
 #include <stdio.h>
 
-#include <library/vec.h>
 #include <library/Common.h>
+#include <library/vec.h>
+
 
 #include <Geometry/Object.h>
 #include <Renders/Camera.h>
