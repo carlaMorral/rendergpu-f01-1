@@ -87,7 +87,7 @@ void GLWidget::resizeGL(int width, int height) {
  * @brief GLWidget::initShadersGPU
  */
 void GLWidget::initShadersGPU(){
-    initShader("://resources/vshader.glsl", "://resources/fshader1.glsl");
+    initShader("://resources/vshader1.glsl", "://resources/fshader1.glsl");
 }
 
 QSize GLWidget::minimumSizeHint() const {
