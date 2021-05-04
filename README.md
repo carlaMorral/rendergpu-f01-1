@@ -14,11 +14,14 @@ Segona pràctica de GiVD 2020-21
         - [X] Objectes
         - [X] Escenes virtuals
         - [X] Escenes de dades Reals 
+        - [X] [OPT] Implementació càrrega paleta
     - Material: *Martí*
+        - [X] Implementar classe Material
+        - [ ] [OPT] Llegir material .mtl
     - Light: *Arnau*
         - [X] Puntual
         - [X] Direccional
-        - [X] Spotlight
+        - [X] [OPT] Spotlight
         - [X] Ambient Global
     - Shading
         - [ ] Phong
@@ -29,7 +32,8 @@ Segona pràctica de GiVD 2020-21
         
 
 - Fase 2 (OPT)
-    - [ ] Toon-shading i èmfasi de siluetes
+    - [ ] Toon-shading
+    - [ ] Èmfasi de siluetes
     - [ ] Mapping indirecte de textures
     - [ ] Animacions amb dades temporals
     - [ ] Normal mapping
