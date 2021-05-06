@@ -87,7 +87,7 @@ void GLWidget::resizeGL(int width, int height) {
  * @brief GLWidget::initShadersGPU
  */
 void GLWidget::initShadersGPU(){
-    initShader("://resources/vshader1.glsl", "://resources/fshader1.glsl");
+    initShader("://resources/vshader_gouraud.glsl", "://resources/fshader_gouraud.glsl");
 }
 
 QSize GLWidget::minimumSizeHint() const {
@@ -287,6 +287,9 @@ void GLWidget::setLighting(const QVector3D &lightPos, const QVector3D &Ia, const
     scene->lights[0]->setId(intensityD);
     scene->lights[0]->setIs(intensityS);
     scene->lights[0]->setLightPosition(lightPosition);
+
+    scene->lightsToGPU(program);
+
     updateGL();
 }
 

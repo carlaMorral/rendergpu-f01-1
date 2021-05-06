@@ -13,5 +13,7 @@
         <file>resources/scenes/RW_Scene1.txt</file>
         <file>resources/scenes/RW_Scene1_mapping.txt</file>
         <file>resources/palettes/palette1.gpl</file>
+        <file>resources/vshader_gouraud.glsl</file>
+        <file>resources/fshader_gouraud.glsl</file>
     </qresource>
 </RCC>

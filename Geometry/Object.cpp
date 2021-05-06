@@ -27,9 +27,9 @@ Object::Object(int npoints, QString n) : numPoints(npoints){
     points = new point4[numPoints];
     normals= new point4[numPoints];
 
-    vec3 ambient(1.0f, 0.0f, 0.0f);
-    vec3 diffuse(0.0f, 1.0f, 0.0f);
-    vec3 specular(0.0f, 0.0f, 1.0f);
+    vec3 ambient(1.0f, 1.0f, 1.0f);
+    vec3 diffuse(1.0f, 1.0f, 1.0f);
+    vec3 specular(1.0f, 1.0f, 1.0f);
     vec3 transparency(1.0f, 1.0f, 0.0f);
     float shininess = 20.0;
     material = make_shared<Material>(ambient, diffuse, specular, transparency, shininess);
@@ -97,11 +97,12 @@ void Object::toGPU(shared_ptr<QGLShaderProgram> pr) {
     // Activació a GL del Vertex Buffer Object
     glBindBuffer( GL_ARRAY_BUFFER, buffer );
 
-    // TO  DO: A modificar a la fase 1 de la practica 2
-    // Cal passar les normals a la GPU
+    // DONE: fase 1 pas 4
+    // Passem les normals a la GPU
 
-    glBufferData( GL_ARRAY_BUFFER, sizeof(point4)*Index, NULL, GL_STATIC_DRAW );
+    glBufferData( GL_ARRAY_BUFFER, 2*sizeof(point4)*Index, NULL, GL_STATIC_DRAW );
     glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof(point4)*Index, points );
+    glBufferSubData( GL_ARRAY_BUFFER, sizeof(point4)*Index, sizeof(point4)*Index, normals);
 
     // set up vertex arrays
     glBindVertexArray( vao );
@@ -139,7 +140,7 @@ void Object::draw(){
  */
 void Object::make(){
 
-    // TO  DO: A modificar a la fase 1 de la practica 2
+    // DONE: fase 1 pas 4
     // Cal calcular la normal a cada vertex a la CPU
 
     static vec3  base_colors[] = {
@@ -152,6 +153,7 @@ void Object::make(){
     for(unsigned int i=0; i<cares.size(); i++){
         for(unsigned int j=0; j<cares[i].idxVertices.size(); j++){
             points[Index] = vertexs[cares[i].idxVertices[j]];
+            normals[Index] = normalsVertexs[cares[i].idxNormals[j]];
             Index++;
         }
     }

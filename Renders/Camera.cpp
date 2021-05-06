@@ -232,10 +232,10 @@ void Camera::toGPU(shared_ptr<QGLShaderProgram> program)
     glUniformMatrix4fv( model_view, 1, GL_TRUE, modView );
     glUniformMatrix4fv( projection, 1, GL_TRUE, proj );
 
-//    vec4 obser(CalculObs(vrp, distancia, angX, angY));
+    vec4 obser(CalculObs(vrp, distancia, angX, angY));
 
    GLuint glObservador = program->uniformLocation("obs");
-   glUniform4fv(glObservador, 1, origin);
+   glUniform4fv(glObservador, 1, obser);
 }
 
 void Camera::setModelView(shared_ptr<QGLShaderProgram> program, mat4 m)
