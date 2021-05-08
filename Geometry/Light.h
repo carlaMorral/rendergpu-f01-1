@@ -30,6 +30,9 @@ class Light {
         vec4 getLightPosition();
         void setLightPosition(vec4 v);
 
+        vec3 getCoefficients();
+        void setCoefficients(vec3 v);
+
     protected:
 
         vec4 position;
@@ -37,6 +40,8 @@ class Light {
         vec3 ambient;
         vec3 diffuse;
         vec3 specular;
+
+        vec3 coefficients;
 
         LightType type;
 };

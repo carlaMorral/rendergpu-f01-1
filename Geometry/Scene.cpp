@@ -123,7 +123,7 @@ void Scene::lightsToGPU(shared_ptr<QGLShaderProgram> program){
         if (lights[i]->getTipusLight()==LightType::Puntual){
             std::shared_ptr<PointLight> pointlight = std::dynamic_pointer_cast<PointLight> (lights[i]);
             position = vec3(pointlight->getLightPosition().x,pointlight->getLightPosition().y,pointlight->getLightPosition().z);
-            coefficients = vec3(pointlight->getCoeficients());
+            coefficients = vec3(pointlight->getCoefficients());
         }
 
         // Nomes per llums direccionals

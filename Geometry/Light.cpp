@@ -105,3 +105,18 @@ vec4 Light::getLightPosition() {
 void Light::setLightPosition(vec4 v) {
     this->position = v;
 }
+
+/**
+ * @brief Light::getCoefficients
+ */
+vec3 Light::getCoefficients() {
+    return this->coefficients;
+}
+
+/**
+ * @brief Light::setCoefficients
+ * @param v
+ */
+void Light::setCoefficients(vec3 v) {
+    this->coefficients = v;
+}

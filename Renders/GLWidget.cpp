@@ -43,6 +43,7 @@ void GLWidget::initializeGL() {
 
     // Creacio d'una PointLight per a poder modificar el seus valors amb la interficie
     shared_ptr<Light> l = dynamic_pointer_cast<Light>(make_shared<PointLight>(vec3(0,1,0), vec3(1,1,1), vec3(0,1,0), vec4(-25,25,25,1), vec3(0,0,1)));
+    l->setCoefficients(vec3(0,0,1));
     scene->addLight(l);
 
     scene->camera->init(this->size().width(), this->size().height(), scene->capsaMinima);
@@ -87,7 +88,7 @@ void GLWidget::resizeGL(int width, int height) {
  * @brief GLWidget::initShadersGPU
  */
 void GLWidget::initShadersGPU(){
-    initShader("://resources/vshader_phong.glsl", "://resources/fshader_phong.glsl");
+    initShader("://resources/vshader_gouraud.glsl", "://resources/fshader_gouraud.glsl");
 }
 
 QSize GLWidget::minimumSizeHint() const {
@@ -282,11 +283,13 @@ void GLWidget::setLighting(const QVector3D &lightPos, const QVector3D &Ia, const
     vec3 intensityA( Ia[0], Ia[1], Ia[2]);
     vec3 intensityD( Id[0], Id[1], Id[2]);
     vec3 intensityS( Is[0], Is[1], Is[2]);
+    vec3 coefficients( coefs[0], coefs[1], coefs[2]);
 
     scene->lights[0]->setIa(intensityA);
     scene->lights[0]->setId(intensityD);
     scene->lights[0]->setIs(intensityS);
     scene->lights[0]->setLightPosition(lightPosition);
+    scene->lights[0]->setCoefficients(coefficients);
 
     scene->lightsToGPU(program);
 
