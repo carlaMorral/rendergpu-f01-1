@@ -10,10 +10,10 @@ Object::Object(int npoints, QObject *parent) : QObject(parent){
     points = new point4[numPoints];
     normals= new point4[numPoints];
 
-    vec3 ambient(1.0f, 0.0f, 0.0f);
-    vec3 diffuse(0.0f, 1.0f, 0.0f);
-    vec3 specular(0.0f, 0.0f, 1.0f);
-    vec3 transparency(1.0f, 1.0f, 0.0f);
+    vec3 ambient(0.2f, 0.2f, 0.2f);
+    vec3 diffuse(0.8f, 0.5f, 0.5f);
+    vec3 specular(1.0f, 1.0f, 1.0f);
+    vec3 transparency(0.0f, 0.0f, 0.0f);
     float shininess = 20.0;
     material = make_shared<Material>(ambient, diffuse, specular, transparency, shininess);
  }
@@ -27,10 +27,10 @@ Object::Object(int npoints, QString n) : numPoints(npoints){
     points = new point4[numPoints];
     normals= new point4[numPoints];
 
-    vec3 ambient(1.0f, 1.0f, 1.0f);
-    vec3 diffuse(1.0f, 1.0f, 1.0f);
+    vec3 ambient(0.2f, 0.2f, 0.2f);
+    vec3 diffuse(0.8f, 0.5f, 0.5f);
     vec3 specular(1.0f, 1.0f, 1.0f);
-    vec3 transparency(1.0f, 1.0f, 0.0f);
+    vec3 transparency(0.0f, 0.0f, 0.0f);
     float shininess = 20.0;
     material = make_shared<Material>(ambient, diffuse, specular, transparency, shininess);
 

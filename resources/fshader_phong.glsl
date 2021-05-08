@@ -1,10 +1,8 @@
 #version 330
 
-layout (location = 0) in vec4 vPosition;
-layout (location = 1) in vec4 vNormal;
-
-uniform mat4 model_view;
-uniform mat4 projection;
+in vec4 normal;
+in vec4 position;
+out vec4 colorOut;
 
 // Struct que representa un material amb tots els seus parametres
 struct stMaterial {
@@ -44,8 +42,6 @@ uniform stGlobal globalAmbientLight;
 
 uniform vec4 obs;
 
-out vec4 color;
-
 vec4 blinn_phong ()
 {
     vec3 ca = vec3(0);
@@ -66,12 +62,12 @@ vec4 blinn_phong ()
             float b = lights[i].coefficients[1];
             float c = lights[i].coefficients[2];
 
-            d = abs(length(vec4(lights[i].position,1) - vPosition));
+            d = abs(length(vec4(lights[i].position,1) - position));
 
             // Ens assegurem que l'atenuacio estigui entre 0 i 1
             attenuationFactor = max(min(1./(c + b*d + a*d*d),1.),0.);
 
-            L = normalize(vec4(lights[i].position,1) - vPosition);
+            L = normalize(vec4(lights[i].position,1) - position);
 
         // DirectionalLight
         }else if(lights[i].type == 1){
@@ -85,10 +81,10 @@ vec4 blinn_phong ()
         ca += material.ambient * lights[i].ambient;
 
         //Component difusa
-        cd += attenuationFactor * lights[i].diffuse * material.diffuse * max(dot(vNormal, normalize(L)), 0.0f);
+        cd += attenuationFactor * lights[i].diffuse * material.diffuse * max(dot(normal, normalize(L)), 0.0f);
 
         //Component especular
-        cs += attenuationFactor * lights[i].specular * material.specular * pow(max(dot(vNormal, H), 0.0f), material.shininess);
+        cs += attenuationFactor * lights[i].specular * material.specular * pow(max(dot(normal, H), 0.0f), material.shininess);
        }
 
     //Retornem la llum ambient global més les tres components
@@ -97,7 +93,5 @@ vec4 blinn_phong ()
 
 void main()
 {
-    gl_Position = projection*model_view*vPosition;
-    gl_Position = gl_Position/gl_Position.w;
-    color = blinn_phong();
+    colorOut = blinn_phong();
 }
