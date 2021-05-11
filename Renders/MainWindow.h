@@ -120,6 +120,9 @@ private slots:
     void setFrustumCamera(shared_ptr<Camera> cam);
 
 
+    void on_lightCoefC_valueChanged(double arg1);
+    void on_lightCoefB_valueChanged(double arg1);
+    void on_lightCoefA_valueChanged(double arg1);
 };
 
 #endif // MAINWINDOW_H
