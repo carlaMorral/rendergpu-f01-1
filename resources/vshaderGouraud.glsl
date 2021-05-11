@@ -27,10 +27,6 @@ struct stLight {
     float angle;
 };
 
-// Struct que representa la llum ambient global
-struct stGlobal {
-    vec3 globalLight;
-};
 
 // Material de l'objecte
 uniform stMaterial material;
@@ -40,7 +36,7 @@ uniform stMaterial material;
 uniform stLight lights[10];
 
 // Llum ambient global
-uniform stGlobal globalAmbientLight;
+uniform vec3 globalAmbientLight;
 
 uniform vec4 obs;
 
@@ -66,7 +62,7 @@ vec4 blinn_phong ()
             float b = lights[i].coefficients[1];
             float c = lights[i].coefficients[2];
 
-            d = abs(length(vec4(lights[i].position,1) - vPosition));
+            d = length(vec4(lights[i].position,1) - vPosition);
 
             // Ens assegurem que l'atenuacio estigui entre 0 i 1
             attenuationFactor = max(min(1./(c + b*d + a*d*d),1.),0.);
@@ -79,7 +75,7 @@ vec4 blinn_phong ()
             L = normalize(vec4(-lights[i].direction,0));
         }
 
-        H = normalize(obs + L);
+        H = normalize(obs - vPosition + L);
 
         //Component ambient
         ca += material.ambient * lights[i].ambient;
@@ -92,7 +88,8 @@ vec4 blinn_phong ()
        }
 
     //Retornem la llum ambient global més les tres components
-    return vec4(globalAmbientLight.globalLight + ca + cd + cs,0);
+    //Retornem la llum ambient global més les tres components
+    return vec4(globalAmbientLight*material.ambient + ca + cd + cs,0);
 }
 
 void main()

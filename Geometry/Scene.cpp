@@ -173,18 +173,10 @@ void Scene::setAmbientToGPU(shared_ptr<QGLShaderProgram> program){
 
         qDebug() << "setAmbientToGPU()";
 
-       // 1. Es declara un struct d'identificadors
-       struct stGlobal{
-           GLuint globalLight;
-       };
 
-       stGlobal gl_IdGlobalAmbientLight;
+        GLuint gl_globalLight = program->uniformLocation("globalAmbientLight");
+        glUniform3fv(gl_globalLight, 1, lightAmbientGlobal);
 
-       // 2. obtencio de l'identificador de la GPU
-       gl_IdGlobalAmbientLight.globalLight = program->uniformLocation("globalAmbientLight.globalLight");
-
-       // 3. Bind de la zona de memòria que corresponen a la GPU al valor de la CPU
-       glUniform3fv(gl_IdGlobalAmbientLight.globalLight, 1, lightAmbientGlobal);
 }
 
 /**
