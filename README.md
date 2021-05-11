@@ -32,7 +32,7 @@ Segona pràctica de GiVD 2020-21
         
 
 - Fase 2 (OPT)
-    - [ ] Toon-shading
+    - [X] Toon-shading *Albert*
     - [ ] Èmfasi de siluetes
     - [ ] Mapping indirecte de textures
     - [ ] Animacions amb dades temporals
