@@ -14,11 +14,14 @@ Segona pràctica de GiVD 2020-21
         - [X] Objectes
         - [X] Escenes virtuals
         - [X] Escenes de dades Reals 
+        - [X] [OPT] Implementació càrrega paleta
     - Material: *Martí*
+        - [X] Implementar classe Material
+        - [ ] [OPT] Llegir material .mtl
     - Light: *Arnau*
         - [X] Puntual
         - [X] Direccional
-        - [X] Spotlight
+        - [X] [OPT] Spotlight
         - [X] Ambient Global
     - Shading
         - [ ] Phong
@@ -29,7 +32,8 @@ Segona pràctica de GiVD 2020-21
         
 
 - Fase 2 (OPT)
-    - [ ] Toon-shading i èmfasi de siluetes
+    - [ ] Toon-shading
+    - [ ] Èmfasi de siluetes
     - [ ] Mapping indirecte de textures
     - [ ] Animacions amb dades temporals
     - [ ] Normal mapping
@@ -46,10 +50,6 @@ Segona pràctica de GiVD 2020-21
 ## Memòria
 
 *(NOTA: Explicació només dels diferents punts que heu desenvolupat i funcionen, detallant les estratègies que heu fet servir)*
-
-## Screenshots
-
-*(NOTA: Per a cada pas de l'enunciat (del 1 al 6), incloure captures de pantalla de les proves que heu fet per a demostrar la funcionalitat de la vostra pràctica amb explicacions de la seva configuració i com les heu aconseguides)*
 
 ### Pas 1
 
@@ -78,11 +78,24 @@ Per a comprovar que el pas de les característiques del material de la CPU a la 
 
 ### Pas 3
 
+Hem implementat l'enviament d'informació a la GPU pel cas de les llums, als mètodes `lightsToGpu` i `setAmbientToGPU` seguint els passos del guió.
+
+Al igual que al cas anterior, hem realitzat comprovacions passant atributs arbitraris de les llums a la GPU i visualitzant-los directament com a colors. En aquest cas, hem utilitzat la interfície gràfica on podem fàcilment modificar valors per les comprovacions necessàries. En les imatges que es mostren a configuració, estem utilitzant `color = vec4(lights[0].specular,1)` com a color de sortida del vertex shader.
+
+`specular = (1, 0, 0)`        |  `specular = (0, 1, 0)`   |  `specular = (0, 0, 1)`  
+:-------------------------:|:-------------------------:|:-------------------------:
+![ambient](readmeFiles/fase1-pas3/lights_test_red.png)  |  ![diffuse](readmeFiles/fase1-pas3/lights_test_green.png) |  ![diffuse](readmeFiles/fase1-pas3/lights_test_blue.png)
+
+Hem realitzat també proves amb els altres atributs, tot i que només estem mostrant la component especular en aquesta memòria. Per tant, concloure també que la informació de les llums es passa correctament a la GPU.
+
 ### Pas 4
 
 ### Pas 5
 
-### Pas 6
+
+## Screenshots
+
+*(NOTA: Per a cada pas de l'enunciat (del 1 al 6), incloure captures de pantalla de les proves que heu fet per a demostrar la funcionalitat de la vostra pràctica amb explicacions de la seva configuració i com les heu aconseguides)*
 
 *(NOTA2: Breu explicació, si cal, de com replicar els vostres resultats)*
 

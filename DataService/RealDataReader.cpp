@@ -56,11 +56,19 @@ void RealDataReader::dataFound(QStringList fields) {
         //Escalat segons la propietat:
         float escalat = mapping->getEscalat(i, valor);
 
-        // Construccio de l'objecte al Mon Virtual:
-        o = make_shared<Object>(100000, mapping->getPropObjectFileName(i), puntBase, escalat);
-
         //Asignació material:
         vec3 color = mapping->getPaletteProp(i)->getColor(mapping->mapeigValorAUnit(i, valor));
+
+        vec3 diffuse = color;
+        vec3 ambient = color/float(10);
+        vec3 specular(1.0f, 1.0f, 1.0f);
+        vec3 transparency(1.0f, 1.0f, 1.0f);
+        float shininess = 0;
+
+        auto material = make_shared<Material>(ambient, diffuse, specular, transparency, shininess);
+
+        // Construccio de l'objecte al Mon Virtual:
+        o = make_shared<Object>(100000, mapping->getPropObjectFileName(i), puntBase, escalat, material);
 
         // Afegir objecte a l'escena
         scene->objects.push_back(o);
