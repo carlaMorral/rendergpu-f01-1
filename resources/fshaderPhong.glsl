@@ -68,7 +68,7 @@ vec4 blinn_phong ()
         // DirectionalLight
         }else if(lights[i].type == 1){
             attenuationFactor = 1.;
-            L = vec4(-lights[i].direction,0);
+            L = normalize(vec4(-lights[i].direction,0));
         }
 
         V = normalize(obs - position);

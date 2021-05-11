@@ -1,5 +1,5 @@
 #include "Renders/MainWindow.h"
-
+#include "Geometry/Light.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -55,8 +55,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(builder, SIGNAL(newObj(shared_ptr<Object>)), glWidget, SLOT(updateObject(shared_ptr<Object>)));
     connect(builder, SIGNAL(newScene(shared_ptr<Scene>)), glWidget, SLOT(updateScene(shared_ptr<Scene>)));
 
-    // TODO Fase 1: Cal connectar el diàleg de  mapping per enviar les seves dades cap a builder
-    // al slot newDataScene
+    //La llum principal per defecte es spotlight:
+    currentLight = LightType::Puntual;
+
 }
 
 MainWindow::~MainWindow()
@@ -315,64 +316,19 @@ void MainWindow::on_rotateZSpin_valueChanged(double arg1)
 void MainWindow::on_lightPosXSpin_valueChanged(double arg1)
 {
     Q_UNUSED(arg1);
-    glWidget->setLighting(QVector3D(ui->lightPosXSpin->value(),
-                                           ui->lightPosYSpin->value(),
-                                           ui->lightPosZSpin->value()),
-                                 QVector3D(ui->lightIa1Spin->value(),
-                                           ui->lightIa2Spin->value(),
-                                           ui->lightIa3Spin->value()),
-                                 QVector3D(ui->lightId1Spin->value(),
-                                           ui->lightId2Spin->value(),
-                                           ui->lightId3Spin->value()),
-                                 QVector3D(ui->lightIs1Spin->value(),
-                                           ui->lightIs2Spin->value(),
-                                           ui->lightIs3Spin->value()),
-                                 QVector3D(ui->lightCoefA->value(),
-                                           ui->lightCoefB->value(),
-                                            ui->lightCoefC->value())
-                                 );
+    setPointLight();
 }
 
 void MainWindow::on_lightPosYSpin_valueChanged(double arg1)
 {
     Q_UNUSED(arg1);
-    glWidget->setLighting(QVector3D(ui->lightPosXSpin->value(),
-                                           ui->lightPosYSpin->value(),
-                                           ui->lightPosZSpin->value()),
-                                 QVector3D(ui->lightIa1Spin->value(),
-                                           ui->lightIa2Spin->value(),
-                                           ui->lightIa3Spin->value()),
-                                 QVector3D(ui->lightId1Spin->value(),
-                                           ui->lightId2Spin->value(),
-                                           ui->lightId3Spin->value()),
-                                 QVector3D(ui->lightIs1Spin->value(),
-                                           ui->lightIs2Spin->value(),
-                                           ui->lightIs3Spin->value()),
-                                 QVector3D(ui->lightCoefA->value(),
-                                           ui->lightCoefB->value(),
-                                            ui->lightCoefC->value())
-                                 );
+    setPointLight();
 }
 
 void MainWindow::on_lightPosZSpin_valueChanged(double arg1)
 {
     Q_UNUSED(arg1);
-    glWidget->setLighting(QVector3D(ui->lightPosXSpin->value(),
-                                           ui->lightPosYSpin->value(),
-                                           ui->lightPosZSpin->value()),
-                                 QVector3D(ui->lightIa1Spin->value(),
-                                           ui->lightIa2Spin->value(),
-                                           ui->lightIa3Spin->value()),
-                                 QVector3D(ui->lightId1Spin->value(),
-                                           ui->lightId2Spin->value(),
-                                           ui->lightId3Spin->value()),
-                                 QVector3D(ui->lightIs1Spin->value(),
-                                           ui->lightIs2Spin->value(),
-                                           ui->lightIs3Spin->value()),
-                                  QVector3D(ui->lightCoefA->value(),
-                                            ui->lightCoefB->value(),
-                                            ui->lightCoefC->value())
-                                 );
+    setPointLight();
 }
 
 void MainWindow::on_actionAbout_Qt_triggered()
@@ -404,190 +360,55 @@ void MainWindow::on_persFarSlider_valueChanged(int value)
 void MainWindow::on_lightId1Spin_valueChanged(double arg1)
 {
     Q_UNUSED(arg1);
-    glWidget->setLighting(QVector3D(ui->lightPosXSpin->value(),
-                                           ui->lightPosYSpin->value(),
-                                           ui->lightPosZSpin->value()),
-                                 QVector3D(ui->lightIa1Spin->value(),
-                                           ui->lightIa2Spin->value(),
-                                           ui->lightIa3Spin->value()),
-                                 QVector3D(ui->lightId1Spin->value(),
-                                           ui->lightId2Spin->value(),
-                                           ui->lightId3Spin->value()),
-                                 QVector3D(ui->lightIs1Spin->value(),
-                                           ui->lightIs2Spin->value(),
-                                           ui->lightIs3Spin->value()),
-                                 QVector3D(ui->lightCoefA->value(),
-                                           ui->lightCoefB->value(),
-                                           ui->lightCoefC->value())
-                                 );
+    setPointLight();
 }
 
 void MainWindow::on_lightId2Spin_valueChanged(double arg1)
 {
     Q_UNUSED(arg1);
-    glWidget->setLighting(QVector3D(ui->lightPosXSpin->value(),
-                                           ui->lightPosYSpin->value(),
-                                           ui->lightPosZSpin->value()),
-                                 QVector3D(ui->lightIa1Spin->value(),
-                                           ui->lightIa2Spin->value(),
-                                           ui->lightIa3Spin->value()),
-                                 QVector3D(ui->lightId1Spin->value(),
-                                           ui->lightId2Spin->value(),
-                                           ui->lightId3Spin->value()),
-                                 QVector3D(ui->lightIs1Spin->value(),
-                                           ui->lightIs2Spin->value(),
-                                           ui->lightIs3Spin->value()),
-                                 QVector3D(ui->lightCoefA->value(),
-                                           ui->lightCoefB->value(),
-                                           ui->lightCoefC->value())
-                                 );
+    setPointLight();
 }
 
 void MainWindow::on_lightId3Spin_valueChanged(double arg1)
 {
     Q_UNUSED(arg1);
-    glWidget->setLighting(QVector3D(ui->lightPosXSpin->value(),
-                                           ui->lightPosYSpin->value(),
-                                           ui->lightPosZSpin->value()),
-                                 QVector3D(ui->lightIa1Spin->value(),
-                                           ui->lightIa2Spin->value(),
-                                           ui->lightIa3Spin->value()),
-                                 QVector3D(ui->lightId1Spin->value(),
-                                           ui->lightId2Spin->value(),
-                                           ui->lightId3Spin->value()),
-                                 QVector3D(ui->lightIs1Spin->value(),
-                                           ui->lightIs2Spin->value(),
-                                           ui->lightIs3Spin->value()),
-                                 QVector3D(ui->lightCoefA->value(),
-                                           ui->lightCoefB->value(),
-                                           ui->lightCoefC->value())
-                                 );
+    setPointLight();
 }
 
 void MainWindow::on_lightIa1Spin_valueChanged(double arg1)
 {
     Q_UNUSED(arg1);
-    glWidget->setLighting(QVector3D(ui->lightPosXSpin->value(),
-                                           ui->lightPosYSpin->value(),
-                                           ui->lightPosZSpin->value()),
-                                 QVector3D(ui->lightIa1Spin->value(),
-                                           ui->lightIa2Spin->value(),
-                                           ui->lightIa3Spin->value()),
-                                 QVector3D(ui->lightId1Spin->value(),
-                                           ui->lightId2Spin->value(),
-                                           ui->lightId3Spin->value()),
-                                 QVector3D(ui->lightIs1Spin->value(),
-                                           ui->lightIs2Spin->value(),
-                                           ui->lightIs3Spin->value()),
-                                 QVector3D(ui->lightCoefA->value(),
-                                           ui->lightCoefB->value(),
-                                           ui->lightCoefC->value())
-                                 );
+    setPointLight();
 }
 
 void MainWindow::on_lightIa2Spin_valueChanged(double arg1)
 {
     Q_UNUSED(arg1);
-    glWidget->setLighting(QVector3D(ui->lightPosXSpin->value(),
-                                           ui->lightPosYSpin->value(),
-                                           ui->lightPosZSpin->value()),
-                                 QVector3D(ui->lightIa1Spin->value(),
-                                           ui->lightIa2Spin->value(),
-                                           ui->lightIa3Spin->value()),
-                                 QVector3D(ui->lightId1Spin->value(),
-                                           ui->lightId2Spin->value(),
-                                           ui->lightId3Spin->value()),
-                                 QVector3D(ui->lightIs1Spin->value(),
-                                           ui->lightIs2Spin->value(),
-                                           ui->lightIs3Spin->value()),
-                                 QVector3D(ui->lightCoefA->value(),
-                                           ui->lightCoefB->value(),
-                                           ui->lightCoefC->value())
-                                 );
+    setPointLight();
 }
 
 void MainWindow::on_lightIa3Spin_valueChanged(double arg1)
 {
     Q_UNUSED(arg1);
-    glWidget->setLighting(QVector3D(ui->lightPosXSpin->value(),
-                                           ui->lightPosYSpin->value(),
-                                           ui->lightPosZSpin->value()),
-                                 QVector3D(ui->lightIa1Spin->value(),
-                                           ui->lightIa2Spin->value(),
-                                           ui->lightIa3Spin->value()),
-                                 QVector3D(ui->lightId1Spin->value(),
-                                           ui->lightId2Spin->value(),
-                                           ui->lightId3Spin->value()),
-                                 QVector3D(ui->lightIs1Spin->value(),
-                                           ui->lightIs2Spin->value(),
-                                           ui->lightIs3Spin->value()),
-                                 QVector3D(ui->lightCoefA->value(),
-                                           ui->lightCoefB->value(),
-                                           ui->lightCoefC->value())
-                                 );
+    setPointLight();
 }
 
 void MainWindow::on_lightIs1Spin_valueChanged(double arg1)
 {
     Q_UNUSED(arg1);
-    glWidget->setLighting(QVector3D(ui->lightPosXSpin->value(),
-                                           ui->lightPosYSpin->value(),
-                                           ui->lightPosZSpin->value()),
-                                 QVector3D(ui->lightIa1Spin->value(),
-                                           ui->lightIa2Spin->value(),
-                                           ui->lightIa3Spin->value()),
-                                 QVector3D(ui->lightId1Spin->value(),
-                                           ui->lightId2Spin->value(),
-                                           ui->lightId3Spin->value()),
-                                 QVector3D(ui->lightIs1Spin->value(),
-                                           ui->lightIs2Spin->value(),
-                                           ui->lightIs3Spin->value()),
-                                 QVector3D(ui->lightCoefA->value(),
-                                           ui->lightCoefB->value(),
-                                           ui->lightCoefC->value())
-                                 );
+    setPointLight();
 }
 
 void MainWindow::on_lightIs2Spin_valueChanged(double arg1)
 {
     Q_UNUSED(arg1);
-    glWidget->setLighting(QVector3D(ui->lightPosXSpin->value(),
-                                           ui->lightPosYSpin->value(),
-                                           ui->lightPosZSpin->value()),
-                                 QVector3D(ui->lightIa1Spin->value(),
-                                           ui->lightIa2Spin->value(),
-                                           ui->lightIa3Spin->value()),
-                                 QVector3D(ui->lightId1Spin->value(),
-                                           ui->lightId2Spin->value(),
-                                           ui->lightId3Spin->value()),
-                                 QVector3D(ui->lightIs1Spin->value(),
-                                           ui->lightIs2Spin->value(),
-                                           ui->lightIs3Spin->value()),
-                                 QVector3D(ui->lightCoefA->value(),
-                                           ui->lightCoefB->value(),
-                                           ui->lightCoefC->value())
-                                 );
+    setPointLight();
 }
 
 void MainWindow::on_lightIs3Spin_valueChanged(double arg1)
 {
     Q_UNUSED(arg1);
-    glWidget->setLighting(QVector3D(ui->lightPosXSpin->value(),
-                                           ui->lightPosYSpin->value(),
-                                           ui->lightPosZSpin->value()),
-                                 QVector3D(ui->lightIa1Spin->value(),
-                                           ui->lightIa2Spin->value(),
-                                           ui->lightIa3Spin->value()),
-                                 QVector3D(ui->lightId1Spin->value(),
-                                           ui->lightId2Spin->value(),
-                                           ui->lightId3Spin->value()),
-                                 QVector3D(ui->lightIs1Spin->value(),
-                                           ui->lightIs2Spin->value(),
-                                           ui->lightIs3Spin->value()),
-                                 QVector3D(ui->lightCoefA->value(),
-                                           ui->lightCoefB->value(),
-                                           ui->lightCoefC->value())
-                                 );
+    setPointLight();
 }
 
 void MainWindow::on_textureFileEdit_returnPressed()
@@ -645,43 +466,14 @@ void MainWindow::setFrustumCamera(shared_ptr<Camera> cam)
 void MainWindow::on_lightCoefC_valueChanged(double arg1)
 {
     Q_UNUSED(arg1);
-    glWidget->setLighting(QVector3D(ui->lightPosXSpin->value(),
-                                           ui->lightPosYSpin->value(),
-                                           ui->lightPosZSpin->value()),
-                                 QVector3D(ui->lightIa1Spin->value(),
-                                           ui->lightIa2Spin->value(),
-                                           ui->lightIa3Spin->value()),
-                                 QVector3D(ui->lightId1Spin->value(),
-                                           ui->lightId2Spin->value(),
-                                           ui->lightId3Spin->value()),
-                                 QVector3D(ui->lightIs1Spin->value(),
-                                           ui->lightIs2Spin->value(),
-                                           ui->lightIs3Spin->value()),
-                                 QVector3D(ui->lightCoefA->value(),
-                                           ui->lightCoefB->value(),
-                                           ui->lightCoefC->value())
-                                 );
+    setPointLight();
 }
 
 void MainWindow::on_lightCoefB_valueChanged(double arg1)
 {
     Q_UNUSED(arg1);
-    glWidget->setLighting(QVector3D(ui->lightPosXSpin->value(),
-                                           ui->lightPosYSpin->value(),
-                                           ui->lightPosZSpin->value()),
-                                 QVector3D(ui->lightIa1Spin->value(),
-                                           ui->lightIa2Spin->value(),
-                                           ui->lightIa3Spin->value()),
-                                 QVector3D(ui->lightId1Spin->value(),
-                                           ui->lightId2Spin->value(),
-                                           ui->lightId3Spin->value()),
-                                 QVector3D(ui->lightIs1Spin->value(),
-                                           ui->lightIs2Spin->value(),
-                                           ui->lightIs3Spin->value()),
-                                 QVector3D(ui->lightCoefA->value(),
-                                           ui->lightCoefB->value(),
-                                           ui->lightCoefC->value())
-                                 );
+    setPointLight();
+
 }
 
 
@@ -689,7 +481,119 @@ void MainWindow::on_lightCoefB_valueChanged(double arg1)
 void MainWindow::on_lightCoefA_valueChanged(double arg1)
 {
     Q_UNUSED(arg1);
-    glWidget->setLighting(QVector3D(ui->lightPosXSpin->value(),
+    setPointLight();
+}
+
+
+
+
+
+void MainWindow::on_lightDirXSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setDirLight();
+}
+
+void MainWindow::on_lightDirYSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setDirLight();
+}
+
+void MainWindow::on_lightDirZSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setDirLight();
+}
+
+void MainWindow::on_dirLightIaXSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setDirLight();
+}
+
+void MainWindow::on_dirLightIaYSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setDirLight();
+}
+
+void MainWindow::on_dirLightIaZSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setDirLight();
+}
+
+void MainWindow::on_dirLightIdXSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setDirLight();
+}
+
+void MainWindow::on_dirLightIdYSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setDirLight();
+}
+
+void MainWindow::on_dirLightIdZSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setDirLight();
+}
+
+void MainWindow::on_dirLightIsXSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setDirLight();
+}
+
+void MainWindow::on_dirLightIsYSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setDirLight();
+}
+
+void MainWindow::on_dirLightIsZSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setDirLight();
+}
+
+void MainWindow::on_pointLightRadioButton_toggled(bool checked)
+{
+    if(checked){
+        cout << "Using point light." << endl;
+        currentLight = LightType::Puntual;
+        setPointLight();
+    }
+
+}
+
+void MainWindow::on_dirLightRadioButton_toggled(bool checked)
+{
+    if(checked){
+       cout << "Using directional light." << endl;
+       currentLight = LightType::Direccional;
+       setDirLight();
+    }
+
+}
+
+void MainWindow::on_spotLightRadioButton_toggled(bool checked)
+{
+    if(checked){
+        cout << "Using spot light (unimplemented)!" << endl;
+         currentLight = LightType::Spot;
+         //TODO: Implement
+    }
+}
+
+void MainWindow::setPointLight(){ //Refactor
+    if(currentLight != LightType::Puntual){
+        return;
+    }
+    glWidget->setPointLight(QVector3D(ui->lightPosXSpin->value(),
                                            ui->lightPosYSpin->value(),
                                            ui->lightPosZSpin->value()),
                                  QVector3D(ui->lightIa1Spin->value(),
@@ -705,4 +609,15 @@ void MainWindow::on_lightCoefA_valueChanged(double arg1)
                                            ui->lightCoefB->value(),
                                            ui->lightCoefC->value())
                                  );
+}
+
+void MainWindow::setDirLight(){
+    if(currentLight != LightType::Direccional){
+        return;
+    }
+   QVector3D direction(ui->lightDirXSpin->value(), ui->lightDirYSpin->value(), ui->lightDirZSpin->value());
+   QVector3D ambient(ui->dirLightIaXSpin->value(), ui->dirLightIaYSpin->value(), ui->dirLightIaZSpin->value());
+   QVector3D diffuse(ui->dirLightIdXSpin->value(), ui->dirLightIdYSpin->value(), ui->dirLightIdZSpin->value());
+   QVector3D specular(ui->dirLightIsXSpin->value(), ui->dirLightIsYSpin->value(), ui->dirLightIsZSpin->value());
+   glWidget->setDirLight(direction, ambient, diffuse, specular);
 }

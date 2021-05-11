@@ -41,9 +41,13 @@ void GLWidget::initializeGL() {
 
     initShadersGPU();
 
-    // Creacio d'una PointLight per a poder modificar el seus valors amb la interficie
-    shared_ptr<Light> l = dynamic_pointer_cast<Light>(make_shared<PointLight>(vec3(0,1,0), vec3(1,1,1), vec3(0,1,0), vec4(-25,25,25,1), vec3(0,0,1)));
-    l->setCoefficients(vec3(0,0,1));
+    // Default point light:
+    vec3 ambient(0,1,0);
+    vec3 diffuse(1,1,1);
+    vec3 specular(0,1,0);
+    vec4 position(-25,25,25,1);
+    vec3 coefficients(0,0,1);
+    shared_ptr<Light> l = dynamic_pointer_cast<Light>(make_shared<PointLight>(ambient, diffuse, specular, position, coefficients));
     scene->addLight(l);
 
     scene->camera->init(this->size().width(), this->size().height(), scene->capsaMinima);
@@ -315,20 +319,40 @@ void GLWidget::setLookAt(const QVector3D &eye, const QVector3D &center, const QV
     updateGL();
 }
 
-void GLWidget::setLighting(const QVector3D &lightPos, const QVector3D &Ia, const QVector3D &Id,
+void GLWidget::setPointLight(const QVector3D &lightPos, const QVector3D &Ia, const QVector3D &Id,
                            const QVector3D &Is, const QVector3D &coefs)
 {
-    vec4 lightPosition(lightPos[0],lightPos[1], lightPos[2], 1.0) ;
-    vec3 intensityA( Ia[0], Ia[1], Ia[2]);
-    vec3 intensityD( Id[0], Id[1], Id[2]);
-    vec3 intensityS( Is[0], Is[1], Is[2]);
+    vec4 position(lightPos[0],lightPos[1], lightPos[2], 1.0) ;
+    vec3 ambient( Ia[0], Ia[1], Ia[2]);
+    vec3 diffuse( Id[0], Id[1], Id[2]);
+    vec3 specular( Is[0], Is[1], Is[2]);
     vec3 coefficients( coefs[0], coefs[1], coefs[2]);
 
-    scene->lights[0]->setIa(intensityA);
-    scene->lights[0]->setId(intensityD);
-    scene->lights[0]->setIs(intensityS);
-    scene->lights[0]->setLightPosition(lightPosition);
-    scene->lights[0]->setCoefficients(coefficients);
+    //Creem una llum i la posem a lights[0].
+    //ja que lights[0] serà la llum puntual/direccional/spotlight que escollim des de la interfície
+
+    shared_ptr<Light> l = dynamic_pointer_cast<Light>(make_shared<PointLight>(ambient, diffuse, specular, position, coefficients));
+
+    scene->lights[0] = l;
+
+    scene->lightsToGPU(program);
+
+    updateGL();
+}
+
+void GLWidget::setDirLight(const QVector3D &lightDir, const QVector3D &Ia, const QVector3D &Id,
+                 const QVector3D &Is)
+{
+    vec3 direction(lightDir[0],lightDir[1], lightDir[2]) ;
+    vec3 ambient( Ia[0], Ia[1], Ia[2]);
+    vec3 diffuse( Id[0], Id[1], Id[2]);
+    vec3 specular( Is[0], Is[1], Is[2]);
+    //Creem una llum i la posem a lights[0].
+    //ja que lights[0] serà la llum puntual/direccional/spotlight que escollim des de la interfície
+
+    shared_ptr<Light> l = dynamic_pointer_cast<Light>(make_shared<DirectionalLight>(ambient, diffuse, specular, direction));
+
+    scene->lights[0] = l;
 
     scene->lightsToGPU(program);
 

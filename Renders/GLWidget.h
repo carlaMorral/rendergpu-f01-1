@@ -58,8 +58,10 @@ public slots:
     void setScale(float s);
     void setPerspective(float verticalAngle, float nearPlane, float farPlane);
     void setLookAt(const QVector3D &eye, const QVector3D &center, const QVector3D& up);
-    void setLighting(const QVector3D &lightPos, const QVector3D &Ia, const QVector3D &Id,
+    void setPointLight(const QVector3D &lightPos, const QVector3D &Ia, const QVector3D &Id,
                                const QVector3D &Is, const QVector3D &coefs);
+    void setDirLight(const QVector3D &lightDir, const QVector3D &Ia, const QVector3D &Id,
+                     const QVector3D &Is);
     void setTextureFile(const QString &file);
 
     // Acció per activar a cada update del timer

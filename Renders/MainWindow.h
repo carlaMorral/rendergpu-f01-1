@@ -30,9 +30,8 @@ private:
     Ui::MainWindow *ui;
     Builder  *builder;
     GLWidget  *glWidget;
-    // TO DO Fase 1: Afegir els diàlegs o finestres per obrir les escenes VIRTUALS i les de DATA
-    // des dels menús Obre Escena i Obre Dades
 
+    int currentLight; //0: point, 1: directional, 2: spotlight
 private slots:
 
     void on_persVerticalAngleSpin_valueChanged(double arg1);
@@ -123,6 +122,25 @@ private slots:
     void on_lightCoefC_valueChanged(double arg1);
     void on_lightCoefB_valueChanged(double arg1);
     void on_lightCoefA_valueChanged(double arg1);
+    void on_pointLightRadioButton_toggled(bool checked);
+    void on_dirLightRadioButton_toggled(bool checked);
+    void on_spotLightRadioButton_toggled(bool checked);
+    void on_lightDirXSpin_valueChanged(double arg1);
+    void on_lightDirYSpin_valueChanged(double arg1);
+    void on_lightDirZSpin_valueChanged(double arg1);
+    void on_dirLightIaXSpin_valueChanged(double arg1);
+    void on_dirLightIaYSpin_valueChanged(double arg1);
+    void on_dirLightIaZSpin_valueChanged(double arg1);
+    void on_dirLightIdXSpin_valueChanged(double arg1);
+    void on_dirLightIdYSpin_valueChanged(double arg1);
+    void on_dirLightIdZSpin_valueChanged(double arg1);
+    void on_dirLightIsXSpin_valueChanged(double arg1);
+    void on_dirLightIsYSpin_valueChanged(double arg1);
+    void on_dirLightIsZSpin_valueChanged(double arg1);
+
+
+    void setPointLight();
+    void setDirLight();
 };
 
 #endif // MAINWINDOW_H
