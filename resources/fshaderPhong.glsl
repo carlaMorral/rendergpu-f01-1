@@ -43,7 +43,7 @@ vec4 blinn_phong ()
     vec3 ca = vec3(0);
     vec3 cd = vec3(0);
     vec3 cs = vec3(0);
-    vec4 H, L, direction;
+    vec4 H, L, V, direction;
     float d, attenuationFactor;
 
     int nLights = lights.length();
@@ -71,7 +71,9 @@ vec4 blinn_phong ()
             L = vec4(-lights[i].direction,0);
         }
 
-        H = normalize(obs - position + L);
+        V = normalize(obs - position);
+
+        H = normalize(V + L);
 
         //Component ambient
         ca += material.ambient * lights[i].ambient;
@@ -84,7 +86,7 @@ vec4 blinn_phong ()
        }
 
     //Retornem la llum ambient global més les tres components
-    return vec4(globalAmbientLight*material.ambient + ca + cd + cs,0);
+    return vec4(globalAmbientLight*material.ambient + ca + cd + cs, 1);
 }
 
 void main()
