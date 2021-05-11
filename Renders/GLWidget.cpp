@@ -88,7 +88,66 @@ void GLWidget::resizeGL(int width, int height) {
  * @brief GLWidget::initShadersGPU
  */
 void GLWidget::initShadersGPU(){
-    initShader("://resources/vshaderGouraud.glsl", "://resources/fshaderGouraud.glsl");
+    //Creem els programes amb els shaders
+    createShadersGPU("://resources/vshaderGouraud.glsl", "://resources/fshaderGouraud.glsl");
+    createShadersGPU("://resources/vshaderPhong.glsl", "://resources/fshaderPhong.glsl");
+    //Queden guardats al map shaderPrograms
+    loadShader("Gouraud");
+}
+
+bool GLWidget::createShadersGPU(QString vShaderFile, QString fShaderFile){
+    QString name = vShaderFile.section("/", 3, 3).replace(".glsl", "").replace("vshader", "");
+    cout << "Loading shader program. Assigned name: " << name.toStdString() << endl;
+    //Només l'afegim si no existeix
+    if (shaderPrograms.find(name) == shaderPrograms.end()){
+        QGLShader *vshader = new QGLShader(QGLShader::Vertex, this);
+        QGLShader *fshader = new QGLShader(QGLShader::Fragment, this);
+        vshader->compileSourceFile(vShaderFile);
+        fshader->compileSourceFile(fShaderFile);
+        auto program = make_shared<QGLShaderProgram>(this);
+        program-> addShader(vshader);
+        program-> addShader(fshader);
+        shaderPrograms[name] = program;
+        cout << name.toStdString() << " loaded successfully." << endl;
+        return true;
+    }else{
+        //Si el shader ja existeix, no el tornem a afegir
+        cout << name.toStdString() << " already exists." << endl;
+        return false;
+    }
+}
+
+bool GLWidget::loadShader(QString shader){
+    //Si ja l'estem utilitzant, no el carreguem
+    if (currentShader == shader){
+        return false;
+    }
+
+    //Si no existeix, no el carreguem
+    auto shaderEntry = shaderPrograms.find(shader);
+    if(shaderEntry == shaderPrograms.end()){
+        cout << "Error! Shader " << shader.toStdString() << " does not exist!" << endl;
+        return false;
+    }
+
+    program = shaderEntry->second;
+    program->link();
+    program->bind();
+    currentShader = shader;
+    return true;
+}
+
+bool GLWidget::loadShaderAndRefresh(QString shader){
+    if(!loadShader(shader)){
+        return false; //Si no s'ha carregat, no fem res
+    }
+
+    // Enviem nou shader a GPU
+    scene->toGPU(program);
+    //
+    updateGL();
+
+    return true;
 }
 
 QSize GLWidget::minimumSizeHint() const {
@@ -99,23 +158,6 @@ QSize GLWidget::sizeHint() const {
     return QSize(400, 400);
 }
 
-/**
- * @brief GLWidget::initShader()
- * Compila i linka el vertex i el fragment shader
- */
-void GLWidget::initShader(const char* vShaderFile, const char* fShaderFile){
-    QGLShader *vshader = new QGLShader(QGLShader::Vertex, this);
-    QGLShader *fshader = new QGLShader(QGLShader::Fragment, this);
-
-    vshader->compileSourceFile(vShaderFile);
-    fshader->compileSourceFile(fShaderFile);
-
-    program = make_shared<QGLShaderProgram>(this);
-    program->addShader(vshader);
-    program->addShader(fshader);
-    program->link();
-    program->bind();
-}
 
 /** Gestio de les animacions i la gravació d'imatges ***/
 
@@ -193,12 +235,14 @@ void GLWidget::activaToonShader() {
 
 void GLWidget::activaPhongShader() {
     //Opcional: A implementar a la fase 1 de la practica 2
+    loadShaderAndRefresh("Phong");
     qDebug()<<"Estic a Phong";
 
 }
 
 void GLWidget::activaGouraudShader() {
     //A implementar a la fase 1 de la practica 2
+    loadShaderAndRefresh("Gouraud");
     qDebug()<<"Estic a Gouraud";
 
 }

@@ -34,6 +34,7 @@ public:
     void setScene (shared_ptr<Scene> sc);
     shared_ptr<Scene> getScene() {return scene;}
 
+
 public slots:
 
     void updateObject(shared_ptr<Object> obj);
@@ -93,11 +94,16 @@ private:
 
     QPoint lastPos;   // per interactuar amb la camera
 
-    shared_ptr<QGLShaderProgram> program; // Per ars nomes es té un parell vertex-fragment
-                               // Cal guardar-ne més d'un en la primera fase.
-
-    void initShader(const char* vertexShaderFile, const char* fragmentShaderFile);
+    //Lista de shaders
+    std::map<QString, shared_ptr<QGLShaderProgram>> shaderPrograms;
+    //Shader actual
+    shared_ptr<QGLShaderProgram> program;
+    //Nom del shader actual (key del map de shaders)
+    QString currentShader;
+    bool loadShader(QString shader);
+    bool loadShaderAndRefresh(QString shader);
     void initShadersGPU();
+    bool createShadersGPU(QString vShaderFile,QString fShaderFile);
     void updateShader();
     void updateShaderTexture();
 };
