@@ -70,30 +70,7 @@ void Object::toGPU(shared_ptr<QGLShaderProgram> pr) {
 
     qDebug() << "Obj to GPU.....";
 
-    // Primer passarem el material
-    // 1. Declerem un struct amb la informacio del material
-
-    struct {
-        GLuint ambient;
-        GLuint diffuse;
-        GLuint specular;
-        GLuint transparency;
-        GLuint shininess;
-    } gl_IdMaterial;
-
-    // 2. Obtenim identificadors GPU
-    gl_IdMaterial.ambient = program->uniformLocation("material.ambient");
-    gl_IdMaterial.diffuse = program->uniformLocation("material.diffuse");
-    gl_IdMaterial.specular = program->uniformLocation("material.specular");
-    gl_IdMaterial.transparency = program->uniformLocation("material.transparency");
-    gl_IdMaterial.shininess = program->uniformLocation("material.shininess");
-
-    // 3. Bind de les zones de memòria de GPU a CPU
-    glUniform3fv(gl_IdMaterial.ambient, 1, this->material->getAmbient());
-    glUniform3fv(gl_IdMaterial.diffuse, 1, this->material->getDiffuse());
-    glUniform3fv(gl_IdMaterial.specular, 1, this->material->getSpecular());
-    glUniform3fv(gl_IdMaterial.transparency, 1, this->material->getTransparency());
-    glUniform1f(gl_IdMaterial.shininess, this->material->getShininess());
+    material->toGPU(program);
 
     // Creació d'un vertex array object
     glGenVertexArrays( 1, &vao );
