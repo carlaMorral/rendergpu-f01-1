@@ -20,12 +20,12 @@ Segona pràctica de GiVD 2020-21
         - [ ] [OPT] Llegir material .mtl
     - Light: *Arnau*
         - [X] Puntual
-        - [X] Direccional
+        - [X] Direccional (Interfície: Albert)
         - [X] [OPT] Spotlight
         - [X] Ambient Global
-    - Shading
-        - [ ] Phong
-        - [ ] Gouraud
+    - Shading: Albert, Arnau
+        - [X] Phong
+        - [X] Gouraud
     - Textures
         - [ ] Textura com material en un objecte
         - [ ] Textura al pla base
