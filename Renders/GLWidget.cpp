@@ -137,7 +137,7 @@ bool GLWidget::loadShader(QString shader){
     return true;
 }
 
-bool GLWidget::loadShaderAndRefresh(QString shader){
+bool GLWidget::loadShaderAndRefresh(QString shader){ //updateShader
     if(!loadShader(shader)){
         return false; //Si no s'ha carregat, no fem res
     }
@@ -146,6 +146,8 @@ bool GLWidget::loadShaderAndRefresh(QString shader){
     scene->toGPU(program);
     //
     updateGL();
+    //TODO: UpdateShaderTexture
+
 
     return true;
 }
@@ -216,6 +218,10 @@ void GLWidget::updateScene(shared_ptr<Scene> sc) {
 
 }
 
+void GLWidget::updateShaderTexture(){
+    //TODO
+}
+
 /** Metodes que es criden des dels menús */
 
 void GLWidget::saveAnimation() {
@@ -272,17 +278,6 @@ void GLWidget::activaTransparency() {
     qDebug()<<"Estic a Transparencia";
 }
 
-//Metode  per canviar de shaders.
-void GLWidget::updateShader(){
-
-
-;}
-
-//Metode per canviar de shaders de textures
-void GLWidget::updateShaderTexture(){
-    //A implementar a la fase 1 de la practica 2
-
-}
 
 /** Mètodes que es criden des de les finestres de dialeg */
 

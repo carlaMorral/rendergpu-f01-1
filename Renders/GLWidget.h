@@ -104,7 +104,6 @@ private:
     bool loadShaderAndRefresh(QString shader);
     void initShadersGPU();
     bool createShadersGPU(QString vShaderFile,QString fShaderFile);
-    void updateShader();
     void updateShaderTexture();
 };
 
