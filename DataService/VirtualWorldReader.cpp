@@ -27,7 +27,6 @@ void VirtualWorldReader::readScene(QString fileName, shared_ptr<Mapping> map) {
         float scale = fields[4].toFloat();
         auto obj = make_shared<Object>(100000, fields[0], position, scale);
         scene->addObject(obj);
-        scene->camera->actualitzaCamera(scene->capsaMinima);
         //readBrObject(fields[0]);
         //scene->camera->actualitzaCamera(scene->capsaMinima);
     }
@@ -37,5 +36,6 @@ void VirtualWorldReader::readScene(QString fileName, shared_ptr<Mapping> map) {
 shared_ptr<Object> VirtualWorldReader::readBrObject (QString fileName) {
     auto obj = make_shared<Object>(1000000, fileName);
     scene->addObject(obj);
+    scene->camera->actualitzaCamera(scene->capsaMinima);
     return obj;
 }
