@@ -20,10 +20,10 @@ Segona pràctica de GiVD 2020-21
         - [ ] [OPT] Llegir material .mtl
     - Light: *Arnau*
         - [X] Puntual
-        - [X] Direccional (Interfície: Albert)
+        - [X] Direccional (*Interfície: Albert*)
         - [X] [OPT] Spotlight
         - [X] Ambient Global
-    - Shading: Albert, Arnau
+    - Shading: *Albert, Arnau*
         - [X] Phong
         - [X] Gouraud
     - Textures
@@ -89,6 +89,26 @@ Al igual que al cas anterior, hem realitzat comprovacions passant atributs arbit
 Hem realitzat també proves amb els altres atributs, tot i que només estem mostrant la component especular en aquesta memòria. Per tant, concloure també que la informació de les llums es passa correctament a la GPU.
 
 ### Pas 4
+
+El pas 4 d'aquesta pràctica consistia en implementar shaders de Gouraud i Phong a la GPU. Els dos són similars, ja que per tots dos utilitzarem el mètode de Blinn-Phong pel càlcul del color. La diferència entre els dos és que a Gouraud Blinn-Phong es calcula al vertex shader i s'interpola (suavitza) el color en rasteritzar, mentre que en el cas de Phong, al vertex shader retorna la normal i és aquesta la que s'interpola (suavitza) per després calcular a cada pixel el color amb Blinn-Phong, utilitzant aquesta normal suavitzada.
+
+El procediment per implementar Gouraud i Phong, per tant, ha estat molt similar. Ens hem basat en el codi de Blinn-Phong que vam fer a la pràctica 1 de Raytracing, amb les adaptacions necessàries. A continuació mostrem l'escena de test proposada amb els paràmetres indicats.
+
+`Gouraud`        |  `Phong`  
+:-------------------------:|:-------------------------:
+![gouraud](readmeFiles/fase1-pas4/test_gouraud.png)  |  ![phong](readmeFiles/fase1-pas4/test_phong.png)
+
+Es pot apreciar lleugerament la diferència, sobretot en la part més il·luminada, on Phong aconsegueix un efecte més suavitzat que Gouraud.
+
+També hem provat amb diferents tipus de llum: PointLight i DirectionalLight. Hem inclòs una opció per escollir entre PointLight i DirectionalLight directament des de interfície gràfica per poder realitzar fàcilment aquestes visualitzacions. 
+
+`PointLight pos=(-1,0,0)`        |  `DirectionalLight dir=(1,0,0)`    |  `PointLight pos=(-100,0,0)`   
+:-------------------------:|:-------------------------:|:-------------------------:
+![pos1](readmeFiles/fase1-pas4/pos1.png)  |  ![dir1](readmeFiles/fase1-pas4/dir1.png) |  ![pos100](readmeFiles/fase1-pas4/pos100.png)
+
+Com podem veure a les imatges, la segona i la tercera són pràcticament idèntiques, com era d'esperar, ja que posant una pointlight a la posició (-100,0,0) sense atenuació estem simulant una llum direccional, ja que els rajos de llum venen gairebé paral·lels, ja que esta a una posició molt allunyada (passa com la llum del sol, que a efectes pràctics la podem considerar direccional). En canvi, la primera imatge és una PointLight en la posició (-1,0,0), molt propera a la esfera, i tot i ser similar a les altres, es veu clarament l'efecte punt de llum.
+
+TODO: toon shading
 
 ### Pas 5
 
