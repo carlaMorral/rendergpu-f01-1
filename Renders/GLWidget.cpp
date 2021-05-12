@@ -152,7 +152,7 @@ bool GLWidget::loadShaderAndRefresh(QString shader){ //updateShader
     //
 
     //TODO: UpdateShaderTexture
-
+    updateGL();
 
     return true;
 }
