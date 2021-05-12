@@ -150,7 +150,7 @@ bool GLWidget::loadShaderAndRefresh(QString shader){ //updateShader
     // Enviem nou shader a GPU
     scene->toGPU(program);
     //
-    updateGL();
+
     //TODO: UpdateShaderTexture
 
 
