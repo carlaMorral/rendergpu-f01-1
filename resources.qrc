@@ -17,5 +17,10 @@
         <file>resources/fshaderGouraud.glsl</file>
         <file>resources/vshaderPhong.glsl</file>
         <file>resources/fshaderPhong.glsl</file>
+        <file>resources/models/bunny.obj</file>
+        <file>resources/models/capsule.obj</file>
+        <file>resources/models/suzanne.obj</file>
+        <file>resources/models/common-cockle.obj</file>
+        <file>resources/textures-P2/bricks.png</file>
     </qresource>
 </RCC>

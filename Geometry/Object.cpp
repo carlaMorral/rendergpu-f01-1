@@ -177,8 +177,9 @@ void Object::make(){
 void Object::toGPUTexture(shared_ptr<QGLShaderProgram> pr) {
     program = pr;
 
-// TO DO: Cal implementar en la fase 1 de la practica 2
-// S'ha d'activar la textura i es passa a la GPU
+    // TO DO: Cal implementar en la fase 1 de la practica 2
+    // S'ha d'activar la textura i es passa a la GPU
+
 
 }
 
@@ -191,6 +192,8 @@ void Object::drawTexture(){
 
     // TO DO: Cal implementar en la fase 1 de la practica 2
     // S'ha d'activar la textura i es passa a la GPU
+    texture->bind(0);
+    program->setUniformValue("texMap", 0);
 
 }
 
@@ -207,6 +210,13 @@ void Object::initTexture()
     // Cal inicialitzar la textura de l'objecte: veure l'exemple del CubGPUTextura
     qDebug() << "Initializing textures...";
 
+    // Carregar la textura
+    glActiveTexture(GL_TEXTURE0);
+    texture = make_shared<QOpenGLTexture>(QImage("://resources/capsule0.jpg"));
+    texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
+    texture->setMagnificationFilter(QOpenGLTexture::Linear);
+
+    texture->bind(0);
  }
 
 
