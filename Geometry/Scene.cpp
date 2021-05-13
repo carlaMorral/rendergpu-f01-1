@@ -34,11 +34,12 @@ void Scene::addObject(shared_ptr<Object> obj) {
  */
 void Scene::toGPU(shared_ptr<QGLShaderProgram> p) {
 
+    lightsToGPU(p);
+    setAmbientToGPU(p);
     for(unsigned int i=0; i < objects.size(); i++){
         objects.at(i)->toGPU(p);
     }
-    lightsToGPU(p);
-    setAmbientToGPU(p);
+
 }
 
 /**
