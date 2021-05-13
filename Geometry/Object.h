@@ -45,6 +45,7 @@ protected:
     int     numPoints;
     point4 *points;
     point4 *normals;
+    vec2 *textVertexsGPU;
 
     shared_ptr<Material> material;
 

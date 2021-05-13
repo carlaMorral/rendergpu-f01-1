@@ -2,6 +2,7 @@
 
 layout (location = 0) in vec4 vPosition;
 layout (location = 1) in vec4 vNormal;
+layout (location = 2) in vec2 vCoordTexture;
 
 uniform mat4 model_view;
 uniform mat4 projection;
@@ -41,6 +42,7 @@ uniform vec3 globalAmbientLight;
 uniform vec4 obs;
 
 out vec4 color;
+out vec2 v_texcoord;
 
 vec4 blinn_phong ()
 {
@@ -99,4 +101,5 @@ void main()
     gl_Position = projection*model_view*vPosition;
     gl_Position = gl_Position/gl_Position.w;
     color = blinn_phong();
+    v_texcoord = vCoordTexture;
 }

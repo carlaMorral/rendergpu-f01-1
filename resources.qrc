@@ -24,5 +24,8 @@
         <file>resources/textures-P2/bricks.png</file>
         <file>resources/vshaderToon.glsl</file>
         <file>resources/fshaderToon.glsl</file>
+        <file>resources/textures-P2/capsule0.jpg</file>
+        <file>resources/textures-P2/cruiser.bmp</file>
+        <file>resources/models/cruiser.obj</file>
     </qresource>
 </RCC>
