@@ -1,7 +1,13 @@
 #pragma once
 
-#include <QGLShaderProgram>
+#include <vector>
+
+#include <library/Common.h>
 #include <memory>
+
+#include <QGLShaderProgram>
+#include <QOpenGLTexture>
+
 #include <library/vec.h>
 
 using namespace std;

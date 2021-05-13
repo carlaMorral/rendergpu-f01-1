@@ -22,5 +22,7 @@
         <file>resources/models/suzanne.obj</file>
         <file>resources/models/common-cockle.obj</file>
         <file>resources/textures-P2/bricks.png</file>
+        <file>resources/vshaderToon.glsl</file>
+        <file>resources/fshaderToon.glsl</file>
     </qresource>
 </RCC>

@@ -95,7 +95,8 @@ void GLWidget::initShadersGPU(){
     //Creem els programes amb els shaders
     createShadersGPU("://resources/vshaderGouraud.glsl", "://resources/fshaderGouraud.glsl");
     createShadersGPU("://resources/vshaderPhong.glsl", "://resources/fshaderPhong.glsl");
-    //Queden guardats al map shaderPrograms
+    createShadersGPU("://resources/vshaderToon.glsl", "://resources/fshaderToon.glsl");
+    //Queden guardats al map shaderPrograms amb els noms Gouraud | Phong | Toon
     loadShader("Gouraud");
 }
 
@@ -240,6 +241,7 @@ void GLWidget::saveAnimation() {
 
 void GLWidget::activaToonShader() {
     //A implementar a la fase 1 de la practica 2
+    loadShaderAndRefresh("Toon");
     qDebug()<<"Estic a Toon";
 }
 
