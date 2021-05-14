@@ -6,6 +6,9 @@ layout (location = 2) in vec2 vCoordTexture;
 
 uniform mat4 model_view;
 uniform mat4 projection;
+uniform int hasTexture;
+
+uniform sampler2D texMap;
 
 // Struct que representa un material amb tots els seus parametres
 struct stMaterial {
@@ -42,9 +45,8 @@ uniform vec3 globalAmbientLight;
 uniform vec4 obs;
 
 out vec4 color;
-out vec2 v_texcoord;
 
-vec4 blinn_phong ()
+vec4 blinn_phong (vec3 diffuse)
 {
     vec3 ca = vec3(0);
     vec3 cd = vec3(0);
@@ -85,7 +87,7 @@ vec4 blinn_phong ()
         ca += material.ambient * lights[i].ambient;
 
         //Component difusa
-        cd += attenuationFactor * lights[i].diffuse * material.diffuse * max(dot(vNormal, normalize(L)), 0.0f);
+        cd += attenuationFactor * lights[i].diffuse * diffuse * max(dot(vNormal, normalize(L)), 0.0f);
 
         //Component especular
         cs += attenuationFactor * lights[i].specular * material.specular * pow(max(dot(vNormal, H), 0.0f), material.shininess);
@@ -99,6 +101,12 @@ void main()
 {
     gl_Position = projection*model_view*vPosition;
     gl_Position = gl_Position/gl_Position.w;
-    color = blinn_phong();
-    v_texcoord = vCoordTexture;
+
+    vec3 diffuse;
+    if (hasTexture == 1) {
+        diffuse = vec3(texture(texMap, vCoordTexture).rgb);
+    } else {
+        diffuse = material.diffuse;
+    }
+    color = blinn_phong(diffuse);
 }

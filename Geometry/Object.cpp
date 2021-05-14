@@ -42,6 +42,11 @@ Object::Object(int npoints, QString n) : numPoints(npoints){
     material = make_shared<Material>(ambient, diffuse, specular, transparency, shininess);
 
     parseObjFile(n);
+    if (canHaveTexture) {
+        qDebug() << "Object can support textures";
+    } else {
+        qDebug() << "Object cannot support textures";
+    }
     make();
 }
 
@@ -124,11 +129,13 @@ void Object::toGPU(shared_ptr<QGLShaderProgram> pr) {
 void Object::draw(){
 
 
-    qDebug() << "DRAW";
+    //qDebug() << "DRAW";
 
     // Aqui s'ha de fer el pas de dades a la GPU per si hi ha més d'un objecte
     // Activació a GL del Vertex Buffer Object
     material->toGPU(program);
+
+    this->toGPUTexture(program);
 
     glBindVertexArray( vao );
     glEnableVertexAttribArray(0);
@@ -186,8 +193,10 @@ void Object::toGPUTexture(shared_ptr<QGLShaderProgram> pr) {
 
     // TO DO: Cal implementar en la fase 1 de la practica 2
     // S'ha d'activar la textura i es passa a la GPU
-    texture->bind(0);
-    program->setUniformValue("texMap", 0);
+    if (hasTexture) {
+        texture->bind(0);
+        program->setUniformValue("texMap", 0);
+    }
 
     GLuint glHasTexture = program->uniformLocation("hasTexture");
     glUniform1i(glHasTexture, int(this->hasTexture));
