@@ -34,6 +34,7 @@ public:
     void setScene (shared_ptr<Scene> sc);
     shared_ptr<Scene> getScene() {return scene;}
 
+
 public slots:
 
     void updateObject(shared_ptr<Object> obj);
@@ -57,8 +58,10 @@ public slots:
     void setScale(float s);
     void setPerspective(float verticalAngle, float nearPlane, float farPlane);
     void setLookAt(const QVector3D &eye, const QVector3D &center, const QVector3D& up);
-    void setLighting(const QVector3D &lightPos, const QVector3D &Ia, const QVector3D &Id,
+    void setPointLight(const QVector3D &lightPos, const QVector3D &Ia, const QVector3D &Id,
                                const QVector3D &Is, const QVector3D &coefs);
+    void setDirLight(const QVector3D &lightDir, const QVector3D &Ia, const QVector3D &Id,
+                     const QVector3D &Is);
     void setTextureFile(const QString &file);
 
     // Acció per activar a cada update del timer
@@ -93,12 +96,16 @@ private:
 
     QPoint lastPos;   // per interactuar amb la camera
 
-    shared_ptr<QGLShaderProgram> program; // Per ars nomes es té un parell vertex-fragment
-                               // Cal guardar-ne més d'un en la primera fase.
-
-    void initShader(const char* vertexShaderFile, const char* fragmentShaderFile);
+    //Lista de shaders
+    std::map<QString, shared_ptr<QGLShaderProgram>> shaderPrograms;
+    //Shader actual
+    shared_ptr<QGLShaderProgram> program;
+    //Nom del shader actual (key del map de shaders)
+    QString currentShader;
+    bool loadShader(QString shader);
+    bool loadShaderAndRefresh(QString shader);
     void initShadersGPU();
-    void updateShader();
+    bool createShadersGPU(QString vShaderFile,QString fShaderFile);
     void updateShaderTexture();
 };
 

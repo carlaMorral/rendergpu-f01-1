@@ -4,7 +4,7 @@
         <file>resources/vshader1.glsl</file>
         <file>resources/models/armadillo.obj</file>
         <file>resources/models/sphere0.obj</file>
-        <file>resources/vshader_test.glsl</file>
+        <file>resources/vshaderTest.glsl</file>
         <file>resources/scenes/VW_Scene1_mapping.txt</file>
         <file>resources/scenes/VW_Scene1.txt</file>
         <file>resources/models/sphere0.mtl</file>
@@ -13,5 +13,11 @@
         <file>resources/scenes/RW_Scene1.txt</file>
         <file>resources/scenes/RW_Scene1_mapping.txt</file>
         <file>resources/palettes/palette1.gpl</file>
+        <file>resources/vshaderGouraud.glsl</file>
+        <file>resources/fshaderGouraud.glsl</file>
+        <file>resources/vshaderPhong.glsl</file>
+        <file>resources/fshaderPhong.glsl</file>
+        <file>resources/vshaderToon.glsl</file>
+        <file>resources/fshaderToon.glsl</file>
     </qresource>
 </RCC>

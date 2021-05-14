@@ -41,7 +41,6 @@ uniform stLight lights[10];
 // Llum ambient global
 uniform stGlobal globalAmbientLight;
 
-
 out vec4 color;
 
 void main()

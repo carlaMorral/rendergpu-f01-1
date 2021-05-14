@@ -1,6 +1,7 @@
 #version 330
 
 layout (location = 0) in vec4 vPosition;
+layout (location = 1) in vec4 vNormal;
 
 uniform mat4 model_view;
 uniform mat4 projection;
@@ -38,6 +39,6 @@ void main(void)
 
     // Comprovem que el primer element de la llista de llums te el valor diffuse esperat
     //color = vec4(globalAmbientLight.globalLight,1);
-    color = vec4(lights[0].specular,1);
+    color = vNormal;
 }
 

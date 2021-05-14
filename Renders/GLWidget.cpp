@@ -41,8 +41,13 @@ void GLWidget::initializeGL() {
 
     initShadersGPU();
 
-    // Creacio d'una PointLight per a poder modificar el seus valors amb la interficie
-    shared_ptr<Light> l = dynamic_pointer_cast<Light>(make_shared<PointLight>(vec3(0,1,0), vec3(1,1,1), vec3(0,1,0), vec4(-25,25,25,1), vec3(0,0,1)));
+    // Default point light:
+    vec3 ambient(0,1,0);
+    vec3 diffuse(1,1,1);
+    vec3 specular(0,1,0);
+    vec4 position(-25,25,25,1);
+    vec3 coefficients(0,0,1);
+    shared_ptr<Light> l = dynamic_pointer_cast<Light>(make_shared<PointLight>(ambient, diffuse, specular, position, coefficients));
     scene->addLight(l);
 
     scene->camera->init(this->size().width(), this->size().height(), scene->capsaMinima);
@@ -87,7 +92,69 @@ void GLWidget::resizeGL(int width, int height) {
  * @brief GLWidget::initShadersGPU
  */
 void GLWidget::initShadersGPU(){
-    initShader("://resources/vshader1.glsl", "://resources/fshader1.glsl");
+    //Creem els programes amb els shaders
+    createShadersGPU("://resources/vshaderGouraud.glsl", "://resources/fshaderGouraud.glsl");
+    createShadersGPU("://resources/vshaderPhong.glsl", "://resources/fshaderPhong.glsl");
+    createShadersGPU("://resources/vshaderToon.glsl", "://resources/fshaderToon.glsl");
+    //Queden guardats al map shaderPrograms amb els noms Gouraud | Phong | Toon
+    loadShader("Gouraud");
+}
+
+bool GLWidget::createShadersGPU(QString vShaderFile, QString fShaderFile){
+    QString name = vShaderFile.section("/", 3, 3).replace(".glsl", "").replace("vshader", "");
+    cout << "Loading shader program. Assigned name: " << name.toStdString() << endl;
+    //Només l'afegim si no existeix
+    if (shaderPrograms.find(name) == shaderPrograms.end()){
+        QGLShader *vshader = new QGLShader(QGLShader::Vertex, this);
+        QGLShader *fshader = new QGLShader(QGLShader::Fragment, this);
+        vshader->compileSourceFile(vShaderFile);
+        fshader->compileSourceFile(fShaderFile);
+        auto program = make_shared<QGLShaderProgram>(this);
+        program-> addShader(vshader);
+        program-> addShader(fshader);
+        shaderPrograms[name] = program;
+        cout << name.toStdString() << " loaded successfully." << endl;
+        return true;
+    }else{
+        //Si el shader ja existeix, no el tornem a afegir
+        cout << name.toStdString() << " already exists." << endl;
+        return false;
+    }
+}
+
+bool GLWidget::loadShader(QString shader){
+    //Si ja l'estem utilitzant, no el carreguem
+    if (currentShader == shader){
+        return false;
+    }
+
+    //Si no existeix, no el carreguem
+    auto shaderEntry = shaderPrograms.find(shader);
+    if(shaderEntry == shaderPrograms.end()){
+        cout << "Error! Shader " << shader.toStdString() << " does not exist!" << endl;
+        return false;
+    }
+
+    program = shaderEntry->second;
+    program->link();
+    program->bind();
+    currentShader = shader;
+    return true;
+}
+
+bool GLWidget::loadShaderAndRefresh(QString shader){ //updateShader
+    if(!loadShader(shader)){
+        return false; //Si no s'ha carregat, no fem res
+    }
+
+    // Enviem nou shader a GPU
+    scene->toGPU(program);
+    //
+    updateGL();
+    //TODO: UpdateShaderTexture
+
+
+    return true;
 }
 
 QSize GLWidget::minimumSizeHint() const {
@@ -98,23 +165,6 @@ QSize GLWidget::sizeHint() const {
     return QSize(400, 400);
 }
 
-/**
- * @brief GLWidget::initShader()
- * Compila i linka el vertex i el fragment shader
- */
-void GLWidget::initShader(const char* vShaderFile, const char* fShaderFile){
-    QGLShader *vshader = new QGLShader(QGLShader::Vertex, this);
-    QGLShader *fshader = new QGLShader(QGLShader::Fragment, this);
-
-    vshader->compileSourceFile(vShaderFile);
-    fshader->compileSourceFile(fShaderFile);
-
-    program = make_shared<QGLShaderProgram>(this);
-    program->addShader(vshader);
-    program->addShader(fshader);
-    program->link();
-    program->bind();
-}
 
 /** Gestio de les animacions i la gravació d'imatges ***/
 
@@ -173,6 +223,10 @@ void GLWidget::updateScene(shared_ptr<Scene> sc) {
 
 }
 
+void GLWidget::updateShaderTexture(){
+    //TODO
+}
+
 /** Metodes que es criden des dels menús */
 
 void GLWidget::saveAnimation() {
@@ -187,17 +241,20 @@ void GLWidget::saveAnimation() {
 
 void GLWidget::activaToonShader() {
     //A implementar a la fase 1 de la practica 2
+    loadShaderAndRefresh("Toon");
     qDebug()<<"Estic a Toon";
 }
 
 void GLWidget::activaPhongShader() {
     //Opcional: A implementar a la fase 1 de la practica 2
+    loadShaderAndRefresh("Phong");
     qDebug()<<"Estic a Phong";
 
 }
 
 void GLWidget::activaGouraudShader() {
     //A implementar a la fase 1 de la practica 2
+    loadShaderAndRefresh("Gouraud");
     qDebug()<<"Estic a Gouraud";
 
 }
@@ -227,17 +284,6 @@ void GLWidget::activaTransparency() {
     qDebug()<<"Estic a Transparencia";
 }
 
-//Metode  per canviar de shaders.
-void GLWidget::updateShader(){
-
-
-;}
-
-//Metode per canviar de shaders de textures
-void GLWidget::updateShaderTexture(){
-    //A implementar a la fase 1 de la practica 2
-
-}
 
 /** Mètodes que es criden des de les finestres de dialeg */
 
@@ -275,18 +321,43 @@ void GLWidget::setLookAt(const QVector3D &eye, const QVector3D &center, const QV
     updateGL();
 }
 
-void GLWidget::setLighting(const QVector3D &lightPos, const QVector3D &Ia, const QVector3D &Id,
+void GLWidget::setPointLight(const QVector3D &lightPos, const QVector3D &Ia, const QVector3D &Id,
                            const QVector3D &Is, const QVector3D &coefs)
 {
-    vec4 lightPosition(lightPos[0],lightPos[1], lightPos[2], 1.0) ;
-    vec3 intensityA( Ia[0], Ia[1], Ia[2]);
-    vec3 intensityD( Id[0], Id[1], Id[2]);
-    vec3 intensityS( Is[0], Is[1], Is[2]);
+    vec4 position(lightPos[0],lightPos[1], lightPos[2], 1.0) ;
+    vec3 ambient( Ia[0], Ia[1], Ia[2]);
+    vec3 diffuse( Id[0], Id[1], Id[2]);
+    vec3 specular( Is[0], Is[1], Is[2]);
+    vec3 coefficients( coefs[0], coefs[1], coefs[2]);
 
-    scene->lights[0]->setIa(intensityA);
-    scene->lights[0]->setId(intensityD);
-    scene->lights[0]->setIs(intensityS);
-    scene->lights[0]->setLightPosition(lightPosition);
+    //Creem una llum i la posem a lights[0].
+    //ja que lights[0] serà la llum puntual/direccional/spotlight que escollim des de la interfície
+
+    shared_ptr<Light> l = dynamic_pointer_cast<Light>(make_shared<PointLight>(ambient, diffuse, specular, position, coefficients));
+
+    scene->lights[0] = l;
+
+    scene->lightsToGPU(program);
+
+    updateGL();
+}
+
+void GLWidget::setDirLight(const QVector3D &lightDir, const QVector3D &Ia, const QVector3D &Id,
+                 const QVector3D &Is)
+{
+    vec3 direction(lightDir[0],lightDir[1], lightDir[2]) ;
+    vec3 ambient( Ia[0], Ia[1], Ia[2]);
+    vec3 diffuse( Id[0], Id[1], Id[2]);
+    vec3 specular( Is[0], Is[1], Is[2]);
+    //Creem una llum i la posem a lights[0].
+    //ja que lights[0] serà la llum puntual/direccional/spotlight que escollim des de la interfície
+
+    shared_ptr<Light> l = dynamic_pointer_cast<Light>(make_shared<DirectionalLight>(ambient, diffuse, specular, direction));
+
+    scene->lights[0] = l;
+
+    scene->lightsToGPU(program);
+
     updateGL();
 }
 
