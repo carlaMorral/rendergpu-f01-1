@@ -70,9 +70,9 @@ void Object::toGPU(shared_ptr<QGLShaderProgram> pr) {
 
     program = pr;
 
-    qDebug() << "Obj to GPU.....";
+    qDebug() << "TO GPU";
 
-    this->toGPUTexture(program);
+    qDebug() << "Obj to GPU.....";
 
     // Creació d'un vertex array object
     glGenVertexArrays( 1, &vao );
@@ -100,7 +100,7 @@ void Object::toGPU(shared_ptr<QGLShaderProgram> pr) {
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0,  (void*)(sizeof(point4)*Index));
     glEnableVertexAttribArray(1);
 
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0,  (void*)(2*sizeof(point4)*Index));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0,  (void*)(2*sizeof(point4)*Index));
     glEnableVertexAttribArray(2);
 
     glEnable( GL_DEPTH_TEST );
@@ -115,9 +115,13 @@ void Object::toGPU(shared_ptr<QGLShaderProgram> pr) {
  */
 void Object::draw(){
 
+
+    qDebug() << "DRAW";
+
     // Aqui s'ha de fer el pas de dades a la GPU per si hi ha més d'un objecte
     // Activació a GL del Vertex Buffer Object
     material->toGPU(program);
+    this->toGPUTexture(program);
 
     glBindVertexArray( vao );
     glEnableVertexAttribArray(0);
@@ -140,6 +144,9 @@ void Object::make(){
 
     // DONE: fase 1 pas 4
     // Cal calcular la normal a cada vertex a la CPU
+
+
+    qDebug() << "MAKE";
 
     static vec3  base_colors[] = {
         vec3( 1.0, 0.0, 0.0 ),
@@ -184,6 +191,7 @@ void Object::toGPUTexture(shared_ptr<QGLShaderProgram> pr) {
 void Object::drawTexture(){
 
     // TO DO: Cal implementar en la fase 1 de la practica 2
+
     // S'ha d'activar la textura i es passa a la GPU
 
 }
@@ -203,7 +211,8 @@ void Object::initTexture()
 
     // Carregar la textura
     glActiveTexture(GL_TEXTURE0);
-    texture = make_shared<QOpenGLTexture>(QImage("://resources/textures-P2/cruiser.bmp"));
+    texture = make_shared<QOpenGLTexture>(QImage("://resources/textures-P2/bricks.png"));
+    texture->setWrapMode(QOpenGLTexture::Repeat);
     texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
     texture->setMagnificationFilter(QOpenGLTexture::Linear);
 
