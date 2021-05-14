@@ -6,9 +6,14 @@ out vec4 colorOut;
 
 uniform sampler2D texMap;
 
+uniform int hasTexture;
+
 void main()
 {
-    // colorOut = color;
-    colorOut = vec4(texture(texMap, v_texcoord).rgb, 1.0f);
+    if (hasTexture == 1) {
+        colorOut = vec4(texture(texMap, v_texcoord).rgb, 1.0f);
+    } else {
+        colorOut = color;
+    }
 }
 

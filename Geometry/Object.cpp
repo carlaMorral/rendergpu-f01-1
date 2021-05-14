@@ -10,9 +10,11 @@ Object::Object(int npoints, QObject *parent) : QObject(parent){
     points = new point4[numPoints];
     normals= new point4[numPoints];
     textVertexsGPU = new vec2[numPoints];
+    canHaveTexture = true;
+    hasTexture = false;
 
-    vec3 ambient(0.2f, 0.2f, 0.2f);
-    vec3 diffuse(0.8f, 0.5f, 0.5f);
+    vec3 ambient(0.1f, 0.02f, 0.02f);
+    vec3 diffuse(1.0f, 0.2f, 0.2f);
     vec3 specular(1.0f, 1.0f, 1.0f);
     vec3 transparency(0.0f, 0.0f, 0.0f);
     float shininess = 20.0;
@@ -29,9 +31,11 @@ Object::Object(int npoints, QString n) : numPoints(npoints){
     points = new point4[numPoints];
     normals= new point4[numPoints];
     textVertexsGPU = new vec2[numPoints];
+    canHaveTexture = false;
+    hasTexture = false;
 
-    vec3 ambient(0.2f, 0.2f, 0.2f);
-    vec3 diffuse(0.8f, 0.5f, 0.5f);
+    vec3 ambient(0.1f, 0.02f, 0.02f);
+    vec3 diffuse(1.0f, 0.2f, 0.2f);
     vec3 specular(1.0f, 1.0f, 1.0f);
     vec3 transparency(0.0f, 0.0f, 0.0f);
     float shininess = 20.0;
@@ -70,8 +74,6 @@ void Object::toGPU(shared_ptr<QGLShaderProgram> pr) {
 
     program = pr;
 
-    qDebug() << "TO GPU";
-
     qDebug() << "Obj to GPU.....";
 
     // Creació d'un vertex array object
@@ -87,10 +89,14 @@ void Object::toGPU(shared_ptr<QGLShaderProgram> pr) {
     // DONE: fase 1 pas 4
     // Passem les normals a la GPU
 
-    glBufferData( GL_ARRAY_BUFFER, 2*sizeof(point4)*Index + sizeof(vec2)*Index, NULL, GL_STATIC_DRAW );
+    if (canHaveTexture) {
+        glBufferData( GL_ARRAY_BUFFER, 2*sizeof(point4)*Index + sizeof(vec2)*Index, NULL, GL_STATIC_DRAW );
+    } else {
+        glBufferData( GL_ARRAY_BUFFER, 2*sizeof(point4)*Index, NULL, GL_STATIC_DRAW );
+    }
     glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof(point4)*Index, points );
     glBufferSubData( GL_ARRAY_BUFFER, sizeof(point4)*Index, sizeof(point4)*Index, normals);
-    glBufferSubData( GL_ARRAY_BUFFER, 2*sizeof(point4)*Index, sizeof(vec2)*Index, textVertexsGPU);
+    if (canHaveTexture) glBufferSubData( GL_ARRAY_BUFFER, 2*sizeof(point4)*Index, sizeof(vec2)*Index, textVertexsGPU);
     qDebug() << "Buffer creat.....";
     // set up vertex arrays
     glBindVertexArray( vao );
@@ -100,11 +106,13 @@ void Object::toGPU(shared_ptr<QGLShaderProgram> pr) {
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0,  (void*)(sizeof(point4)*Index));
     glEnableVertexAttribArray(1);
 
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0,  (void*)(2*sizeof(point4)*Index));
-    glEnableVertexAttribArray(2);
+    if (canHaveTexture) {
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0,  (void*)(2*sizeof(point4)*Index));
+        glEnableVertexAttribArray(2);
 
-    glEnable( GL_DEPTH_TEST );
-    glEnable(GL_TEXTURE_2D);
+        glEnable( GL_DEPTH_TEST );
+        glEnable(GL_TEXTURE_2D);
+    }
     qDebug() << "Tot ja a GPU.....";
 }
 
@@ -121,19 +129,18 @@ void Object::draw(){
     // Aqui s'ha de fer el pas de dades a la GPU per si hi ha més d'un objecte
     // Activació a GL del Vertex Buffer Object
     material->toGPU(program);
-    this->toGPUTexture(program);
 
     glBindVertexArray( vao );
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
+    if (canHaveTexture) {glEnableVertexAttribArray(2);}
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawArrays( GL_TRIANGLES, 0, Index );
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(2);
+    if (canHaveTexture) {glDisableVertexAttribArray(2);}
 
 }
 
@@ -159,11 +166,12 @@ void Object::make(){
         for(unsigned int j=0; j<cares[i].idxVertices.size(); j++){
             points[Index] = vertexs[cares[i].idxVertices[j]];
             normals[Index] = normalsVertexs[cares[i].idxNormals[j]];
-            // textVertexsGPU[Index] = textVertexs[cares[i].idxTextures[j]];
+            if (this->canHaveTexture) {
+                textVertexsGPU[Index] = textVertexs[cares[i].idxTextures[j]];
+            }
             Index++;
         }
     }
-    initTexture();
 }
 
 
@@ -181,6 +189,9 @@ void Object::toGPUTexture(shared_ptr<QGLShaderProgram> pr) {
     texture->bind(0);
     program->setUniformValue("texMap", 0);
 
+    GLuint glHasTexture = program->uniformLocation("hasTexture");
+    glUniform1i(glHasTexture, int(this->hasTexture));
+
 }
 
 
@@ -197,6 +208,8 @@ void Object::drawTexture(){
 
 void Object::setTexture(shared_ptr<QOpenGLTexture> t){
    texture = t;
+   hasTexture = true;
+   initTexture();
    this->toGPUTexture(program);
 }
 
@@ -211,12 +224,12 @@ void Object::initTexture()
 
     // Carregar la textura
     glActiveTexture(GL_TEXTURE0);
-    texture = make_shared<QOpenGLTexture>(QImage("://resources/textures-P2/bricks.png"));
     texture->setWrapMode(QOpenGLTexture::Repeat);
     texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
     texture->setMagnificationFilter(QOpenGLTexture::Linear);
 
     texture->bind(0);
+
     printf("Textura carregada");
  }
 
@@ -260,6 +273,7 @@ void Object::parseObjFile(const QString &fileName)
                     {
                         textVertexs.push_back(vec2(lineParts.at(1).toFloat(),
                                             lineParts.at(2).toFloat()));
+                        canHaveTexture = true;
                     }
 
                     // if it’s face data (f)

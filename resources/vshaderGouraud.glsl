@@ -92,7 +92,6 @@ vec4 blinn_phong ()
        }
 
     //Retornem la llum ambient global més les tres components
-    //Retornem la llum ambient global més les tres components
     return vec4(globalAmbientLight*material.ambient + ca + cd + cs, 1);
 }
 
