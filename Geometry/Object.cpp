@@ -159,7 +159,7 @@ void Object::make(){
         for(unsigned int j=0; j<cares[i].idxVertices.size(); j++){
             points[Index] = vertexs[cares[i].idxVertices[j]];
             normals[Index] = normalsVertexs[cares[i].idxNormals[j]];
-            textVertexsGPU[Index] = textVertexs[cares[i].idxTextures[j]];
+            // textVertexsGPU[Index] = textVertexs[cares[i].idxTextures[j]];
             Index++;
         }
     }
@@ -191,13 +191,13 @@ void Object::toGPUTexture(shared_ptr<QGLShaderProgram> pr) {
 void Object::drawTexture(){
 
     // TO DO: Cal implementar en la fase 1 de la practica 2
-
     // S'ha d'activar la textura i es passa a la GPU
 
 }
 
 void Object::setTexture(shared_ptr<QOpenGLTexture> t){
    texture = t;
+   this->toGPUTexture(program);
 }
 
 /**
