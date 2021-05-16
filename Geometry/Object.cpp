@@ -70,8 +70,6 @@ void Object::toGPU(shared_ptr<QGLShaderProgram> pr) {
 
     qDebug() << "Obj to GPU.....";
 
-    material->toGPU(program);
-
     // Creació d'un vertex array object
     glGenVertexArrays( 1, &vao );
 
@@ -107,6 +105,7 @@ void Object::draw(){
 
     // Aqui s'ha de fer el pas de dades a la GPU per si hi ha més d'un objecte
     // Activació a GL del Vertex Buffer Object
+    material->toGPU(program);
 
     glBindVertexArray( vao );
     glEnableVertexAttribArray(0);
