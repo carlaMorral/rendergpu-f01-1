@@ -57,10 +57,11 @@ void RealDataReader::dataFound(QStringList fields) {
         float escalat = mapping->getEscalat(i, valor);
 
         //Asignació material:
-        vec3 color = mapping->getPaletteProp(i)->getColor(mapping->mapeigValorAUnit(i, valor));
+        float valorEnUnit = mapping->mapeigValorAUnit(i,valor);
+        vec3 color = mapping->getPaletteProp(i)->getColor(valorEnUnit);
 
         vec3 diffuse = color;
-        vec3 ambient = color/float(10);
+        vec3 ambient = color;
         vec3 specular(1.0f, 1.0f, 1.0f);
         vec3 transparency(1.0f, 1.0f, 1.0f);
         float shininess = 0;

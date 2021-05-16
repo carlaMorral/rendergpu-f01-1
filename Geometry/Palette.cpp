@@ -31,5 +31,5 @@ Palette::Palette(QString fileName){
 
 vec3 Palette::getColor(float value){
     int index = std::max(0, std::min(size-1, (int)floor(value * size)));
-    return colors[index];
+    return colors[index] / float(255);
 }
