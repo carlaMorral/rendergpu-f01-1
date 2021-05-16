@@ -26,6 +26,11 @@ void VirtualWorldReader::readScene(QString fileName, shared_ptr<Mapping> map) {
         vec3 position(fields[1].toFloat(), fields[2].toFloat(), fields[3].toFloat());
         float scale = fields[4].toFloat();
         auto obj = make_shared<Object>(100000, fields[0], position, scale);
+        //Si s'indica textura, s'afegeix:
+        if(fields.length() >= 6){
+            shared_ptr<QOpenGLTexture> texture = make_shared<QOpenGLTexture>(QImage(fields[5]).mirrored());
+            obj->setTexture(texture);
+        }
         scene->addObject(obj);
         scene->camera->actualitzaCamera(scene->capsaMinima);
     }
