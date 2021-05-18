@@ -219,7 +219,6 @@ void Object::setTexture(shared_ptr<QOpenGLTexture> t){
    texture = t;
    hasTexture = true;
    initTexture();
-   //this->toGPUTexture(program);
 }
 
 /**
