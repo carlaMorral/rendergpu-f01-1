@@ -8,7 +8,6 @@
         <file>resources/scenes/VW_Scene1_mapping.txt</file>
         <file>resources/scenes/VW_Scene1.txt</file>
         <file>resources/models/sphere0.mtl</file>
-        <file>resources/models/sphere0.obj</file>
         <file>resources/models/sphere1.obj</file>
         <file>resources/scenes/RW_Scene1.txt</file>
         <file>resources/scenes/RW_Scene1_mapping.txt</file>
@@ -68,5 +67,11 @@
         <file>resources/textures/metal_crosshatch_pattern_6190173.JPG</file>
         <file>resources/textures/MonkeyTex.png</file>
         <file>resources/textures/uvtemplate.bmp</file>
+        <file>resources/textures/mapZoom.png</file>
+        <file>resources/textures/mapCities2.png</file>
+        <file>resources/textures/mapCities.png</file>
+        <file>resources/textures/mapBCN.png</file>
+        <file>resources/textures/map.png</file>
+        <file>resources/textures/europa.png</file>
     </qresource>
 </RCC>
