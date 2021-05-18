@@ -25,6 +25,7 @@ struct stLight {
     vec3 position;
     vec3 direction;
     float angle;
+    float sharpness;
 };
 
 
@@ -55,8 +56,8 @@ vec4 blinn_phong ()
     //Per cada Light (nomes per llums puntuals, si es direccional no te posicio, pero si direccio)
     for(int i=0; i<nLights; i++){
 
-        // PointLight o SpotLight
-        if (lights[i].type == 0 || lights[i].type == 2){
+        // PointLight
+        if (lights[i].type == 0){
 
             a = lights[i].coefficients[0];
             b = lights[i].coefficients[1];
@@ -69,25 +70,27 @@ vec4 blinn_phong ()
 
             L = normalize(vec4(lights[i].position,1) - vPosition);
 
-            // SpotLight
-            if (lights[i].type == 2){
-
-                // Direccio de la llum (normalitzada)
-                vec4 D = vec4(normalize(lights[i].direction),0);
-
-                // Comprovem si estem dins el con del Spotlight
-                angle = (180.0/3.14)*(acos(dot(-L, D)));
-
-                // Si esta a fora del con, la llum no actua (att=0)
-                if (angle > lights[i].angle){
-                  attenuationFactor = 0.0;
-                }
-            }
-
-        // DirectionalLight
-        }else if(lights[i].type == 1){
+        }// DirectionalLight
+        else if(lights[i].type == 1){
             attenuationFactor = 1.;
             L = normalize(vec4(-lights[i].direction,0));
+        }
+        // SpotLight
+        else if (lights[i].type == 2){
+
+            attenuationFactor = 1.;
+            L = normalize(vec4(-lights[i].direction,1) - vPosition);
+
+            // Direccio de la llum (normalitzada)
+            vec4 D = vec4(normalize(lights[i].direction),0);
+
+            // Comprovem si estem dins el con del Spotlight
+            angle = (180.0/3.14)*(acos(dot(-L, D)));
+
+            // Si esta a fora del con, la llum no actua (att=0)
+            if (angle > lights[i].angle){
+              attenuationFactor = 0.0;
+            }
         }
 
         V = normalize(obs - vPosition);
@@ -104,7 +107,6 @@ vec4 blinn_phong ()
         cs += attenuationFactor * lights[i].specular * material.specular * pow(max(dot(vNormal, H), 0.0f), material.shininess);
        }
 
-    //Retornem la llum ambient global més les tres components
     //Retornem la llum ambient global més les tres components
     return vec4(globalAmbientLight*material.ambient + ca + cd + cs, 1);
 }
