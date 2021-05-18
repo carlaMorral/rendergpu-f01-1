@@ -5,6 +5,8 @@
 #include <QStringList>
 #include <QFile>
 #include <QTextStream>
+#include <QImage>
+#include <QOpenGLTexture>
 
 #include <vector>
 #include <iostream>

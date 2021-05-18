@@ -7,7 +7,8 @@
 
 #include <QGLShaderProgram>
 #include <QOpenGLTexture>
-
+#include <QFile>
+#include <QRegularExpression>
 #include <library/vec.h>
 
 using namespace std;
@@ -20,6 +21,7 @@ class Material {
 public:
     Material();
     Material(vec3 a, vec3 d, vec3 s, vec3 k, float beta);
+    Material(QString fileName);
     ~Material();
 
     void toGPU(shared_ptr<QGLShaderProgram> program);

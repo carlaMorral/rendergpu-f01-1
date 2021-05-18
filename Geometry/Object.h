@@ -45,6 +45,7 @@ protected:
     int     numPoints;
     point4 *points;
     point4 *normals;
+    vec2 *textVertexsGPU;
 
     shared_ptr<Material> material;
 
@@ -53,6 +54,7 @@ protected:
     shared_ptr<QGLShaderProgram> program;
 
     shared_ptr<QOpenGLTexture> texture;
+    bool hasTexture;
 
 public:
     Object(const int npoints, QObject *parent = 0);
@@ -81,6 +83,7 @@ public:
     void setScale(float scale);
 
     void setMaterial(shared_ptr<Material> material);
+    bool canHaveTexture;
 private:
     void initTexture();
 };
