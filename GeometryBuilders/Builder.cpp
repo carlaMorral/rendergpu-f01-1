@@ -49,6 +49,7 @@ void Builder::newDataScene()
 
         rdr->readFile(fileName, map);
         auto obj = make_shared<FittedPlane>(mr->Vxmin, mr->Vxmax, mr->Vzmin, mr->Vzmax, mr->dPlaBase);
+        obj->setTexture(mr->texturePlaBase);
         scene->addObject(obj);
     }
     emit newScene(scene);
