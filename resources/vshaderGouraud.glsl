@@ -91,7 +91,7 @@ vec4 blinn_phong (vec3 diffuse)
         cd += attenuationFactor * lights[i].diffuse * diffuse * max(dot(vNormal, normalize(L)), 0.0f);
 
         //Component especular
-        cs += attenuationFactor * lights[i].specular * material.specular * pow(max(dot(vNormal, H), 0.0f), material.shininess);
+        cs += attenuationFactor * lights[i].specular * material.specular * pow(max(dot(vNormal, H), 0.0001f), material.shininess);
        }
 
     //Retornem la llum ambient global més les tres components

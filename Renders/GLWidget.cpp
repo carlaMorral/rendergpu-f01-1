@@ -42,9 +42,9 @@ void GLWidget::initializeGL() {
     initShadersGPU();
 
     // Default point light:
-    vec3 ambient(0,1,0);
+    vec3 ambient(0.3,0.3,0.3);
     vec3 diffuse(1,1,1);
-    vec3 specular(0,1,0);
+    vec3 specular(0.5,0.5,0.5);
     vec4 position(-25,25,25,1);
     vec3 coefficients(0,0,1);
     shared_ptr<Light> l = dynamic_pointer_cast<Light>(make_shared<PointLight>(ambient, diffuse, specular, position, coefficients));
