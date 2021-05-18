@@ -8,5 +8,10 @@
         <file>resources/fshaderPhong.glsl</file>
         <file>resources/vshaderToon.glsl</file>
         <file>resources/fshaderToon.glsl</file>
+        <file>resources/models/common-cockle.mtl</file>
+        <file>resources/models/cruiser.mtl</file>
+        <file>resources/models/f16.mtl</file>
+        <file>resources/models/sphere0.mtl</file>
+        <file>resources/models/sphere1.mtl</file>
     </qresource>
 </RCC>
