@@ -48,7 +48,7 @@ vec4 blinn_phong ()
     vec3 cd = vec3(0);
     vec3 cs = vec3(0);
     vec4 H, L, V, direction;
-    float d, attenuationFactor;
+    float d, attenuationFactor, angle, a, b, c;
 
     int nLights = lights.length();
 
@@ -58,9 +58,9 @@ vec4 blinn_phong ()
         // PointLight o SpotLight
         if (lights[i].type == 0 || lights[i].type == 2){
 
-            float a = lights[i].coefficients[0];
-            float b = lights[i].coefficients[1];
-            float c = lights[i].coefficients[2];
+            a = lights[i].coefficients[0];
+            b = lights[i].coefficients[1];
+            c = lights[i].coefficients[2];
 
             d = length(vec4(lights[i].position,1) - vPosition);
 
@@ -68,6 +68,21 @@ vec4 blinn_phong ()
             attenuationFactor = max(min(1./(c + b*d + a*d*d),1.),0.);
 
             L = normalize(vec4(lights[i].position,1) - vPosition);
+
+            // SpotLight
+            if (lights[i].type == 2){
+
+                // Direccio de la llum (normalitzada)
+                vec4 D = vec4(normalize(lights[i].direction,0));
+
+                // Comprovem si estem dins el con del Spotlight
+                angle = (180.0/3.14)*(acos(dot(-L, D)));
+
+                // Si esta a fora del con, la llum no actua (att=0)
+                if (angle > lights[i].angle){
+                  attenuationFactor = 0.0;
+                }
+            }
 
         // DirectionalLight
         }else if(lights[i].type == 1){
