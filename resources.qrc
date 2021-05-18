@@ -13,5 +13,10 @@
         <file>resources/models/f16.mtl</file>
         <file>resources/models/sphere0.mtl</file>
         <file>resources/models/sphere1.mtl</file>
+        <file>resources/palettes/palette1.gpl</file>
+        <file>resources/models/sphere0.obj</file>
+        <file>resources/textures/earth1.png</file>
+        <file>resources/scenes/RW_Scene1_mapping.txt</file>
+        <file>resources/textures/europa.png</file>
     </qresource>
 </RCC>
