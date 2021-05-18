@@ -26,9 +26,9 @@ Segona pràctica de GiVD 2020-21
     - Shading
         - [ ] Phong
         - [ ] Gouraud
-    - Textures
-        - [ ] Textura com material en un objecte
-        - [ ] Textura al pla base
+    - Textures: *Carla, Martí*
+        - [X] Textura com material en un objecte
+        - [X] Textura al pla base
         
 
 - Fase 2 (OPT)
@@ -91,6 +91,18 @@ Hem realitzat també proves amb els altres atributs, tot i que només estem most
 ### Pas 4
 
 ### Pas 5
+
+Hem implementat la lectura de textures per aquells objectes que tenen coordenades de textura. Per a fer-ho, hem creat dos atributs a la classe Object.cpp que indiquen si un objecte pot tenir textura (`canHaveTexture`) i si realment té textura (`hasTexture`). Hem implementat les textures tant a gouraud com a phong i a toon shading. En el cas de gouraud hem provat d'implementar el color de textura directament al vertex, com a component difusa, però després en extrapolar el color final al fragment queda poc detallat. Després hem provat de posar un 75% del color final segons la textura al fragment, i el 25% restant corresponent al color rebut de gouraud (on la component difosa també és la textura). Finalment, hem implementat la textura en phong, on fem que el color de la textura sigui la component difosa. A continuació es poden veure les diferències en un cas particular.
+
+Gouraud textura vertex        |  Gouraud textura a fragment  |  Phong
+:-------------------------:|:-------------------------:|:-------------------------:
+![gouraud_v1](readmeFiles/fase1-pas5/gouraud_v1.png)  |  ![gouraud_v2](readmeFiles/fase1-pas5/gouraud_v2.png) |  ![phong_v1](readmeFiles/fase1-pas5/phong_v1.png)
+
+A continuació es mostra la textura amb el toon shading.
+
+Toon shading
+:-------------------------:
+![toon_v1](readmeFiles/fase1-pas5/toon_v1.png)
 
 
 ## Screenshots
