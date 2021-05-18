@@ -361,6 +361,28 @@ void GLWidget::setDirLight(const QVector3D &lightDir, const QVector3D &Ia, const
     updateGL();
 }
 
+//(vec3 ambient, vec3 diffuse, vec3 specular, vec3 direction) : Light(LightType::Direccional, ambient, diffuse, specular)
+void GLWidget::setSpotLight(const QVector3D &lightDir, const QVector3D &Ia, const QVector3D &Id,
+                 const QVector3D &Is, const qfloat16 angle, const qfloat16 sharpness)
+{
+    vec3 direction(lightDir[0],lightDir[1], lightDir[2]) ;
+    vec3 ambient( Ia[0], Ia[1], Ia[2]);
+    vec3 diffuse( Id[0], Id[1], Id[2]);
+    vec3 specular( Is[0], Is[1], Is[2]);
+    float ang = angle;
+    float sharp = sharpness;
+    //Creem una llum i la posem a lights[0].
+    //ja que lights[0] serà la llum puntual/direccional/spotlight que escollim des de la interfície
+
+    shared_ptr<Light> l = dynamic_pointer_cast<Light>(make_shared<SpotLight>(ambient, diffuse, specular, direction, angle, sharp));
+
+    scene->lights[0] = l;
+
+    scene->lightsToGPU(program);
+
+    updateGL();
+}
+
 void GLWidget::setTextureFile(const QString &file)
 {
     shared_ptr<QOpenGLTexture> texture;

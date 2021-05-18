@@ -9,10 +9,10 @@ FittedPlane::FittedPlane(int xmin, int xmax, int zmin, int zmax, int d) : Object
     vertexs.push_back(point4(  xmax,  d,  zmax, 1.0 ));
     vertexs.push_back(point4(  xmin, d,  zmax, 1.0 ));
 
-    normalsVertexs.push_back(point4(0, 1, 0, 0));
-    normalsVertexs.push_back(point4(0, 1, 0, 0));
-    normalsVertexs.push_back(point4(0, 1, 0, 0));
-    normalsVertexs.push_back(point4(0, 1, 0, 0));
+    normalsVertexs.push_back(point4(0, -1, 0, 0));
+    normalsVertexs.push_back(point4(0, -1, 0, 0));
+    normalsVertexs.push_back(point4(0, -1, 0, 0));
+    normalsVertexs.push_back(point4(0, -1, 0, 0));
 
     textVertexs.push_back(vec2(0,0));
     textVertexs.push_back(vec2(1,0));
@@ -43,10 +43,10 @@ FittedPlane::FittedPlane(int xmin, int xmax, int zmin, int zmax, int d) : Object
     cara_2->idxNormals.push_back(3);
     cares.push_back(*cara_2);
 
-    normalsVertexs.push_back(point4(0, -1, 0, 0));
-    normalsVertexs.push_back(point4(0, -1, 0, 0));
-    normalsVertexs.push_back(point4(0, -1, 0, 0));
-    normalsVertexs.push_back(point4(0, -1, 0, 0));
+    normalsVertexs.push_back(point4(0, 1, 0, 0));
+    normalsVertexs.push_back(point4(0, 1, 0, 0));
+    normalsVertexs.push_back(point4(0, 1, 0, 0));
+    normalsVertexs.push_back(point4(0, 1, 0, 0));
 
     Cara *cara_3 = new Cara();
     cara_3->idxVertices.push_back(2);

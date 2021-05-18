@@ -99,6 +99,7 @@ void Scene::lightsToGPU(shared_ptr<QGLShaderProgram> program){
      GLuint position;
      GLuint direction;
      GLuint angle;
+     GLuint sharpness;
     };
 
     // vector de structs gl_IdLights
@@ -119,6 +120,7 @@ void Scene::lightsToGPU(shared_ptr<QGLShaderProgram> program){
         vec3 coefficients = vec3(0,0,0);
         vec3 direction = vec3(0,0,0);
         float angle = 0;
+        float sharpness = 0;
 
         // Nomes per llums puntuals
         if (lights[i]->getTipusLight()==LightType::Puntual){
@@ -138,6 +140,7 @@ void Scene::lightsToGPU(shared_ptr<QGLShaderProgram> program){
             std::shared_ptr<SpotLight> spotlight = std::dynamic_pointer_cast<SpotLight> (lights[i]);
             direction = vec3(spotlight->getLightDirection());
             angle = spotlight->getAngle();
+            sharpness = spotlight->getSharpness();
         }
 
         // 3. obtencio dels identificadors de la GPU: Suposem i l'index de l'i-èssim element del vector
@@ -149,6 +152,7 @@ void Scene::lightsToGPU(shared_ptr<QGLShaderProgram> program){
         gl_IdVectLights[i].direction = program->uniformLocation(QString("lights[%1].direction").arg(i));
         gl_IdVectLights[i].coefficients = program->uniformLocation(QString("lights[%1].coefficients").arg(i));
         gl_IdVectLights[i].angle = program->uniformLocation(QString("lights[%1].angle").arg(i));
+        gl_IdVectLights[i].sharpness = program->uniformLocation(QString("lights[%1].sharpness").arg(i));
 
         // 4. Bind de les zones de memòria que corresponen a la GPU als valors de la CPU
         glUniform1i(gl_IdVectLights[i].type, type);
@@ -159,6 +163,7 @@ void Scene::lightsToGPU(shared_ptr<QGLShaderProgram> program){
         glUniform3fv(gl_IdVectLights[i].position, 1, position);
         glUniform3fv(gl_IdVectLights[i].direction, 1, direction);
         glUniform1f(gl_IdVectLights[i].angle, angle);
+        glUniform1f(gl_IdVectLights[i].sharpness, sharpness);
     }
 }
 

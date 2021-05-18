@@ -28,6 +28,7 @@ struct stLight {
     vec3 position;
     vec3 direction;
     float angle;
+    float sharpness;
 };
 
 
@@ -49,19 +50,19 @@ vec4 blinn_phong (vec3 diffuse)
     vec3 cd = vec3(0);
     vec3 cs = vec3(0);
     vec4 H, L, V, direction;
-    float d, attenuationFactor;
+    float d, attenuationFactor, angle, a, b, c;
 
     int nLights = lights.length();
 
     //Per cada Light (nomes per llums puntuals, si es direccional no te posicio, pero si direccio)
     for(int i=0; i<nLights; i++){
 
-        // PointLight o SpotLight
-        if (lights[i].type == 0 || lights[i].type == 2){
+        // PointLight
+        if (lights[i].type == 0){
 
-            float a = lights[i].coefficients[0];
-            float b = lights[i].coefficients[1];
-            float c = lights[i].coefficients[2];
+            a = lights[i].coefficients[0];
+            b = lights[i].coefficients[1];
+            c = lights[i].coefficients[2];
 
             d = length(vec4(lights[i].position,1) - position);
 
@@ -70,10 +71,29 @@ vec4 blinn_phong (vec3 diffuse)
 
             L = normalize(vec4(lights[i].position,1) - position);
 
-        // DirectionalLight
-        }else if(lights[i].type == 1){
+        }// DirectionalLight
+        else if(lights[i].type == 1){
             attenuationFactor = 1.;
             L = normalize(vec4(-lights[i].direction,0));
+        }
+        // SpotLight
+        else if (lights[i].type == 2){
+
+            attenuationFactor = 1.;
+            L = normalize(vec4(-lights[i].direction,1) - position);
+
+            // Direccio de la llum (normalitzada)
+            vec4 D = vec4(normalize(lights[i].direction),0);
+
+            // Comprovem si estem dins el con del Spotlight
+            angle = (180.0/3.14)*(acos(dot(-L, D)));
+
+            // Si esta a fora del con, la llum no actua (att=0)
+            if (angle > lights[i].angle){
+              attenuationFactor = 0.0;
+            } else {
+                attenuationFactor = pow(dot(-L, D),100-lights[i].sharpness);
+            }
         }
 
         V = normalize(obs - position);
