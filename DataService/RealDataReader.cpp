@@ -64,7 +64,7 @@ void RealDataReader::dataFound(QStringList fields) {
         vec3 ambient = color/float(10);
         vec3 specular(0.f, 0.f, 0.f);
         vec3 transparency(1.0f, 1.0f, 1.0f);
-        float shininess = 20;
+        float shininess = 0;
 
         auto material = make_shared<Material>(ambient, diffuse, specular, transparency, shininess);
 

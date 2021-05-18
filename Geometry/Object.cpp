@@ -34,14 +34,21 @@ Object::Object(int npoints, QString n) : numPoints(npoints){
     canHaveTexture = false;
     hasTexture = false;
 
-    vec3 ambient(0.1f, 0.02f, 0.02f);
-    vec3 diffuse(1.0f, 0.2f, 0.2f);
+    /*
+    vec3 ambient(0.2f, 0.2f, 0.2f);
+    vec3 diffuse(0.8f, 0.5f, 0.5f);
     vec3 specular(1.0f, 1.0f, 1.0f);
     vec3 transparency(0.0f, 0.0f, 0.0f);
     float shininess = 20.0;
     material = make_shared<Material>(ambient, diffuse, specular, transparency, shininess);
+    */
 
     parseObjFile(n);
+
+    //Llegeix material del fitxer que es digui igual pero .mtl
+    QString matFile = n.replace(QString(".obj"), QString(".mtl"));
+    material = make_shared<Material>(matFile);
+
     if (canHaveTexture) {
         qDebug() << "Object can support textures";
     } else {
