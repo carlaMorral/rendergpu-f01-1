@@ -45,6 +45,7 @@ uniform vec3 globalAmbientLight;
 uniform vec4 obs;
 
 out vec4 color;
+out vec2 coordTexture;
 
 vec4 blinn_phong (vec3 diffuse)
 {
@@ -108,5 +109,6 @@ void main()
     } else {
         diffuse = material.diffuse;
     }
+    coordTexture = vCoordTexture;
     color = blinn_phong(diffuse);
 }
