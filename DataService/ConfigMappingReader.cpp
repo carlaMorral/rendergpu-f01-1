@@ -97,9 +97,7 @@ void ConfigMappingReader::baseFound(QStringList fields) {
 
     normalPlaBase = vec3(fields[1].toDouble(), fields[2].toDouble(), fields[3].toDouble());
     dPlaBase = fields[4].toDouble();
-
-    //TODO: TEXTURES Llegir textura i afegir-la a l'objecte.
-    //texturePlaBase = make_shared<Texture>(fields[6]);
+    texturePlaBase = make_shared<QOpenGLTexture>(QImage(fields[5]));
 }
 
 void ConfigMappingReader::propFound(QStringList fields) {
