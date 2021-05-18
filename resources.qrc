@@ -18,5 +18,10 @@
         <file>resources/textures/earth1.png</file>
         <file>resources/scenes/RW_Scene1_mapping.txt</file>
         <file>resources/textures/europa.png</file>
+        <file>resources/scenes/VW_Scene1_mapping.txt</file>
+        <file>resources/scenes/VW_Scene1.txt</file>
+        <file>resources/scenes/RW_Scene1.txt</file>
+        <file>resources/scenes/VW_Scene_Toon.txt</file>
+        <file>resources/scenes/VW_Scene_Toon_mapping.txt</file>
     </qresource>
 </RCC>
