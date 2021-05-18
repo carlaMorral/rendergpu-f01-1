@@ -27,7 +27,7 @@ void VirtualWorldReader::readScene(QString fileName, shared_ptr<Mapping> map) {
         float scale = fields[4].toFloat();
         auto obj = make_shared<Object>(100000, fields[0], position, scale);
         //Si s'indica textura, s'afegeix:
-        if(fields.length() >= 6){
+        if(fields.length() >= 6 && obj->canHaveTexture){
             shared_ptr<QOpenGLTexture> texture = make_shared<QOpenGLTexture>(QImage(fields[5]).mirrored());
             obj->setTexture(texture);
         }

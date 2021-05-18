@@ -369,8 +369,11 @@ void GLWidget::setTextureFile(const QString &file)
 
     // TO DO: A modificar en la fase 1 de la practica 2
     // Per ara es posa la textura al primer objecte de l'escena
-    scene->objects[0]->setTexture(texture);
-
+    for (int i = 0; i < scene->objects.size(); i++) {
+        if (scene->objects[i]->canHaveTexture) {
+            scene->objects[i]->setTexture(texture);
+        }
+    }
 }
 
 /**  Mètodes d'interacció amb el ratolí */

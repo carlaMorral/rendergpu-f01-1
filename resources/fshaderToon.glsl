@@ -2,7 +2,12 @@
 
 in vec4 normal;
 in vec4 position;
+in vec2 coordTexture;
 out vec4 colorOut;
+
+uniform sampler2D texMap;
+
+uniform int hasTexture;
 
 // Struct que representa un material amb tots els seus parametres
 struct stMaterial {
@@ -60,7 +65,7 @@ float silhouette_emphasis_factor(vec4 pointToObs){
     return 1 - alpha;
 }
 
-vec4 blinn_phong ()
+vec4 blinn_phong (vec3 diffuse)
 {
     vec3 ca = vec3(0);
     vec3 cd = vec3(0);
@@ -102,7 +107,7 @@ vec4 blinn_phong ()
 
         //Component difusa
         //cd += attenuationFactor * lights[i].diffuse * material.diffuse * silhouette_emphasis_factor(V) * toon_factor(L) * max(dot(normal, normalize(L)), 0.0f);
-        cd += attenuationFactor * lights[i].diffuse * material.diffuse * toon_factor(L) * max(dot(normal, normalize(L)), 0.0f);
+        cd += attenuationFactor * lights[i].diffuse * diffuse * toon_factor(L) * max(dot(normal, normalize(L)), 0.0f);
 
         //Component especular
         cs += attenuationFactor * lights[i].specular * material.specular * pow(max(dot(normal, H), 0.0f), material.shininess);
@@ -114,5 +119,11 @@ vec4 blinn_phong ()
 
 void main()
 {
-    colorOut = blinn_phong();
+    vec3 diffuse;
+    if (hasTexture == 1) {
+        diffuse = vec3(texture(texMap, coordTexture).rgb);
+    } else {
+        diffuse = material.diffuse;
+    }
+    colorOut = blinn_phong(diffuse);
 }
