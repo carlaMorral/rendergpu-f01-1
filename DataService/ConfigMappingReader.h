@@ -39,8 +39,7 @@ public:
     int                 numProp;
     vec3                normalPlaBase;
     double              dPlaBase;
-    //TODO: Textura del pla ??
-    //shared_ptr<Texture> texturePlaBase;
+    shared_ptr<QOpenGLTexture> texturePlaBase;
     //Per comoditat, oferim també els limits com a vectors i altres mesures:
     vec3                Rmin, Rmax, Vmin, Vmax, Rdiff, Vdiff;
     float               VminDiff, RminDiff;
