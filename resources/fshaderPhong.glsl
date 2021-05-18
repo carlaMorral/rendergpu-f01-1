@@ -69,7 +69,7 @@ vec4 blinn_phong ()
             if (lights[i].type == 2){
 
                 // Direccio de la llum (normalitzada)
-                vec4 D = vec4(normalize(lights[i].direction,0));
+                vec4 D = vec4(normalize(lights[i].direction),0);
 
                 // Comprovem si estem dins el con del Spotlight
                 angle = (180.0/3.14)*(acos(dot(-L, D)));

@@ -10,6 +10,7 @@
 #include <QTime>
 #include <QtDebug>
 #include <QString>
+#include <QFloat16>
 
 #include <Geometry/Scene.h>
 #include "Geometry/Animation.h"
@@ -62,6 +63,8 @@ public slots:
                                const QVector3D &Is, const QVector3D &coefs);
     void setDirLight(const QVector3D &lightDir, const QVector3D &Ia, const QVector3D &Id,
                      const QVector3D &Is);
+    void setSpotLight(const QVector3D &lightDir, const QVector3D &Ia, const QVector3D &Id,
+                      const QVector3D &Is, const qfloat16 angle, const qfloat16 sharpness);
     void setTextureFile(const QString &file);
 
     // Acció per activar a cada update del timer

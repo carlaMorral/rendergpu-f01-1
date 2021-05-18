@@ -1,9 +1,10 @@
 #include "SpotLight.h"
 
-SpotLight::SpotLight(vec3 ambient, vec3 diffuse, vec3 specular, vec3 direction, float angle) : Light(LightType::Spot, ambient, diffuse, specular)
+SpotLight::SpotLight(vec3 ambient, vec3 diffuse, vec3 specular, vec3 direction, float angle, float sharpness) : Light(LightType::Spot, ambient, diffuse, specular)
 {
     this->direction = direction;
     this->angleObertura = angle;
+    this->sharpness = sharpness;
 }
 
 vec3 SpotLight::getLightDirection(){
@@ -20,5 +21,9 @@ float SpotLight::getAngle(){
 
 void SpotLight::setAngle(float a){
     this->angleObertura = a;
+}
+
+float SpotLight::getSharpness(){
+    return this->sharpness;
 }
 

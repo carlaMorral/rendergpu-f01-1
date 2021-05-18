@@ -141,6 +141,21 @@ private slots:
 
     void setPointLight();
     void setDirLight();
+    void setSpotLight();
+    void on_lightSpotXSpin_valueChanged(double arg1);
+    void on_lightSpotYSpin_valueChanged(double arg1);
+    void on_lightSpotZSpin_valueChanged(double arg1);
+    void on_spotLightIaXSpin_valueChanged(double arg1);
+    void on_spotLightIaYSpin_valueChanged(double arg1);
+    void on_spotLightIaZSpin_valueChanged(double arg1);
+    void on_spotLightIdXSpin_valueChanged(double arg1);
+    void on_spotLightIdYSpin_valueChanged(double arg1);
+    void on_spotLightIdZSpin_valueChanged(double arg1);
+    void on_spotLightIsXSpin_valueChanged(double arg1);
+    void on_spotLightIsYSpin_valueChanged(double arg1);
+    void on_spotLightIsZSpin_valueChanged(double arg1);
+    void on_spotLightAngleSlider_valueChanged(int value);
+    void on_spotLightSharpnessSlider_valueChanged(int value);
 };
 
 #endif // MAINWINDOW_H

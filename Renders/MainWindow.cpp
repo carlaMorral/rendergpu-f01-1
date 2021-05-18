@@ -583,11 +583,97 @@ void MainWindow::on_dirLightRadioButton_toggled(bool checked)
 void MainWindow::on_spotLightRadioButton_toggled(bool checked)
 {
     if(checked){
-        cout << "Using spot light (unimplemented)!" << endl;
+        cout << "Using spot light!" << endl;
          currentLight = LightType::Spot;
-         //TODO: Implement
+         setSpotLight();
     }
 }
+
+
+void MainWindow::on_lightSpotXSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setSpotLight();
+}
+
+void MainWindow::on_lightSpotYSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setSpotLight();
+}
+
+void MainWindow::on_lightSpotZSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setSpotLight();
+}
+
+void MainWindow::on_spotLightIaXSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setSpotLight();
+}
+
+void MainWindow::on_spotLightIaYSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setSpotLight();
+}
+
+void MainWindow::on_spotLightIaZSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setSpotLight();
+}
+
+void MainWindow::on_spotLightIdXSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setSpotLight();
+}
+
+void MainWindow::on_spotLightIdYSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setSpotLight();
+}
+
+void MainWindow::on_spotLightIdZSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setSpotLight();
+}
+
+void MainWindow::on_spotLightIsXSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setSpotLight();
+}
+
+void MainWindow::on_spotLightIsYSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setSpotLight();
+}
+
+void MainWindow::on_spotLightIsZSpin_valueChanged(double arg1)
+{
+    Q_UNUSED(arg1);
+    setSpotLight();
+}
+
+void MainWindow::on_spotLightAngleSlider_valueChanged(int value)
+{
+    Q_UNUSED(value);
+    setSpotLight();
+}
+
+void MainWindow::on_spotLightSharpnessSlider_valueChanged(int value)
+{
+    Q_UNUSED(value);
+    setSpotLight();
+}
+
 
 void MainWindow::setPointLight(){ //Refactor
     if(currentLight != LightType::Puntual){
@@ -620,4 +706,18 @@ void MainWindow::setDirLight(){
    QVector3D diffuse(ui->dirLightIdXSpin->value(), ui->dirLightIdYSpin->value(), ui->dirLightIdZSpin->value());
    QVector3D specular(ui->dirLightIsXSpin->value(), ui->dirLightIsYSpin->value(), ui->dirLightIsZSpin->value());
    glWidget->setDirLight(direction, ambient, diffuse, specular);
+}
+
+void MainWindow::setSpotLight(){
+    if(currentLight != LightType::Spot){
+        return;
+    }
+
+   QVector3D direction(ui->lightSpotXSpin->value(), ui->lightSpotYSpin->value(), ui->lightSpotZSpin->value());
+   QVector3D ambient(ui->spotLightIaXSpin->value(), ui->spotLightIaYSpin->value(), ui->spotLightIaZSpin->value());
+   QVector3D diffuse(ui->spotLightIdXSpin->value(), ui->spotLightIdYSpin->value(), ui->spotLightIdZSpin->value());
+   QVector3D specular(ui->spotLightIsXSpin->value(), ui->spotLightIsYSpin->value(), ui->spotLightIsZSpin->value());
+   qfloat16 angle(float(ui->spotLightAngleSlider->value()));
+   qfloat16 sharpness(float(ui->spotLightSharpnessSlider->value()));
+   glWidget->setSpotLight(direction, ambient, diffuse, specular, angle, sharpness);
 }
