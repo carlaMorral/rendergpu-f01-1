@@ -138,7 +138,7 @@ A continuació es mostren tres imatges de resultats que hem obtingut. A l'esquer
 
 La Terra amb Gouraud        |  La Terra amb Phong  |  La Terra sense el problema de mapping (Gouraud)
 :-------------------------:|:-------------------------:|:-------------------------:
-![gouraud_v1](readmeFiles/fase2-textures-indirectes/terra-gouraud)  |  ![gouraud_v2](readmeFiles/fase2-textures-indirectes/terra-phong) |  ![phong_v1](readmeFiles/fase2-textures-indirectes/terra-no-error)
+![gouraud_v1](readmeFiles/fase2-textures-indirectes/terra-gouraud.png)  |  ![gouraud_v2](readmeFiles/fase2-textures-indirectes/terra-phong.png) |  ![phong_v1](readmeFiles/fase2-textures-indirectes/terra-no-error.png)
 
 ## Screenshots
 
