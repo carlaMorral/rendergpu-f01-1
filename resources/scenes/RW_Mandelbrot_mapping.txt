@@ -1,0 +1,4 @@
+limitsMonVirtual, -5, 5, -1, 2, -5, 5
+limitsMonReal, 2.1103, 2.2075, 41.3581, 41.4423
+plaBase, 0.0, 1.0, 0.0, -1,://resources/textures/europa.png
+prop, 1, 1800, 382703,://resources/models/sphere0.obj,://resources/palettes/palette1.gpl

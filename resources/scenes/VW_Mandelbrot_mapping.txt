@@ -1,0 +1,3 @@
+limitsMonReal, -1, 1, -1, 1, -1, 1
+limitsMonVirtual, -1, 1, -1, 1, -1, 1
+plaBase, 0.0, 1.0, 0.0, -1,://resources/textures/europa.png

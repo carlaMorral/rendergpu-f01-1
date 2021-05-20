@@ -42,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this->ui->action_gouraud, SIGNAL(triggered()), glWidget, SLOT(activaGouraudShader()));
     connect(this->ui->action_phong, SIGNAL(triggered()), glWidget, SLOT(activaPhongShader()));
     connect(this->ui->action_toon, SIGNAL(triggered()), glWidget, SLOT(activaToonShader()));
+    connect(this->ui->action_mandelbrot, SIGNAL(triggered()), glWidget, SLOT(activaMandelbrotShader()));
     connect(this->ui->action_activa_background, SIGNAL(triggered()), glWidget, SLOT(activaBackground()));
     connect(this->ui->action_phong_tex, SIGNAL(triggered()), glWidget, SLOT(activaPhongTex()));
     connect(this->ui->action_bump_mapping, SIGNAL(triggered()), glWidget, SLOT(activaBumpMapping()));

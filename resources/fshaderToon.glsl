@@ -62,16 +62,118 @@ float toon_factor(vec4 pointToLight){
 }
 
 float silhouette_emphasis_factor(vec4 pointToObs){
-    float alpha = dot(normal, -pointToObs);
-    return 1 - alpha;
+    //http://ivl.calit2.net/wiki/images/8/82/15_ToonShadingS16.pdf
+    float alpha = max(0, dot(normal, pointToObs));
+    return alpha;
+}
+
+vec3 rgb2hsv(vec3 rgb){ //h=r s=g v=b
+
+    vec3 hsv;
+    float m, M, delta;
+
+    m = min(rgb.x, min(rgb.y, rgb.z));
+    M = max(rgb.x, max(rgb.y, rgb.z));
+
+    hsv.z = M;
+    delta = M - m;
+
+    if (delta < 0.00001)
+    {
+        hsv.y = 0;
+        hsv.x = 0;
+        return hsv;
+    }
+    if( M > 0.0 ) {
+        hsv.y = (delta / M);
+    } else {
+        // if max is 0, then r = g = b = 0
+        // s = 0, h is undefined
+        hsv.y = 0.0;
+        hsv.x = 0.0;                            // its now undefined
+        return hsv;
+    }
+
+    if( rgb.x >= M - 0.0001 )
+        hsv.x = ( rgb.y - rgb.z ) / delta;
+    else
+    if( rgb.y >= M - 0.0001 )
+        hsv.x = 2.0 + ( rgb.z - rgb.x ) / delta;  // between cyan & yellow
+    else
+        hsv.x = 4.0 + ( rgb.x - rgb.y ) / delta;  // between magenta & cyan
+
+    hsv.x *= 60.0;                              // degrees
+
+    if( hsv.x < 0.0 )
+        hsv.x += 360.0;
+
+    return hsv;
+}
+
+
+vec3 hsv2rgb(vec3 hsv)
+{
+    float hh, p, q, t, ff;
+    vec3 rgb;
+
+    if(hsv.y <= 0.0) {       // < is bogus, just shuts up warnings
+        rgb.x = hsv.z;
+        rgb.y = hsv.z;
+        rgb.z = hsv.z;
+        return rgb;
+    }
+    hh = hsv.x;
+    if(hh >= 360.0){
+        hh = 0.0;
+    }
+    hh /= 60.0;
+    int i = int(hh); //Auto cast
+    float ifloat = float(i);
+    ff = hh - ifloat;
+    p = hsv.z * (1.0 - hsv.y);
+    q = hsv.z * (1.0 - (hsv.y * ff));
+    t = hsv.z * (1.0 - (hsv.y * (1.0 - ff)));
+
+    switch(i) {
+    case 0:
+        rgb.x = hsv.z;
+        rgb.g = t;
+        rgb.z = p;
+        break;
+    case 1:
+        rgb.x = q;
+        rgb.y = hsv.z;
+        rgb.z = p;
+        break;
+    case 2:
+        rgb.x = p;
+        rgb.y = hsv.z;
+        rgb.z = t;
+        break;
+    case 3:
+        rgb.x = p;
+        rgb.y = q;
+        rgb.z = hsv.z;
+        break;
+    case 4:
+        rgb.x = t;
+        rgb.y = p;
+        rgb.z = hsv.z;
+        break;
+    case 5:
+    default:
+        rgb.x = hsv.z;
+        rgb.y = p;
+        rgb.z = q;
+        break;
+    }
+    return rgb;
 }
 
 vec4 blinn_phong (vec3 diffuse)
 {
-    vec3 ca = vec3(0);
     vec3 cd = vec3(0);
-    vec3 cs = vec3(0);
-    vec4 H, L, V, direction;
+    vec4 L, V;
     float d, attenuationFactor, angle, a, b, c;
 
     int nLights = lights.length();
@@ -82,60 +184,40 @@ vec4 blinn_phong (vec3 diffuse)
         // PointLight
         if (lights[i].type == 0){
 
-            a = lights[i].coefficients[0];
-            b = lights[i].coefficients[1];
-            c = lights[i].coefficients[2];
-
-            d = length(vec4(lights[i].position,1) - position);
-
-            // Ens assegurem que l'atenuacio estigui entre 0 i 1
-            attenuationFactor = max(min(1./(c + b*d + a*d*d),1.),0.);
-
             L = normalize(vec4(lights[i].position,1) - position);
 
         }// DirectionalLight
         else if(lights[i].type == 1){
-            attenuationFactor = 1.;
+
             L = normalize(vec4(-lights[i].direction,0));
+
         }
         // SpotLight
         else if (lights[i].type == 2){
 
-            attenuationFactor = 1.;
             L = normalize(vec4(-lights[i].direction,1) - position);
 
-            // Direccio de la llum (normalitzada)
-            vec4 D = vec4(normalize(lights[i].direction),0);
-
-            // Comprovem si estem dins el con del Spotlight
-            angle = (180.0/3.14)*(acos(dot(-L, D)));
-
-            // Si esta a fora del con, la llum no actua (att=0)
-            if (angle > lights[i].angle){
-              attenuationFactor = 0.0;
-            } else {
-              attenuationFactor = pow(dot(-L, D),100-lights[i].sharpness);
-            }
         }
 
         V = normalize(obs - position);
 
-        H = normalize(V + L);
+        vec3 hsv = rgb2hsv(diffuse);
 
-        //Component ambient
-        ca += material.ambient * lights[i].ambient;
+        hsv.z *= toon_factor(L);
 
-        //Component difusa
-        //cd += attenuationFactor * lights[i].diffuse * material.diffuse * silhouette_emphasis_factor(V) * toon_factor(L) * max(dot(normal, normalize(L)), 0.0f);
-        cd += attenuationFactor * lights[i].diffuse * diffuse * toon_factor(L) * max(dot(normal, normalize(L)), 0.0f);
+        vec3 rgb = hsv2rgb(hsv);
 
-        //Component especular
-        cs += attenuationFactor * lights[i].specular * material.specular * pow(max(dot(normal, H), 0.000001f), material.shininess);
-       }
+        if (silhouette_emphasis_factor(V) < 0.01){
+            rgb = vec3(0,0,0);
+        }
 
-    //Retornem la llum ambient global més les tres components
-    return vec4(globalAmbientLight*material.ambient + ca + cd + cs, 1);
+        cd += rgb;
+
+    }
+
+    return vec4(globalAmbientLight*material.ambient + cd, 1);
 }
+
 
 void main()
 {
@@ -145,5 +227,6 @@ void main()
     } else {
         diffuse = material.diffuse;
     }
+
     colorOut = blinn_phong(diffuse);
 }
