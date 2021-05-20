@@ -215,6 +215,8 @@ vec4 blinn_phong (vec3 diffuse)
 
     }
 
+    cd /= nLights;
+
     return vec4(globalAmbientLight*material.ambient + cd, 1);
 }
 
