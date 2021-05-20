@@ -21,6 +21,8 @@
         <file>resources/scenes/VW_Scene1_mapping.txt</file>
         <file>resources/scenes/VW_Scene1.txt</file>
         <file>resources/scenes/RW_Scene1.txt</file>
+        <file>resources/scenes/VW_Scene_Toon.txt</file>
+        <file>resources/scenes/VW_Scene_Toon_mapping.txt</file>
         <file>resources/vshaderMandelbrot.glsl</file>
         <file>resources/fshaderMandelbrot.glsl</file>
         <file>resources/models/cruiser.obj</file>

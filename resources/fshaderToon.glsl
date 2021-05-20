@@ -207,9 +207,9 @@ vec4 blinn_phong (vec3 diffuse)
 
         vec3 rgb = hsv2rgb(hsv);
 
-        if (silhouette_emphasis_factor(V) < 0.01){
-            rgb = vec3(0,0,0);
-        }
+        //if (silhouette_emphasis_factor(V) < 0.01){
+        //    rgb = vec3(0,0,0);
+        //}
 
         cd += rgb;
 
