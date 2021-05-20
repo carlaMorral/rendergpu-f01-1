@@ -17,10 +17,10 @@ Segona pràctica de GiVD 2020-21
         - [X] [OPT] Implementació càrrega paleta
     - Material: *Martí*
         - [X] Implementar classe Material
-        - [ ] [OPT] Llegir material .mtl
-    - Light: *Arnau*
+        - [X] [OPT] Llegir material .mtl *(*Albert*)
+    - Light: *Arnau* (*Interfície gràfica: Albert*)
         - [X] Puntual
-        - [X] Direccional (*Interfície: Albert*)
+        - [X] Direccional 
         - [X] [OPT] Spotlight
         - [X] Ambient Global
     - Shading: *Albert, Arnau*
@@ -33,9 +33,9 @@ Segona pràctica de GiVD 2020-21
         
 
 - Fase 2 (OPT)
-    - [X] Toon-shading *Albert*
+    - [X] Toon-shading: *Albert*
     - [ ] Èmfasi de siluetes
-    - [ ] Mapping indirecte de textures
+    - [X] Mapping indirecte de textures: *Carla, Martí*
     - [ ] Animacions amb dades temporals
     - [ ] Normal mapping
     - [ ] Entorn amb textures
@@ -89,6 +89,8 @@ Al igual que al cas anterior, hem realitzat comprovacions passant atributs arbit
 
 Hem realitzat també proves amb els altres atributs, tot i que només estem mostrant la component especular en aquesta memòria. Per tant, concloure també que la informació de les llums es passa correctament a la GPU.
 
+Al pas 4 mostrarem les diferents llums implementades als shaders.
+
 ### Pas 4
 
 El pas 4 d'aquesta pràctica consistia en implementar shaders de Gouraud i Phong a la GPU. Els dos són similars, ja que per tots dos utilitzarem el mètode de Blinn-Phong pel càlcul del color. La diferència entre els dos és que a Gouraud Blinn-Phong es calcula al vertex shader i s'interpola (suavitza) el color en rasteritzar, mentre que en el cas de Phong, al vertex shader retorna la normal i és aquesta la que s'interpola (suavitza) per després calcular a cada pixel el color amb Blinn-Phong, utilitzant aquesta normal suavitzada.
@@ -109,7 +111,23 @@ També hem provat amb diferents tipus de llum: PointLight i DirectionalLight. He
 
 Com podem veure a les imatges, la segona i la tercera són pràcticament idèntiques, com era d'esperar, ja que posant una pointlight a la posició (-100,0,0) sense atenuació estem simulant una llum direccional, ja que els rajos de llum venen gairebé paral·lels, ja que esta a una posició molt allunyada (passa com la llum del sol, que a efectes pràctics la podem considerar direccional). En canvi, la primera imatge és una PointLight en la posició (-1,0,0), molt propera a la esfera, i tot i ser similar a les altres, es veu clarament l'efecte punt de llum.
 
-TODO: toon shading
+#### OPT: Spotlight
+
+Per implementar el spotlight hem seguit les indicacions del recurs proporcionat (http://math.hws.edu/graphicsbook/c7/s2.html). 
+
+A part dels atributs direcció i angle que es proposaven al guió, hem implementat un atribut *sharpness*, que al link anterior anomenen *spot exponent*, que regula com de suau es la frontera de la llum. Tant per l'angle com per la sharpness hem afegit sliders a la per tal que sigui més fàcil jugar amb la spotlight des de la interfície gràfica.
+
+A continuació mostrem tres exemples d'una Spotlight apuntant cap a una esfera, amb diferents configuracions d'angle i sharpness. Al tercer exemple, que és una spotlight amb angle gran, on la "frontera" del con de llum no es veu a la esfera, obtenim exactamente el mateix efecte que amb una PointLight.
+
+`SpotLight angle petit, sharpness alta`        |  `SpotLight angle petit, sharpness baixa`    |  `SpotLight angle gran`   
+:-------------------------:|:-------------------------:|:-------------------------:
+![spot1](readmeFiles/fase1-pas4/spot1.png)  |  ![spot2](readmeFiles/fase1-pas4/spot2.png) |  ![spot3](readmeFiles/fase1-pas4/spot3.png)
+
+*Nota: Una Spotlight conceptualment hauria de tenir una posició, ja que s'ha de tenir una posició des de la qual es projecta el con de llum. Per simplificar la implementació, només li posem una direcció, i la posició serà -direcció. És a dir, si posem spotlight amb direcció (1,0,0), projectarem el con de llum des de (-1,0,0). Si volguessim el con més lluny, hauríem d'ajustar el mòdul del vector direcció que escollim. És com si projectessim des d'una esfera de radi = |direcció| apuntant cap a l'origen de coordenades.*
+
+
+#### OPT: Toon Shading
+
 
 ### Pas 5
 
@@ -125,12 +143,31 @@ Toon shading
 :-------------------------:
 ![toon_v1](readmeFiles/fase1-pas5/toon_v1.png)
 
+## Opcionals
+
+### Mapping indirecte de textures
+
+Per tal de realitzar aquesta extensió hem modificat la classe Object per afegir-li un atribut que ens indica si l'opcional està activat o no (OPT_IND_TEXT_ACT). Si està activat, el que fem és que sempre que vulguem posar textura a un objecte li posarem amb mapping indirecte, encara que ja tingui coordenades de textura.
+
+Per calcular les coordenades de textura el que fem és un mètode a part que es diu fillIndirectTextureCoord(), i aquí anem recorrent les cares de l'objecte i assignant els vèrtexs de textura corresponents a cada vèrtex amb la fórmula donada a l'enunciat. Prèviament hem de calcular el centre de la capsa mínima contenidora de l'objecte i fer el vector normal del centre a cada vèrtex. Són les coordenades des de les quals partim per calcular u i v.
+
+Finalment, fem un seguit d'operacions per tal d'eliminar l'error que teníem en el mapping per a triangles que estaven entre les dues fronteres de la textura, és a dir, aquells triangles que tenien alguns vèrtexs amb (u, v) properes a 1 i uns altres vèrtexs amb (u, v) properes a 0. Les operacions consisteixen a fer el segon approach explicat a teoria: per les x i les y, posem 6 casos, que són les 6 possibilitats que hi ha de com poden estar les coordenades dels vèrtexs de les cares que necessiten un reajustament. Usem la convenció de sumar 1 a la component u o v quan u o v siguin menor a 1 respectivament.
+
+A continuació es mostren tres imatges de resultats que hem obtingut. A l'esquerra podem veure la Terra amb Gouraud, al mig la Terra amb Phong i les tres components especular i ambient a zero, i a la dreta es pot veure també la Terra al que seria la part de la frontera de la textura, podent-se observar que ja no hi ha l'error del mapping.
+
+La Terra amb Gouraud        |  La Terra amb Phong  |  La Terra sense el problema de mapping (Gouraud)
+:-------------------------:|:-------------------------:|:-------------------------:
+![gouraud_v1](readmeFiles/fase2-textures-indirectes/terra-gouraud.png)  |  ![gouraud_v2](readmeFiles/fase2-textures-indirectes/terra-phong.png) |  ![phong_v1](readmeFiles/fase2-textures-indirectes/terra-no-error.png)
 
 ## Screenshots
 
 *(NOTA: Per a cada pas de l'enunciat (del 1 al 6), incloure captures de pantalla de les proves que heu fet per a demostrar la funcionalitat de la vostra pràctica amb explicacions de la seva configuració i com les heu aconseguides)*
 
 *(NOTA2: Breu explicació, si cal, de com replicar els vostres resultats)*
+
+Mapa amb SpotLight (gif)
+:-------------------------:
+![spotmap](readmeFiles/screenshots/spotmap.gif)
 
 ## Additional Information
 

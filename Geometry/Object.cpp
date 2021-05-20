@@ -50,9 +50,9 @@ Object::Object(int npoints, QString n) : numPoints(npoints){
     material = make_shared<Material>(matFile);
 
     if (canHaveTexture) {
-        qDebug() << "Object can support textures";
+        qDebug() << "Object can support direct textures";
     } else {
-        qDebug() << "Object cannot support textures";
+        qDebug() << "Object cannot support direct textures";
     }
     make();
 }
@@ -101,14 +101,10 @@ void Object::toGPU(shared_ptr<QGLShaderProgram> pr) {
     // DONE: fase 1 pas 4
     // Passem les normals a la GPU
 
-    if (canHaveTexture) {
-        glBufferData( GL_ARRAY_BUFFER, 2*sizeof(point4)*Index + sizeof(vec2)*Index, NULL, GL_STATIC_DRAW );
-    } else {
-        glBufferData( GL_ARRAY_BUFFER, 2*sizeof(point4)*Index, NULL, GL_STATIC_DRAW );
-    }
+    glBufferData( GL_ARRAY_BUFFER, 2*sizeof(point4)*Index + sizeof(vec2)*Index, NULL, GL_STATIC_DRAW );
     glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof(point4)*Index, points );
     glBufferSubData( GL_ARRAY_BUFFER, sizeof(point4)*Index, sizeof(point4)*Index, normals);
-    if (canHaveTexture) glBufferSubData( GL_ARRAY_BUFFER, 2*sizeof(point4)*Index, sizeof(vec2)*Index, textVertexsGPU);
+    glBufferSubData( GL_ARRAY_BUFFER, 2*sizeof(point4)*Index, sizeof(vec2)*Index, textVertexsGPU);
     qDebug() << "Buffer creat.....";
     // set up vertex arrays
     glBindVertexArray( vao );
@@ -118,13 +114,12 @@ void Object::toGPU(shared_ptr<QGLShaderProgram> pr) {
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0,  (void*)(sizeof(point4)*Index));
     glEnableVertexAttribArray(1);
 
-    if (canHaveTexture) {
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0,  (void*)(2*sizeof(point4)*Index));
-        glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0,  (void*)(2*sizeof(point4)*Index));
+    glEnableVertexAttribArray(2);
 
-        glEnable( GL_DEPTH_TEST );
-        glEnable(GL_TEXTURE_2D);
-    }
+    glEnable( GL_DEPTH_TEST );
+    glEnable(GL_TEXTURE_2D);
+
     qDebug() << "Tot ja a GPU.....";
 }
 
@@ -147,14 +142,14 @@ void Object::draw(){
     glBindVertexArray( vao );
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
-    if (canHaveTexture) {glEnableVertexAttribArray(2);}
+    glEnableVertexAttribArray(2);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawArrays( GL_TRIANGLES, 0, Index );
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
-    if (canHaveTexture) {glDisableVertexAttribArray(2);}
+    glDisableVertexAttribArray(2);
 
 }
 
@@ -180,15 +175,13 @@ void Object::make(){
         for(unsigned int j=0; j<cares[i].idxVertices.size(); j++){
             points[Index] = vertexs[cares[i].idxVertices[j]];
             normals[Index] = normalsVertexs[cares[i].idxNormals[j]];
-            if (this->canHaveTexture) {
+            if (this->canHaveTexture || OPT_IND_TEXT_ACT) {
                 textVertexsGPU[Index] = textVertexs[cares[i].idxTextures[j]];
             }
             Index++;
         }
     }
 }
-
-
 
 
 /**
@@ -200,7 +193,7 @@ void Object::toGPUTexture(shared_ptr<QGLShaderProgram> pr) {
 
     // TO DO: Cal implementar en la fase 1 de la practica 2
     // S'ha d'activar la textura i es passa a la GPU
-    if (hasTexture) {
+    if (canHaveTexture) { //canHaveTexture en comptes de hasTexture per tal que funcioni tambe amb MandelBrot Shader
         texture->bind(0);
         program->setUniformValue("texMap", 0);
     }
@@ -323,6 +316,64 @@ void Object::parseObjFile(const QString &fileName)
             }
 
             file.close();
+        }
+    }
+    if (OPT_IND_TEXT_ACT) {
+        fillIndirectTextureCoord();
+    }
+}
+
+void Object::fillIndirectTextureCoord() {
+    Capsa3D capsaMinima = calculCapsa3D();
+    vec3 centreCapsa(capsaMinima.pmin.x + capsaMinima.a/float(2), capsaMinima.pmin.y + capsaMinima.h/float(2), capsaMinima.pmin.z + capsaMinima.p/float(2));
+    textVertexs.clear();
+    int index = 0;
+    for(unsigned int i=0; i<cares.size(); i++){
+        cares[i].idxTextures.clear();
+        for(unsigned int j=0; j<cares[i].idxVertices.size(); j++){
+            cares[i].idxTextures.push_back(index);
+            vec3 posCentrada = vec3(vertexs[cares[i].idxVertices[j]].x, vertexs[cares[i].idxVertices[j]].y, vertexs[cares[i].idxVertices[j]].z) - centreCapsa;
+            posCentrada = normalize(posCentrada);
+            vec2 coordText(0.5 - atan2(posCentrada.z, posCentrada.x)/(2*M_PI), 0.5 + asin(posCentrada.y)/M_PI);
+            qDebug() << "XYZ" << posCentrada.x << posCentrada.y << posCentrada.z << posCentrada.x*posCentrada.x + posCentrada.y*posCentrada.y + posCentrada.z*posCentrada.z;
+            qDebug() << "UV" << coordText.x << coordText.y;
+            textVertexs.push_back(coordText);
+            index++;
+        }
+        vec2 s3 = textVertexs[index-3];
+        vec2 s2 = textVertexs[index-2];
+        vec2 s1 = textVertexs[index-1];
+        if (s1.x > 0.75 && s2.x > 0.75 && s3.x < 0.25) {
+            textVertexs[index-3] += vec2(1.0, 0.0);
+        } else if (s1.x > 0.75 && s2.x < 0.25 && s3.x > 0.75) {
+            textVertexs[index-2] += vec2(1.0, 0.0);
+        } else if (s1.x < 0.25 && s2.x > 0.75 && s3.x > 0.75) {
+            textVertexs[index-1] += vec2(1.0, 0.0);
+        } else if (s1.x > 0.75 && s2.x < 0.25 && s3.x < 0.25) {
+            textVertexs[index-2] += vec2(1.0, 0.0);
+            textVertexs[index-3] += vec2(1.0, 0.0);
+        } else if (s1.x < 0.25 && s2.x > 0.75 && s3.x < 0.25) {
+            textVertexs[index-1] += vec2(1.0, 0.0);
+            textVertexs[index-3] += vec2(1.0, 0.0);
+        } else if (s1.x < 0.25 && s2.x < 0.25 && s3.x > 0.75) {
+            textVertexs[index-1] += vec2(1.0, 0.0);
+            textVertexs[index-2] += vec2(1.0, 0.0);
+        }
+        if (s1.y > 0.75 && s2.y > 0.75 && s3.y < 0.25) {
+            textVertexs[index-3] += vec2(0.0, 1.0);
+        } else if (s1.y > 0.75 && s2.y < 0.25 && s3.y > 0.75) {
+            textVertexs[index-2] += vec2(0.0, 1.0);
+        } else if (s1.y < 0.25 && s2.y > 0.75 && s3.y > 0.75) {
+            textVertexs[index-1] += vec2(0.0, 1.0);
+        } else if (s1.y > 0.75 && s2.y < 0.25 && s3.y < 0.25) {
+            textVertexs[index-2] += vec2(0.0, 1.0);
+            textVertexs[index-3] += vec2(0.0, 1.0);
+        } else if (s1.y < 0.25 && s2.y > 0.75 && s3.y < 0.25) {
+            textVertexs[index-1] += vec2(0.0, 1.0);
+            textVertexs[index-3] += vec2(0.0, 1.0);
+        } else if (s1.y < 0.25 && s2.y < 0.25 && s3.y > 0.75) {
+            textVertexs[index-1] += vec2(0.0, 1.0);
+            textVertexs[index-2] += vec2(0.0, 1.0);
         }
     }
 }

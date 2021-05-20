@@ -84,8 +84,10 @@ public:
 
     void setMaterial(shared_ptr<Material> material);
     bool canHaveTexture;
+    static const bool OPT_IND_TEXT_ACT = false;
 private:
     void initTexture();
+    void fillIndirectTextureCoord();
 };
 
 

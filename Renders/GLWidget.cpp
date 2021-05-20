@@ -96,7 +96,8 @@ void GLWidget::initShadersGPU(){
     createShadersGPU("://resources/vshaderGouraud.glsl", "://resources/fshaderGouraud.glsl");
     createShadersGPU("://resources/vshaderPhong.glsl", "://resources/fshaderPhong.glsl");
     createShadersGPU("://resources/vshaderToon.glsl", "://resources/fshaderToon.glsl");
-    //Queden guardats al map shaderPrograms amb els noms Gouraud | Phong | Toon
+    createShadersGPU("://resources/vshaderMandelbrot.glsl", "://resources/fshaderMandelbrot.glsl");
+    //Queden guardats al map shaderPrograms amb els noms Gouraud | Phong | Toon | Mandelbrot
     loadShader("Gouraud");
 }
 
@@ -256,6 +257,12 @@ void GLWidget::activaGouraudShader() {
     //A implementar a la fase 1 de la practica 2
     loadShaderAndRefresh("Gouraud");
     qDebug()<<"Estic a Gouraud";
+}
+
+void GLWidget::activaMandelbrotShader() {
+    //A implementar a la fase 1 de la practica 2
+    loadShaderAndRefresh("Mandelbrot");
+    qDebug()<<"Estic a Mandelbrot";
 
 }
 
@@ -392,7 +399,7 @@ void GLWidget::setTextureFile(const QString &file)
     // TO DO: A modificar en la fase 1 de la practica 2
     // Per ara es posa la textura al primer objecte de l'escena
     for (int i = 0; i < scene->objects.size(); i++) {
-        if (scene->objects[i]->canHaveTexture) {
+        if (scene->objects[i]->canHaveTexture || scene->objects[i]->OPT_IND_TEXT_ACT) {
             scene->objects[i]->setTexture(texture);
         }
     }

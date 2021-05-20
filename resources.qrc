@@ -23,5 +23,13 @@
         <file>resources/scenes/RW_Scene1.txt</file>
         <file>resources/scenes/VW_Scene_Toon.txt</file>
         <file>resources/scenes/VW_Scene_Toon_mapping.txt</file>
+        <file>resources/vshaderMandelbrot.glsl</file>
+        <file>resources/fshaderMandelbrot.glsl</file>
+        <file>resources/models/cruiser.obj</file>
+        <file>resources/scenes/VW_MultTex.txt</file>
+        <file>resources/scenes/VW_MultTex_mapping.txt</file>
+        <file>resources/textures/2k_sun.jpg</file>
+        <file>resources/scenes/RW_Mandelbrot.txt</file>
+        <file>resources/scenes/RW_Mandelbrot_mapping.txt</file>
     </qresource>
 </RCC>
