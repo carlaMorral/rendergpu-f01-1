@@ -150,6 +150,10 @@ Toon shading
 
 *(NOTA2: Breu explicació, si cal, de com replicar els vostres resultats)*
 
+Mapa amb SpotLight
+:-------------------------:
+![spotmap](readmeFiles/screenshots/spotmap.gif)
+
 ## Additional Information
 
 *(NOTA: Hores de dedicació i problemes que heu tingut fent la pràctica)*
