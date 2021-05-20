@@ -1,6 +1,6 @@
 #include "Cub.h"
 
-Cub::Cub() : Cub(10.0)
+Cub::Cub() : Cub(1.0)
 {
     qDebug() <<"Estic en el constructor del Cub\n";
 
@@ -148,6 +148,13 @@ Cub::Cub(float a) : Object(8)
     backTriangle2->idxTextures.push_back(5);
     cares.push_back(*backTriangle2);
 
+    faces.push_back(QImage("://resources/textures/skybox/right.jpg"));
+    faces.push_back(QImage("://resources/textures/skybox/left.jpg"));
+    faces.push_back(QImage("://resources/textures/skybox/bottom.jpg"));
+    faces.push_back(QImage("://resources/textures/skybox/top.jpg"));
+    faces.push_back(QImage("://resources/textures/skybox/back.jpg"));
+    faces.push_back(QImage("://resources/textures/skybox/front.jpg"));
+
     canHaveTexture = true;
 
 }
@@ -156,5 +163,117 @@ Cub::Cub(float a) : Object(8)
 Cub::~Cub()
 {
 }
+
+void Cub::setTexture() {
+    QImage image[6];
+    for (GLuint i = 0; i < faces.size(); i++) {
+        image[i] = faces[i].convertToFormat(QImage::Format_RGBA8888);
+    }
+
+    glActiveTexture(GL_TEXTURE0);
+
+    texture = make_shared<QOpenGLTexture>(QOpenGLTexture::TargetCubeMap);
+
+    if (!texture->isCreated())
+        texture->create();
+
+    glBindTexture(GL_TEXTURE_CUBE_MAP, texture->textureId());
+
+    texture->setFormat(QOpenGLTexture::RGBAFormat);
+    texture->setSize(image[0].width(), image[0].height(), image[0].depth());
+    texture->generateMipMaps();
+    texture->allocateStorage();
+
+    texture->setData(0, 0, QOpenGLTexture::CubeMapPositiveX, QOpenGLTexture::RGBA,
+                     QOpenGLTexture::UInt8, (const void*)image[0].constBits(), 0);
+    texture->setData(0, 0, QOpenGLTexture::CubeMapPositiveY, QOpenGLTexture::RGBA,
+                     QOpenGLTexture::UInt8, (const void*)image[3].constBits(), 0);
+    texture->setData(0, 0, QOpenGLTexture::CubeMapPositiveZ, QOpenGLTexture::RGBA,
+                     QOpenGLTexture::UInt8, (const void*)image[5].constBits(), 0);
+    texture->setData(0, 0, QOpenGLTexture::CubeMapNegativeX, QOpenGLTexture::RGBA,
+                     QOpenGLTexture::UInt8, (const void*)image[1].constBits(), 0);
+    texture->setData(0, 0, QOpenGLTexture::CubeMapNegativeY, QOpenGLTexture::RGBA,
+                     QOpenGLTexture::UInt8, (const void*)image[2].constBits(), 0);
+    texture->setData(0, 0, QOpenGLTexture::CubeMapNegativeZ, QOpenGLTexture::RGBA,
+                     QOpenGLTexture::UInt8, (const void*)image[4].constBits(), 0);
+
+    texture->setWrapMode(QOpenGLTexture::ClampToEdge);
+    texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
+    texture->setMagnificationFilter(QOpenGLTexture::LinearMipMapLinear);
+
+    glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+
+    make();
+
+}
+
+void Cub::draw() {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glDepthFunc(GL_LEQUAL);
+    glDrawArrays(GL_TRIANGLES, 0, Index);
+    glDepthFunc(GL_LESS);
+
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+
+    glDisable(GL_TEXTURE_CUBE_MAP);
+}
+
+
+void Cub::make(){
+
+    qDebug() << "MAKE";
+
+    Index = 0;
+    for(unsigned int i=0; i<cares.size(); i++){
+        for(unsigned int j=0; j<cares[i].idxVertices.size(); j++){
+            points[Index] = vertexs[cares[i].idxVertices[j]];
+            textVertexsGPU[Index] = textVertexs[cares[i].idxTextures[j]];
+            Index++;
+        }
+    }
+}
+
+void Cub::toGPU(shared_ptr<QGLShaderProgram> pr) {
+
+    program = pr;
+
+    qDebug() << "Cube to GPU.....";
+
+    texture->bind(texture->textureId());
+    program->setUniformValue("textEnvironment", texture->textureId());
+
+    // Creació d'un vertex array object
+    glGenVertexArrays( 1, &vao );
+
+    // Creacio i inicialitzacio d'un vertex buffer object (VBO)
+    glGenBuffers( 1, &buffer );
+
+    // Activació a GL del Vertex Buffer Object
+    glBindBuffer( GL_ARRAY_BUFFER, buffer );
+
+    glBufferData( GL_ARRAY_BUFFER, sizeof(point4)*Index + sizeof(vec2)*Index, NULL, GL_STATIC_DRAW );
+    glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof(point4)*Index, points );
+    glBufferSubData( GL_ARRAY_BUFFER, sizeof(point4)*Index, sizeof(vec2)*Index, textVertexsGPU);
+
+    qDebug() << "Buffer creat.....";
+    // set up vertex arrays
+    glBindVertexArray( vao );
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0,  0);
+    glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0,  (void*)(sizeof(point4)*Index));
+    glEnableVertexAttribArray(1);
+
+    glEnable(GL_TEXTURE_CUBE_MAP);
+
+    qDebug() << "Tot ja a GPU.....";
+}
+
+
+
+
+
+
 
 

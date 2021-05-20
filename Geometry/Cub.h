@@ -19,6 +19,12 @@ class Cub: public Object
       Cub();
       Cub(float a);
       ~Cub();
+      void draw();
+      void toGPU(shared_ptr<QGLShaderProgram> pr);
+      void setTexture();
+  protected:
+      vector<QImage> faces;
+      void make();
 };
 
 #endif // CUB_H

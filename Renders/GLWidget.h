@@ -13,6 +13,7 @@
 #include <QFloat16>
 
 #include <Geometry/Scene.h>
+#include <Geometry/Cub.h>
 #include "Geometry/Animation.h"
 
 #define PROGRAM_VERTEX_ATTRIBUTE 0
@@ -92,6 +93,7 @@ protected:
     void saveFrame();
 private:
     shared_ptr<Scene>  scene; // Escena que es pinta al GLWidget
+    shared_ptr<Cub> cub; // Cub per l'opcional CubeMap
 
     QTimer *timer;
     unsigned int currentFrame;
@@ -110,5 +112,9 @@ private:
     void initShadersGPU();
     bool createShadersGPU(QString vShaderFile,QString fShaderFile);
     void updateShaderTexture();
+
+    void sendLightsToGPU();
+    bool lightsSent = false;
+    static const bool CUBEMAP_ACTIVATED = true;
 };
 
