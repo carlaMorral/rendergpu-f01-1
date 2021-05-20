@@ -1,3 +1,5 @@
+#version 330
+
 in vec3 v_texcoord;
 out vec4 colorOut;
 

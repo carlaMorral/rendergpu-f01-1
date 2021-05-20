@@ -165,6 +165,8 @@ Cub::~Cub()
 }
 
 void Cub::setTexture() {
+    qDebug() << "setTexture del cub";
+
     QImage image[6];
     for (GLuint i = 0; i < faces.size(); i++) {
         image[i] = faces[i].convertToFormat(QImage::Format_RGBA8888);
@@ -208,6 +210,8 @@ void Cub::setTexture() {
 }
 
 void Cub::draw() {
+    qDebug() << "DRAW del cub";
+
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDepthFunc(GL_LEQUAL);
     glDrawArrays(GL_TRIANGLES, 0, Index);
@@ -222,7 +226,7 @@ void Cub::draw() {
 
 void Cub::make(){
 
-    qDebug() << "MAKE";
+    qDebug() << "MAKE del cub";
 
     Index = 0;
     for(unsigned int i=0; i<cares.size(); i++){
@@ -256,7 +260,7 @@ void Cub::toGPU(shared_ptr<QGLShaderProgram> pr) {
     glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof(point4)*Index, points );
     glBufferSubData( GL_ARRAY_BUFFER, sizeof(point4)*Index, sizeof(vec2)*Index, textVertexsGPU);
 
-    qDebug() << "Buffer creat.....";
+    qDebug() << "Buffer cub creat.....";
     // set up vertex arrays
     glBindVertexArray( vao );
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0,  0);
@@ -267,7 +271,7 @@ void Cub::toGPU(shared_ptr<QGLShaderProgram> pr) {
 
     glEnable(GL_TEXTURE_CUBE_MAP);
 
-    qDebug() << "Tot ja a GPU.....";
+    qDebug() << "Cub ja a GPU.....";
 }
 
 

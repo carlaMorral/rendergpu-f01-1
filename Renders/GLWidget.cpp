@@ -67,12 +67,13 @@ void GLWidget::initializeGL() {
 void GLWidget::paintGL() {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    //if (CUBEMAP_ACTIVATED) {
-        //loadShader("CubeMap");
-        //cub->setTexture();
-        //cub->toGPU(program);
-        //cub->draw();
-    //}
+    if (CUBEMAP_ACTIVATED) {
+        loadShader("CubeMap");
+        cub->setTexture();
+        cub->draw();
+        cub->toGPU(program);
+
+    }
 
     loadShader("Gouraud");
     // Nomes enviem les llums una vegada
@@ -109,8 +110,6 @@ void GLWidget::initShadersGPU(){
     createShadersGPU("://resources/vshaderToon.glsl", "://resources/fshaderToon.glsl");
     createShadersGPU("://resources/vshaderCubeMap.glsl", "://resources/fshaderCubeMap.glsl");
     //Queden guardats al map shaderPrograms amb els noms Gouraud | Phong | Toon | CubeMap
-    qDebug() << "Loading Gouraud";
-    //loadShader("Gouraud");
 }
 
 bool GLWidget::createShadersGPU(QString vShaderFile, QString fShaderFile){
