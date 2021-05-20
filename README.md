@@ -123,7 +123,7 @@ A continuació mostrem tres exemples d'una Spotlight apuntant cap a una esfera, 
 :-------------------------:|:-------------------------:|:-------------------------:
 ![spot1](readmeFiles/fase1-pas4/spot1.png)  |  ![spot2](readmeFiles/fase1-pas4/spot2.png) |  ![spot3](readmeFiles/fase1-pas4/spot3.png)
 
-*Nota: Una Spotlight conceptualment hauria de tenir una posició, ja que s'ha de tenir una posició des de la qual es projecta el con de llum. Per simplificar la implementació, només li posem una direcció, i la posició serà -direcció. És a dir, si posem spotlight amb direcció (1,0,0), projectarem el con de llum des de (-1,0,0). Si volguessim el con més lluny, hauríem d'ajustar el mòdul del vector posició que escollim. És com si projectessim des d'una esfera de radi = |direcció| apuntant cap a l'origen de coordenades.*
+*Nota: Una Spotlight conceptualment hauria de tenir una posició, ja que s'ha de tenir una posició des de la qual es projecta el con de llum. Per simplificar la implementació, només li posem una direcció, i la posició serà -direcció. És a dir, si posem spotlight amb direcció (1,0,0), projectarem el con de llum des de (-1,0,0). Si volguessim el con més lluny, hauríem d'ajustar el mòdul del vector direcció que escollim. És com si projectessim des d'una esfera de radi = |direcció| apuntant cap a l'origen de coordenades.*
 
 
 #### OPT: Toon Shading
