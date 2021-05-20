@@ -17,7 +17,7 @@ Segona pràctica de GiVD 2020-21
         - [X] [OPT] Implementació càrrega paleta
     - Material: *Martí*
         - [X] Implementar classe Material
-        - [ ] [OPT] Llegir material .mtl
+        - [X] [OPT] Llegir material .mtl *(*Albert*)
     - Light: *Arnau* (*Interfície gràfica: Albert*)
         - [X] Puntual
         - [X] Direccional 
