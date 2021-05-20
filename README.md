@@ -33,9 +33,9 @@ Segona pràctica de GiVD 2020-21
         
 
 - Fase 2 (OPT)
-    - [X] Toon-shading *Albert*
+    - [X] Toon-shading: *Albert*
     - [ ] Èmfasi de siluetes
-    - [ ] Mapping indirecte de textures
+    - [X] Mapping indirecte de textures: *Carla, Martí*
     - [ ] Animacions amb dades temporals
     - [ ] Normal mapping
     - [ ] Entorn amb textures
@@ -143,6 +143,21 @@ Toon shading
 :-------------------------:
 ![toon_v1](readmeFiles/fase1-pas5/toon_v1.png)
 
+## Opcionals
+
+### Mapping indirecte de textures
+
+Per tal de realitzar aquesta extensió hem modificat la classe Object per afegir-li un atribut que ens indica si l'opcional està activat o no (OPT_IND_TEXT_ACT). Si està activat, el que fem és que sempre que vulguem posar textura a un objecte li posarem amb mapping indirecte, encara que ja tingui coordenades de textura.
+
+Per calcular les coordenades de textura el que fem és un mètode a part que es diu fillIndirectTextureCoord(), i aquí anem recorrent les cares de l'objecte i assignant els vèrtexs de textura corresponents a cada vèrtex amb la fórmula donada a l'enunciat. Prèviament hem de calcular el centre de la capsa mínima contenidora de l'objecte i fer el vector normal del centre a cada vèrtex. Són les coordenades des de les quals partim per calcular u i v.
+
+Finalment, fem un seguit d'operacions per tal d'eliminar l'error que teníem en el mapping per a triangles que estaven entre les dues fronteres de la textura, és a dir, aquells triangles que tenien alguns vèrtexs amb (u, v) properes a 1 i uns altres vèrtexs amb (u, v) properes a 0. Les operacions consisteixen a fer el segon approach explicat a teoria: per les x i les y, posem 6 casos, que són les 6 possibilitats que hi ha de com poden estar les coordenades dels vèrtexs de les cares que necessiten un reajustament. Usem la convenció de sumar 1 a la component u o v quan u o v siguin menor a 1 respectivament.
+
+A continuació es mostren tres imatges de resultats que hem obtingut. A l'esquerra podem veure la Terra amb Gouraud, al mig la Terra amb Phong i les tres components especular i ambient a zero, i a la dreta es pot veure també la Terra al que seria la part de la frontera de la textura, podent-se observar que ja no hi ha l'error del mapping.
+
+La Terra amb Gouraud        |  La Terra amb Phong  |  La Terra sense el problema de mapping (Gouraud)
+:-------------------------:|:-------------------------:|:-------------------------:
+![gouraud_v1](readmeFiles/fase2-textures-indirectes/terra-gouraud.png)  |  ![gouraud_v2](readmeFiles/fase2-textures-indirectes/terra-phong.png) |  ![phong_v1](readmeFiles/fase2-textures-indirectes/terra-no-error.png)
 
 ## Screenshots
 
