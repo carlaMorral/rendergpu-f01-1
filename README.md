@@ -165,7 +165,7 @@ La Terra amb Gouraud        |  La Terra amb Phong  |  La Terra sense el problema
 
 *(NOTA2: Breu explicació, si cal, de com replicar els vostres resultats)*
 
-Mapa amb SpotLight
+Mapa amb SpotLight (gif)
 :-------------------------:
 ![spotmap](readmeFiles/screenshots/spotmap.gif)
 
