@@ -70,6 +70,19 @@ void GLWidget::paintGL() {
 
     qDebug() << "paintGL";
 
+    if (scene->CUBEMAP_ACTIVATED) {
+        loadShader("CubeMap");
+        scene->cub->setTexture();
+        scene->cub->toGPU(program);
+        scene->cub->draw();
+        loadShader("Gouraud");
+        // Nomes enviem les llums una vegada
+        if(!lightsSent) {
+            sendLightsToGPU();
+            lightsSent = true;
+        }
+    }
+
     scene->camera->toGPU(program);
     scene->draw();
 }
@@ -155,6 +168,11 @@ bool GLWidget::loadShaderAndRefresh(QString shader){ //updateShader
     updateGL();
 
     return true;
+}
+
+void GLWidget::sendLightsToGPU() {
+    scene->setAmbientToGPU(this->program);
+    scene->lightsToGPU(this->program);
 }
 
 QSize GLWidget::minimumSizeHint() const {

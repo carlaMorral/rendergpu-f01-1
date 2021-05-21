@@ -110,5 +110,7 @@ private:
     void initShadersGPU();
     bool createShadersGPU(QString vShaderFile,QString fShaderFile);
     void updateShaderTexture();
+    void sendLightsToGPU();
+    bool lightsSent = false;
 };
 
