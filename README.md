@@ -32,7 +32,6 @@ Segona pràctica de GiVD 2020-21
 
 - Fase 2 (OPT)
     - [X] Toon-shading: *Albert*
-    - [X] Diversos objectes poden tenir diferents materials/textures *Albert*
     - [X] Implementació càrrega paleta (.gpl) *Albert*
     - [X] Llegir material .mtl *Albert*
     - [ ] Èmfasi de siluetes
@@ -56,6 +55,8 @@ Segona pràctica de GiVD 2020-21
 ### Pas 1
 Aquest pas es tractava de reutilitzar el codi de la pràctica 1 per poder llegir els escenes de ```VirtualWorld``` o ```RealWorld```. Hem reutilitzat les classes ```Mapping```, ```ConfigMappingReader```, ```VirtualWorldReader```, ```RealDataReader```, i hem utilitzat el ```Builder``` com a classe que s'encarrega d'instanciar-les, segons les calls que ens arriben des de ```MainWindow```.
 Algunes variacions respecte el codi de la primera pràctica són que, en aquesta pràctica, tots els objectes son del mateix tipus, BoundaryObjects (formats per malles de triangles), per la naturalesa dels mètodes projectius. En les nostres escenes virtuals, a més, permetem indicar la posició de l'objecte i la escala. Per tal de posicionar l'objecte a la posició desitjada i escalar-lo, primer obtenim la capsa mínima i el centre d'aquesta capsa, després movem tots els vertexs segons la distància entre l'origen i el centre de la capsa, per tal de centrar l'objecte. Després, aprofitem i fem l'escalat (multipliquem tots els vèrtex). Un cop fet, seguirà estant centrat, així que simplement traslladem tots els vèrtexs a la posició desitjada. 
+A més, hem decidit que l'escala dels objectes no és relativa al propi objecte carregat, si no absoluta: primer escalem la capsa contenedora per tal que el seu costat més gran tingui longitud 1, i després apliquem el factor d'escalat.
+
 
 Aquí tenim un exemple, on tots els objectes son ```sphere0.obj```, que hem modificat en la nostra escena per tenir posicions i mides diferents (veure ```VW_ScenePas1.txt```):
 ![posicions](readmeFiles/fase1-pas1/posicions.png)
@@ -154,9 +155,32 @@ El toon shading consisteix en fer que els objectes tinguin un estil que s'assemb
 :-------------------------:|:-------------------------:
 ![sphere0.obj toon shader](readmeFiles/opcionals/toon_1.png)  |  ![cruiser.obj toon shader](readmeFiles/opcionals/toon_2.png)
 
-Podem obtenir diferens resultats si modifiquem els esglaons per tenir diferents colors. Les següents imatges mostren els mateixos objectes, però en comptes de mapejar els valors 0-0.25 -> 0, fem 0-0.25 -> 0.03:
+Podem obtenir diferens resultats si modifiquem els esglaons per tenir diferents colors. La següent imatge mostra també `sphere0.obj`, però en comptes de mapejar els valors 0-0.25 -> 0, fem 0-0.25 -> 0.03:
 
-### Càrrega de .plt i .mtl & diferents materials/textures per objecte
+![sphere0.obj toon shader variacio](readmeFiles/opcionals/toon_1_var.png)
+
+### Parseig fitxers .gpl i .mtl
+Aquests opcionals són molt similars ja que consisteixen en parsejar fitxers. Primerament, per poder tenir diferents materials i textures per objecte, realitzem l'enviament del material i la textura de cada objecte en el mètode draw de cada objecte, abans de realitzar totes les altres accions.
+
+**.mtl**
+
+En cas dels fitxers .mtl, hem fet servir les indicacions de http://paulbourke.net/dataformats/mtl/ . En el nostre cas, nomes llegim les 3 components ambient (Ka), especular (Ks) i difosa (Kd), i la shinininess (Ns). També llegim la component transparent (Kt), per si en algun opcional es volia jugar amb aquesta component, tot i ser conscients de que la transparencia funciona indicant un únic valor de transparència (alfa) a la quarta posició del vector de color en el fragment shader. En el codi, hem posat que el fitxer .mtl es llegeixi de cada material segons el seu nom, substituïnt .obj per .mtl (`sphere0.obj` -> `sphere0.mtl`). A més, en cas de no existir aquest fitxer o algun dels components en el fitxer, es carreguen uns valors per defecte.
+Aquí un exemple, on carreguem diferents objectes amb diferents materials:
+`sphere0.obj` i `cruiser.obj` tenen el seu fitxer `.mtl` associat, mentres que `suzzane.obj` està utilitzant els valors per defecte ja que no té el fitxer `.mtl` associat. A més, com havíem configurat que es puguessin tenir diferents posicions i escala, hem posat les posicions per tal que estiguin alineats, i tots ells amb escala 1, és a dir, la capsa que els conté té el seu costat més gran de longitud 1 (escena ```VW_Scene_MTL.txt```):
+
+![diferents materials en objectes](readmeFiles/opcionals/scene_mtl.png)
+
+També, en el món virtual, hem fet que es puguin carregar diferents textures per diferents objectes, indicant el path a la textura en el fitxer de l'escena (escena ```VW_Scene_TEX.txt```):
+
+![diferents textures en objectes](readmeFiles/opcionals/scene_tex.png)
+
+**.gpl**
+
+En cas dels fitxers .gpl, parsegem els fitxers obtinguts de http://colorbrewer2.org/ , i ho guardem en una array de paletes (ja que, si hi ha més d'una propietat, podem utilitzar diferents paletes), que conté objectes de la classe ```Palette```. Aquests objectes de tipus ```Palette``` tenen una array de colors que conté tots els colors que s'han parsejat del fitxer. En el ```RealWorldReader```, es mapejarà el valor dels diferents punts a un valor entre 0 i 1, que després s'utilitzarà per cridar al mètode ```getColor``` de ```Palette```, que s'encarrega de retornar el color adequat segons aquest valor.
+
+En la següent imatge, podem observar com les diferents boles tenen diferents colors segons la seva mida (escena `RW_BCN".txt`):
+![palette](readmeFiles/opcionals/palette.png)
+
 
 ### Mapping indirecte de textures
 
@@ -172,7 +196,13 @@ La Terra amb Gouraud        |  La Terra amb Phong  |  La Terra sense el problema
 :-------------------------:|:-------------------------:|:-------------------------:
 ![gouraud_v1](readmeFiles/fase2-textures-indirectes/terra-gouraud.png)  |  ![gouraud_v2](readmeFiles/fase2-textures-indirectes/terra-phong.png) |  ![phong_v1](readmeFiles/fase2-textures-indirectes/terra-no-error.png)
 
-# Mandelbrot shader
+### Mandelbrot shader
+Per realitzar aquest shader ens hem basat en una sèrie de videos del canal de youtube [The Art of Code](https://www.youtube.com/channel/UCcAlTqd9zID6aNX3TzwxJXg), que inclou molts tutorials relacionats amb shaders. Aquest shader es pot afegir fent Alt+4 o des del menú de shaders, i funcionarà per tots aquells objectes que incloguin shaders. Si l'opcional de Mapeig Indirecte està activat, també funcionarà.
+La implementació bàsica del fractal de Mandelbrot és molt més senzilla del que sembla. Consisteix en la successió de nombres
+complexos z_{n+1} = (z_n)^2 + c, on c és un nombre complex. Per a diferents valors de c, aquesta successió serà acotada o no. El dibuix del fractal de mandelbrot, consisteix, en posar un pla on cada punt correspondrà a un possible valor de c, i veure si per aquest c la successió convergeix o no. Hi ha un criteri que ens diu que si el mòdul de c es major a 2, aleshores la successió és no acotada i divergent. Per tant, si en la nostra iteració arribem a aquest punt, ja estem. Pintem aleshores de color blanc o negre segons si la successió convergeix o divergeix per a aquell valor de c, obtenint (escena amb un ```FittedPlane```, utilitzant el MandelBrot Shader):
+
+![mandelbrot](readmeFiles/opcionals/Fractal_1.png)
+
 
 ## Screenshots
 
@@ -184,6 +214,21 @@ Mapa amb SpotLight (gif)
 :-------------------------:
 ![spotmap](readmeFiles/screenshots/spotmap.gif)
 
+Fractal Mandelbrot més bònic:
+Es pot jugar amb els diferents valors per tal d'obtenir representacions més boniques. En la següent imatge, tenint en compte un màxim d'iteracions que farem per cada punt, dividim el nombre d'iteracions que es triga a tenir mòdul major a 2 començant amb aquest c pel nombre màxim d'iteracions. Després, fem un quadrat de la imatge per tal de suavitzar el resultat, i afegim una sèrie d'operacions més que ens fan veure el següent resultat:
+
+![mandelbrot millorat](readmeFiles/screenshots/Fractal_2.png)
+
+Podem jugar encara més, fent que el color estigui basat en el color obtingut anteriorment, però aplicant funcions lineals acotades entre 0 i 1, com és la funció de (sin(x) + 1) / 2 = sin(x)*0.5 + 0.5:
+
+![mandelbrot color](readmeFiles/screenshots/Fractal_3.png)
+
+Podem també afegir aquest shader a objectes com esfères, utilitzant el mapeig indirecte (gif):
+
+![spotmap](readmeFiles/screenshots/mandelbrot.gif)
+
 ## Additional Information
 
 *(NOTA: Hores de dedicació i problemes que heu tingut fent la pràctica)*
+
+- Albert: unes 8-12 per setmana. Molts problemes dificils de debugar amb shaders. Vam tenir un problema amb el càlcul de Phong. Quan la shininess era 0, es veien malament els objectes. El problema va ser que els meus companys (utilitzen Mac o VM en Windows, jo Linux) ho veien bé sense problemes. Em vaig tirar hores debugant per veure en quin commit apareixia el problema, per després tirar-me més hores per adonar-me que el problema venia donat de la shininess. A més, el mapeig indirecte funciona bé en els ordinadors dels meus companys, però en el meu crasheja, per tant, no puc probar-lo. També és complicat saber d'on bé el problema quan no has fet tú el codi i ets l'únic que té el problema.
