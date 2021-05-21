@@ -56,7 +56,9 @@ void GLWidget::initializeGL() {
     emit FrustumCameraChanged(scene->camera);
 
     glViewport(scene->camera->vp.pmin[0], scene->camera->vp.pmin[1], scene->camera->vp.a, scene->camera->vp.h);
-
+    // TODO: aquestes crides nomes per check que es fa be, treure un cop es faci merge amb pas 1!!!
+    scene->setAmbientToGPU(this->program);
+    scene->lightsToGPU(this->program);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -68,19 +70,6 @@ void GLWidget::paintGL() {
 
     qDebug() << "paintGL";
 
-    if (scene->CUBEMAP_ACTIVATED) {
-        loadShader("CubeMap");
-        scene->cub->setTexture();
-        scene->cub->toGPU(program);
-        scene->cub->draw();
-    }
-
-    loadShader("Gouraud");
-    // Nomes enviem les llums una vegada
-    if(!lightsSent) {
-        sendLightsToGPU();
-        lightsSent = true;
-    }
     scene->camera->toGPU(program);
     scene->draw();
 }
@@ -110,6 +99,7 @@ void GLWidget::initShadersGPU(){
     createShadersGPU("://resources/vshaderToon.glsl", "://resources/fshaderToon.glsl");
     createShadersGPU("://resources/vshaderCubeMap.glsl", "://resources/fshaderCubeMap.glsl");
     //Queden guardats al map shaderPrograms amb els noms Gouraud | Phong | Toon | CubeMap
+    loadShader("Gouraud");
 }
 
 bool GLWidget::createShadersGPU(QString vShaderFile, QString fShaderFile){
@@ -165,11 +155,6 @@ bool GLWidget::loadShaderAndRefresh(QString shader){ //updateShader
     updateGL();
 
     return true;
-}
-
-void GLWidget::sendLightsToGPU() {
-    scene->setAmbientToGPU(this->program);
-    scene->lightsToGPU(this->program);
 }
 
 QSize GLWidget::minimumSizeHint() const {

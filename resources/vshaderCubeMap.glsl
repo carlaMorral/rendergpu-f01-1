@@ -4,10 +4,10 @@ layout (location = 0) in vec4 vPosition;
 layout (location = 1) in vec2 vCoordTexture;
 
 out vec4 position;
-out vec3 v_texcoord;
+out vec3 coordTexture;
 
 void main()
 {
     position = vPosition;
-    v_texcoord = normalize(position.xyz);
+    coordTexture = normalize(position.xyz);
 }
