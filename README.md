@@ -59,6 +59,7 @@ A més, hem decidit que l'escala dels objectes no és relativa al propi objecte 
 
 
 Aquí tenim un exemple, on tots els objectes son ```sphere0.obj```, que hem modificat en la nostra escena per tenir posicions i mides diferents (veure ```VW_ScenePas1.txt```):
+
 ![posicions](readmeFiles/fase1-pas1/posicions.png)
 
 **TODO: EXPLICAR FITTED PLANE (CARLA)**
@@ -214,18 +215,16 @@ Mapa amb SpotLight (gif)
 :-------------------------:
 ![spotmap](readmeFiles/screenshots/spotmap.gif)
 
-Fractal Mandelbrot més bònic:
-Es pot jugar amb els diferents valors per tal d'obtenir representacions més boniques. En la següent imatge, tenint en compte un màxim d'iteracions que farem per cada punt, dividim el nombre d'iteracions que es triga a tenir mòdul major a 2 començant amb aquest c pel nombre màxim d'iteracions. Després, fem un quadrat de la imatge per tal de suavitzar el resultat, i afegim una sèrie d'operacions més que ens fan veure el següent resultat:
+**Fractal Mandelbrot més bònic:**
 
-![mandelbrot millorat](readmeFiles/screenshots/Fractal_2.png)
+Es pot jugar amb els diferents valors per tal d'obtenir representacions més boniques. En la següent imatge, tenint en compte un màxim d'iteracions que farem per cada punt, dividim el nombre d'iteracions que es triga a tenir mòdul major a 2 començant amb aquest c pel nombre màxim d'iteracions. Després, fem un quadrat de la imatge per tal de suavitzar el resultat. Podem jugar encara més, fent que el color estigui basat en el color obtingut anteriorment, però aplicant funcions lineals acotades entre 0 i 1, com és la funció de (sin(x) + 1) / 2 = sin(x)*0.5 + 0.5. Podem també afegir aquest shader a objectes com esfères, utilitzant el mapeig indirecte.
 
-Podem jugar encara més, fent que el color estigui basat en el color obtingut anteriorment, però aplicant funcions lineals acotades entre 0 i 1, com és la funció de (sin(x) + 1) / 2 = sin(x)*0.5 + 0.5:
 
-![mandelbrot color](readmeFiles/screenshots/Fractal_3.png)
 
-Podem també afegir aquest shader a objectes com esfères, utilitzant el mapeig indirecte (gif):
 
-![spotmap](readmeFiles/screenshots/mandelbrot.gif)
+Mandelbrot millorat       |  Mandelbrot a color  | Mandelbrot mapeig indirecte (gif)
+:-------------------------:|:-------------------------:|:-------------------------:
+![mandelbrot millorat](readmeFiles/screenshots/Fractal_2.png) |  ![mandelbrot color](readmeFiles/screenshots/Fractal_3.png)|  ![spotmap](readmeFiles/screenshots/mandelbrot.gif)
 
 ## Additional Information
 
