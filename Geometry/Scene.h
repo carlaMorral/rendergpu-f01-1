@@ -19,6 +19,7 @@
 #include <Geometry/PointLight.h>
 #include <Geometry/DirectionalLight.h>
 #include <Geometry/SpotLight.h>
+#include <Geometry/Cub.h>
 
 using namespace std;
 using namespace Common;

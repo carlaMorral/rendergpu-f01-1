@@ -70,9 +70,8 @@ void GLWidget::paintGL() {
     if (CUBEMAP_ACTIVATED) {
         loadShader("CubeMap");
         cub->setTexture();
-        cub->draw();
         cub->toGPU(program);
-
+        cub->draw();
     }
 
     loadShader("Gouraud");

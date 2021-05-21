@@ -5,7 +5,7 @@ out vec4 colorOut;
 
 uniform samplerCube texEnvironment;
 
-void main(void)
+void main()
 {
-    colorOut = vec4(vec3(texture(texEnvironment, v_texcoord.xyz).rgb), 1.0f);
+    colorOut = vec4(texture(texEnvironment, v_texcoord.xyz).rgb, 1.0f);
 }

@@ -1,6 +1,6 @@
 #include "Cub.h"
 
-Cub::Cub() : Cub(1.0)
+Cub::Cub() : Cub(100.0)
 {
     qDebug() <<"Estic en el constructor del Cub\n";
 
@@ -156,7 +156,7 @@ Cub::Cub(float a) : Object(8)
     faces.push_back(QImage("://resources/textures/skybox/front.jpg"));
 
     canHaveTexture = true;
-
+    make();
 }
 
 // Destructora
@@ -205,12 +205,14 @@ void Cub::setTexture() {
 
     glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 
-    make();
-
 }
 
 void Cub::draw() {
     qDebug() << "DRAW del cub";
+
+    glBindVertexArray( vao );
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDepthFunc(GL_LEQUAL);
@@ -245,7 +247,7 @@ void Cub::toGPU(shared_ptr<QGLShaderProgram> pr) {
     qDebug() << "Cube to GPU.....";
 
     texture->bind(texture->textureId());
-    program->setUniformValue("textEnvironment", texture->textureId());
+    program->setUniformValue("texEnvironment", texture->textureId());
 
     // Creació d'un vertex array object
     glGenVertexArrays( 1, &vao );
@@ -269,6 +271,8 @@ void Cub::toGPU(shared_ptr<QGLShaderProgram> pr) {
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0,  (void*)(sizeof(point4)*Index));
     glEnableVertexAttribArray(1);
 
+    glEnable( GL_DEPTH_TEST );
+    glEnable(GL_TEXTURE_2D);
     glEnable(GL_TEXTURE_CUBE_MAP);
 
     qDebug() << "Cub ja a GPU.....";
