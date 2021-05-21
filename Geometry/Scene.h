@@ -42,6 +42,8 @@ public:
 
     vector<shared_ptr<Object>> objects;
     vector<shared_ptr<Light>>  lights;
+    shared_ptr<Cub> cub; // Cub per l'opcional CubeMap
+    static const bool CUBEMAP_ACTIVATED = true;
 
     vec3    lightAmbientGlobal;
     shared_ptr<Camera> camera;

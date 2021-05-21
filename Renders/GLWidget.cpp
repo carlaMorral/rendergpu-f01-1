@@ -14,7 +14,6 @@ GLWidget::GLWidget(const QGLFormat &glf, QWidget *parent) : QGLWidget(glf, paren
     scene->setCamera(make_shared<Camera>(this->size().width(), this->size().height()));
     emit ObsCameraChanged(scene->camera);
     emit FrustumCameraChanged(scene->camera);
-    cub = make_shared<Cub>();
 }
 
 GLWidget::~GLWidget() {
@@ -67,11 +66,13 @@ void GLWidget::initializeGL() {
 void GLWidget::paintGL() {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    if (CUBEMAP_ACTIVATED) {
+    qDebug() << "paintGL";
+
+    if (scene->CUBEMAP_ACTIVATED) {
         loadShader("CubeMap");
-        cub->setTexture();
-        cub->toGPU(program);
-        cub->draw();
+        scene->cub->setTexture();
+        scene->cub->toGPU(program);
+        scene->cub->draw();
     }
 
     loadShader("Gouraud");
