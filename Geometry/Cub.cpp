@@ -1,6 +1,6 @@
 #include "Cub.h"
 
-Cub::Cub() : Cub(100.0)
+Cub::Cub() : Cub(1.0)
 {
     qDebug() <<"Estic en el constructor del Cub\n";
 
