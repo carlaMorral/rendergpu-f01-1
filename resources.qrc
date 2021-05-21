@@ -31,5 +31,10 @@
         <file>resources/textures/2k_sun.jpg</file>
         <file>resources/scenes/RW_Mandelbrot.txt</file>
         <file>resources/scenes/RW_Mandelbrot_mapping.txt</file>
+        <file>resources/scenes/VW_ScenePas1.txt</file>
+        <file>resources/scenes/VW_ScenePas1_mapping.txt</file>
+        <file>resources/scenes/RW_BCN.txt</file>
+        <file>resources/scenes/RW_BCN_mapping.txt</file>
+        <file>resources/textures/mapBCN.png</file>
     </qresource>
 </RCC>

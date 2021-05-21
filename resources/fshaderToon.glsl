@@ -56,7 +56,7 @@ float toon_factor(vec4 pointToLight){
         else if (p_escalar > 0.25)
             factor = 0.25;
         else
-            factor = 0;
+            factor = 0.01;
 
     return factor;
 }

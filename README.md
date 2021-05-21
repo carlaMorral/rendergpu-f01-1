@@ -14,10 +14,8 @@ Segona pràctica de GiVD 2020-21
         - [X] Objectes
         - [X] Escenes virtuals
         - [X] Escenes de dades Reals 
-        - [X] [OPT] Implementació càrrega paleta
     - Material: *Martí*
         - [X] Implementar classe Material
-        - [X] [OPT] Llegir material .mtl *(*Albert*)
     - Light: *Arnau* (*Interfície gràfica: Albert*)
         - [X] Puntual
         - [X] Direccional 
@@ -34,6 +32,9 @@ Segona pràctica de GiVD 2020-21
 
 - Fase 2 (OPT)
     - [X] Toon-shading: *Albert*
+    - [X] Diversos objectes poden tenir diferents materials/textures *Albert*
+    - [X] Implementació càrrega paleta (.gpl) *Albert*
+    - [X] Llegir material .mtl *Albert*
     - [ ] Èmfasi de siluetes
     - [X] Mapping indirecte de textures: *Carla, Martí*
     - [ ] Animacions amb dades temporals
@@ -42,7 +43,7 @@ Segona pràctica de GiVD 2020-21
     - [ ] Reflexions
     - [ ] Transparencias via objectes.
     - [ ] Transparencias via environmental mapping.
-
+    - [X] Mandelbrot shader *Albert*
 
 ## Extensions
 
@@ -53,6 +54,16 @@ Segona pràctica de GiVD 2020-21
 *(NOTA: Explicació només dels diferents punts que heu desenvolupat i funcionen, detallant les estratègies que heu fet servir)*
 
 ### Pas 1
+Aquest pas es tractava de reutilitzar el codi de la pràctica 1 per poder llegir els escenes de ```VirtualWorld``` o ```RealWorld```. Hem reutilitzat les classes ```Mapping```, ```ConfigMappingReader```, ```VirtualWorldReader```, ```RealDataReader```, i hem utilitzat el ```Builder``` com a classe que s'encarrega d'instanciar-les, segons les calls que ens arriben des de ```MainWindow```.
+Algunes variacions respecte el codi de la primera pràctica són que, en aquesta pràctica, tots els objectes son del mateix tipus, BoundaryObjects (formats per malles de triangles), per la naturalesa dels mètodes projectius. En les nostres escenes virtuals, a més, permetem indicar la posició de l'objecte i la escala. Per tal de posicionar l'objecte a la posició desitjada i escalar-lo, primer obtenim la capsa mínima i el centre d'aquesta capsa, després movem tots els vertexs segons la distància entre l'origen i el centre de la capsa, per tal de centrar l'objecte. Després, aprofitem i fem l'escalat (multipliquem tots els vèrtex). Un cop fet, seguirà estant centrat, així que simplement traslladem tots els vèrtexs a la posició desitjada. 
+
+Aquí tenim un exemple, on tots els objectes son ```sphere0.obj```, que hem modificat en la nostra escena per tenir posicions i mides diferents (veure ```VW_ScenePas1.txt```):
+![posicions](readmeFiles/fase1-pas1/posicions.png)
+
+**TODO: EXPLICAR FITTED PLANE (CARLA)**
+
+En la següent imatge, es pot veure com les dades del món real es carreguen correctament (```RW_Scene1.txt```):
+![mon real pas 1](readmeFiles/fase1-pas1/realWorld.png)
 
 ### Pas 2
 
@@ -126,9 +137,6 @@ A continuació mostrem tres exemples d'una Spotlight apuntant cap a una esfera, 
 *Nota: Una Spotlight conceptualment hauria de tenir una posició, ja que s'ha de tenir una posició des de la qual es projecta el con de llum. Per simplificar la implementació, només li posem una direcció, i la posició serà -direcció. És a dir, si posem spotlight amb direcció (1,0,0), projectarem el con de llum des de (-1,0,0). Si volguessim el con més lluny, hauríem d'ajustar el mòdul del vector direcció que escollim. És com si projectessim des d'una esfera de radi = |direcció| apuntant cap a l'origen de coordenades.*
 
 
-#### OPT: Toon Shading
-
-
 ### Pas 5
 
 Hem implementat la lectura de textures per aquells objectes que tenen coordenades de textura. Per a fer-ho, hem creat dos atributs a la classe Object.cpp que indiquen si un objecte pot tenir textura (`canHaveTexture`) i si realment té textura (`hasTexture`). Hem implementat les textures tant a gouraud com a phong i a toon shading. En el cas de gouraud hem provat d'implementar el color de textura directament al vertex, com a component difusa, però després en extrapolar el color final al fragment queda poc detallat. Després hem provat de posar un 75% del color final segons la textura al fragment, i el 25% restant corresponent al color rebut de gouraud (on la component difosa també és la textura). Finalment, hem implementat la textura en phong, on fem que el color de la textura sigui la component difosa. A continuació es poden veure les diferències en un cas particular.
@@ -137,13 +145,18 @@ Gouraud textura vertex        |  Gouraud textura a fragment 75%  |  Phong
 :-------------------------:|:-------------------------:|:-------------------------:
 ![gouraud_v1](readmeFiles/fase1-pas5/gouraud_v1.png)  |  ![gouraud_v2](readmeFiles/fase1-pas5/gouraud_v2.png) |  ![phong_v1](readmeFiles/fase1-pas5/phong_v1.png)
 
-A continuació es mostra la textura amb el toon shading.
-
-Toon shading
-:-------------------------:
-![toon_v1](readmeFiles/fase1-pas5/toon_v1.png)
 
 ## Opcionals
+### Toon Shading
+El toon shading consisteix en fer que els objectes tinguin un estil que s'assembli al d'un còmic. La implementació realitzada varia una mica respecte la proposada a l'enunciat. En el nostre cas, un cop tenim el producte escalar entre la normal i el vector de la llum, separem aquest resultat en esglaons (0-0.25 -> 0, 0.25-0.5 -> 0.25, 0.5-0.75 -> 0.5, 0.75-1 -> 0.75). Després, transformem el color que ens dona la component difosa del material de l'objecte, de rgb a hsv. En hsv, multipliquem el valor de v pel factor obtingut anteriorment, i transformem de nou a rgb. hsv ens permet que aquests transformació sigui lineal, al contrari de rgb. Aquí tenim un parell d'exemples on es pot veure els resultats: 
+
+`sphere0.obj`        |  `cruiser.obj`  
+:-------------------------:|:-------------------------:
+![sphere0.obj toon shader](readmeFiles/opcionals/toon_1.png)  |  ![cruiser.obj toon shader](readmeFiles/opcionals/toon_2.png)
+
+Podem obtenir diferens resultats si modifiquem els esglaons per tenir diferents colors. Les següents imatges mostren els mateixos objectes, però en comptes de mapejar els valors 0-0.25 -> 0, fem 0-0.25 -> 0.03:
+
+### Càrrega de .plt i .mtl & diferents materials/textures per objecte
 
 ### Mapping indirecte de textures
 
@@ -158,6 +171,8 @@ A continuació es mostren tres imatges de resultats que hem obtingut. A l'esquer
 La Terra amb Gouraud        |  La Terra amb Phong  |  La Terra sense el problema de mapping (Gouraud)
 :-------------------------:|:-------------------------:|:-------------------------:
 ![gouraud_v1](readmeFiles/fase2-textures-indirectes/terra-gouraud.png)  |  ![gouraud_v2](readmeFiles/fase2-textures-indirectes/terra-phong.png) |  ![phong_v1](readmeFiles/fase2-textures-indirectes/terra-no-error.png)
+
+# Mandelbrot shader
 
 ## Screenshots
 
