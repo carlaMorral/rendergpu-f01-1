@@ -62,7 +62,8 @@ Aquí tenim un exemple, on tots els objectes son ```sphere0.obj```, que hem modi
 
 ![posicions](readmeFiles/fase1-pas1/posicions.png)
 
-**TODO: EXPLICAR FITTED PLANE (CARLA)**
+
+Seguidament, hem creat el pla ```FittedPlane```, el pla on estan els objectes que representaran dades reals. Per crear la classe esmentada hem fet que hereti d'```Object``` i donades unes x, z mínimes i màximes hem construit els vèrtexs del pla i les seves quatre cares, dos triangles pel davant i dos pel darrera. Per tant, dues cares tenen com a normal el vector (0,1,0) i les altres dues, el vector (0,-1,0). Al final del constructor cridem al mètode ```make()``` (que es cridarà el de la classe ```Object```) per tal de generar la geometria del ```FittedPlane```.
 
 En la següent imatge, es pot veure com les dades del món real es carreguen correctament (```RW_Scene1.txt```):
 ![mon real pas 1](readmeFiles/fase1-pas1/realWorld.png)
