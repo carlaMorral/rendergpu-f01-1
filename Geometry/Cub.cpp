@@ -1,6 +1,6 @@
 #include "Cub.h"
 
-Cub::Cub() : Cub(1.0)
+Cub::Cub() : Cub(2.0)
 {
     qDebug() <<"Estic en el constructor del Cub\n";
 
@@ -19,38 +19,17 @@ Cub::Cub(float a) : Object(8)
     vertexs.push_back(point4(  a/2,  a/2, -a/2, 1.0 ));
     vertexs.push_back(point4(  a/2, -a/2, -a/2, 1.0 ));
 
-    textVertexs.push_back(vec2(1./4,0.0));
-    textVertexs.push_back(vec2(2./4,0.0));
-    textVertexs.push_back(vec2(2./4,1./3));
-    textVertexs.push_back(vec2(3./4,1./3));
-    textVertexs.push_back(vec2(1.0,1./3));
-    textVertexs.push_back(vec2(1.0,2./3));
-    textVertexs.push_back(vec2(3./4,2./3));
-    textVertexs.push_back(vec2(2./4,2./3));
-    textVertexs.push_back(vec2(2./4,1.0));
-    textVertexs.push_back(vec2(1./4,1.0));
-    textVertexs.push_back(vec2(1./4,2./3));
-    textVertexs.push_back(vec2(0.0,2./3));
-    textVertexs.push_back(vec2(0.0,1./3));
-    textVertexs.push_back(vec2(1./4,1./3));
-
     // Bottom
     Cara *bottomTriangle1 = new Cara();
     bottomTriangle1->idxVertices.push_back(4);
     bottomTriangle1->idxVertices.push_back(0);
     bottomTriangle1->idxVertices.push_back(7);
-    bottomTriangle1->idxTextures.push_back(0);
-    bottomTriangle1->idxTextures.push_back(13);
-    bottomTriangle1->idxTextures.push_back(1);
     cares.push_back(*bottomTriangle1);
 
     Cara *bottomTriangle2 = new Cara();
     bottomTriangle2->idxVertices.push_back(7);
     bottomTriangle2->idxVertices.push_back(0);
     bottomTriangle2->idxVertices.push_back(3);
-    bottomTriangle2->idxTextures.push_back(1);
-    bottomTriangle2->idxTextures.push_back(13);
-    bottomTriangle2->idxTextures.push_back(2);
     cares.push_back(*bottomTriangle2);
 
     // Front
@@ -58,18 +37,12 @@ Cub::Cub(float a) : Object(8)
     frontTriangle1->idxVertices.push_back(0);
     frontTriangle1->idxVertices.push_back(1);
     frontTriangle1->idxVertices.push_back(3);
-    frontTriangle1->idxTextures.push_back(13);
-    frontTriangle1->idxTextures.push_back(10);
-    frontTriangle1->idxTextures.push_back(2);
     cares.push_back(*frontTriangle1);
 
     Cara *frontTriangle2 = new Cara();
     frontTriangle2->idxVertices.push_back(3);
     frontTriangle2->idxVertices.push_back(1);
     frontTriangle2->idxVertices.push_back(2);
-    frontTriangle2->idxTextures.push_back(2);
-    frontTriangle2->idxTextures.push_back(10);
-    frontTriangle2->idxTextures.push_back(7);
     cares.push_back(*frontTriangle2);
 
     // Top
@@ -77,18 +50,12 @@ Cub::Cub(float a) : Object(8)
     topTriangle1->idxVertices.push_back(1);
     topTriangle1->idxVertices.push_back(5);
     topTriangle1->idxVertices.push_back(2);
-    topTriangle1->idxTextures.push_back(10);
-    topTriangle1->idxTextures.push_back(9);
-    topTriangle1->idxTextures.push_back(7);
     cares.push_back(*topTriangle1);
 
     Cara *topTriangle2 = new Cara();
     topTriangle2->idxVertices.push_back(2);
     topTriangle2->idxVertices.push_back(5);
     topTriangle2->idxVertices.push_back(6);
-    topTriangle2->idxTextures.push_back(7);
-    topTriangle2->idxTextures.push_back(9);
-    topTriangle2->idxTextures.push_back(8);
     cares.push_back(*topTriangle2);
 
     // Right
@@ -96,18 +63,12 @@ Cub::Cub(float a) : Object(8)
     rightTriangle1->idxVertices.push_back(3);
     rightTriangle1->idxVertices.push_back(2);
     rightTriangle1->idxVertices.push_back(7);
-    rightTriangle1->idxTextures.push_back(2);
-    rightTriangle1->idxTextures.push_back(7);
-    rightTriangle1->idxTextures.push_back(3);
     cares.push_back(*rightTriangle1);
 
     Cara *rightTriangle2 = new Cara();
     rightTriangle2->idxVertices.push_back(7);
     rightTriangle2->idxVertices.push_back(2);
     rightTriangle2->idxVertices.push_back(6);
-    rightTriangle2->idxTextures.push_back(3);
-    rightTriangle2->idxTextures.push_back(7);
-    rightTriangle2->idxTextures.push_back(6);
     cares.push_back(*rightTriangle2);
 
     // Left
@@ -115,18 +76,12 @@ Cub::Cub(float a) : Object(8)
     leftTriangle1->idxVertices.push_back(4);
     leftTriangle1->idxVertices.push_back(5);
     leftTriangle1->idxVertices.push_back(0);
-    leftTriangle1->idxTextures.push_back(12);
-    leftTriangle1->idxTextures.push_back(11);
-    leftTriangle1->idxTextures.push_back(13);
     cares.push_back(*leftTriangle1);
 
     Cara *leftTriangle2 = new Cara();
     leftTriangle2->idxVertices.push_back(0);
     leftTriangle2->idxVertices.push_back(5);
     leftTriangle2->idxVertices.push_back(1);
-    leftTriangle2->idxTextures.push_back(13);
-    leftTriangle2->idxTextures.push_back(11);
-    leftTriangle2->idxTextures.push_back(10);
     cares.push_back(*leftTriangle2);
 
     // Back
@@ -134,18 +89,12 @@ Cub::Cub(float a) : Object(8)
     backTriangle1->idxVertices.push_back(7);
     backTriangle1->idxVertices.push_back(6);
     backTriangle1->idxVertices.push_back(4);
-    backTriangle1->idxTextures.push_back(3);
-    backTriangle1->idxTextures.push_back(6);
-    backTriangle1->idxTextures.push_back(4);
     cares.push_back(*backTriangle1);
 
     Cara *backTriangle2 = new Cara();
     backTriangle2->idxVertices.push_back(4);
     backTriangle2->idxVertices.push_back(6);
     backTriangle2->idxVertices.push_back(5);
-    backTriangle2->idxTextures.push_back(4);
-    backTriangle2->idxTextures.push_back(6);
-    backTriangle2->idxTextures.push_back(5);
     cares.push_back(*backTriangle2);
 
     faces.push_back(QImage("://resources/textures/skybox/right.jpg"));
@@ -212,7 +161,6 @@ void Cub::draw() {
 
     glBindVertexArray( vao );
     glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDepthFunc(GL_LEQUAL);
@@ -220,7 +168,6 @@ void Cub::draw() {
     glDepthFunc(GL_LESS);
 
     glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
 
     glDisable(GL_TEXTURE_CUBE_MAP);
 }
@@ -234,7 +181,6 @@ void Cub::make(){
     for(unsigned int i=0; i<cares.size(); i++){
         for(unsigned int j=0; j<cares[i].idxVertices.size(); j++){
             points[Index] = vertexs[cares[i].idxVertices[j]];
-            textVertexsGPU[Index] = textVertexs[cares[i].idxTextures[j]];
             Index++;
         }
     }
@@ -258,9 +204,8 @@ void Cub::toGPU(shared_ptr<QGLShaderProgram> pr) {
     // Activació a GL del Vertex Buffer Object
     glBindBuffer( GL_ARRAY_BUFFER, buffer );
 
-    glBufferData( GL_ARRAY_BUFFER, sizeof(point4)*Index + sizeof(vec2)*Index, NULL, GL_STATIC_DRAW );
+    glBufferData( GL_ARRAY_BUFFER, sizeof(point4)*Index, NULL, GL_STATIC_DRAW );
     glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof(point4)*Index, points );
-    glBufferSubData( GL_ARRAY_BUFFER, sizeof(point4)*Index, sizeof(vec2)*Index, textVertexsGPU);
 
     qDebug() << "Buffer cub creat.....";
     // set up vertex arrays
@@ -268,11 +213,6 @@ void Cub::toGPU(shared_ptr<QGLShaderProgram> pr) {
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0,  0);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0,  (void*)(sizeof(point4)*Index));
-    glEnableVertexAttribArray(1);
-
-    glEnable( GL_DEPTH_TEST );
-    glEnable(GL_TEXTURE_2D);
     glEnable(GL_TEXTURE_CUBE_MAP);
 
     qDebug() << "Cub ja a GPU.....";
