@@ -1,6 +1,6 @@
 #include "Cub.h"
 
-Cub::Cub() : Cub(2.0)
+Cub::Cub() : Cub(10.0)
 {
     qDebug() <<"Estic en el constructor del Cub\n";
 
@@ -140,13 +140,13 @@ void Cub::setTexture() {
     texture->setData(0, 0, QOpenGLTexture::CubeMapPositiveY, QOpenGLTexture::RGBA,
                      QOpenGLTexture::UInt8, (const void*)image[3].constBits(), 0);
     texture->setData(0, 0, QOpenGLTexture::CubeMapPositiveZ, QOpenGLTexture::RGBA,
-                     QOpenGLTexture::UInt8, (const void*)image[5].constBits(), 0);
+                     QOpenGLTexture::UInt8, (const void*)image[4].constBits(), 0);
     texture->setData(0, 0, QOpenGLTexture::CubeMapNegativeX, QOpenGLTexture::RGBA,
                      QOpenGLTexture::UInt8, (const void*)image[1].constBits(), 0);
     texture->setData(0, 0, QOpenGLTexture::CubeMapNegativeY, QOpenGLTexture::RGBA,
                      QOpenGLTexture::UInt8, (const void*)image[2].constBits(), 0);
     texture->setData(0, 0, QOpenGLTexture::CubeMapNegativeZ, QOpenGLTexture::RGBA,
-                     QOpenGLTexture::UInt8, (const void*)image[4].constBits(), 0);
+                     QOpenGLTexture::UInt8, (const void*)image[5].constBits(), 0);
 
     texture->setWrapMode(QOpenGLTexture::ClampToEdge);
     texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
