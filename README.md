@@ -38,7 +38,7 @@ Segona pràctica de GiVD 2020-21
     - [X] Mapping indirecte de textures: *Carla, Martí*
     - [ ] Animacions amb dades temporals
     - [ ] Normal mapping
-    - [X] Entorn amb textures
+    - [X] Entorn amb textures *Carla*
     - [ ] Reflexions
     - [ ] Transparencias via objectes.
     - [ ] Transparencias via environmental mapping.
