@@ -32,17 +32,17 @@ Segona pràctica de GiVD 2020-21
 
 - Fase 2 (OPT)
     - [X] Toon-shading: *Albert*
-    - [X] Implementació càrrega paleta (.gpl) *Albert*
-    - [X] Llegir material .mtl *Albert*
+    - [X] Implementació càrrega paleta (.gpl): *Albert*
+    - [X] Llegir material .mtl: *Albert*
     - [ ] Èmfasi de siluetes
     - [X] Mapping indirecte de textures: *Carla, Martí*
     - [ ] Animacions amb dades temporals
     - [ ] Normal mapping
-    - [X] Entorn amb textures *Carla*
+    - [X] Entorn amb textures: *Carla*
     - [ ] Reflexions
-    - [ ] Transparencias via objectes.
-    - [ ] Transparencias via environmental mapping.
-    - [X] Mandelbrot shader *Albert*
+    - [ ] Transparencies via objectes.
+    - [ ] Transparencies via environmental mapping.
+    - [X] Mandelbrot shader: *Albert*
 
 ## Extensions
 
