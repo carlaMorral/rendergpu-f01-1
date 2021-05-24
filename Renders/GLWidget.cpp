@@ -80,6 +80,7 @@ void GLWidget::paintGL() {
         scene->cub->toGPU(program);
         scene->cub->draw();
         loadShader("Gouraud");
+        scene->toGPU(program);
         // Nomes enviem les llums una vegada
         if(!lightsSent) {
             sendLightsToGPU();
