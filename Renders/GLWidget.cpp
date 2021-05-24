@@ -72,7 +72,10 @@ void GLWidget::paintGL() {
 
     if (scene->CUBEMAP_ACTIVATED) {
         loadShader("CubeMap");
-        scene->cub->setTexture();
+        if (!textureSet) {
+           scene->cub->setTexture();
+           textureSet = true;
+        }
         scene->camera->toGPU(program);
         scene->cub->toGPU(program);
         scene->cub->draw();

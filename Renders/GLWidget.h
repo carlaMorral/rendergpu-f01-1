@@ -112,5 +112,6 @@ private:
     void updateShaderTexture();
     void sendLightsToGPU();
     bool lightsSent = false;
+    bool textureSet = false;
 };
 
