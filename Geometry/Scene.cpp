@@ -10,6 +10,9 @@ Scene::Scene() {
     capsaMinima.h = 2;
     capsaMinima.p = 2;
     lightAmbientGlobal = vec3(0.1, 0.1, 0.1);
+    if (CUBEMAP_ACTIVATED) {
+        cub = make_shared<Cub>();
+    }
 }
 
 /**

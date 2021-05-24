@@ -131,7 +131,7 @@ void Object::toGPU(shared_ptr<QGLShaderProgram> pr) {
 void Object::draw(){
 
 
-    //qDebug() << "DRAW";
+    qDebug() << "DRAW Object";
 
     // Aqui s'ha de fer el pas de dades a la GPU per si hi ha més d'un objecte
     // Activació a GL del Vertex Buffer Object

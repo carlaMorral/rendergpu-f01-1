@@ -40,6 +40,7 @@ void GLWidget::initializeGL() {
     glEnable(GL_DOUBLE);
 
     initShadersGPU();
+    qDebug() << "Shaders initialized";
 
     // Default point light:
     vec3 ambient(0.3,0.3,0.3);
@@ -55,12 +56,9 @@ void GLWidget::initializeGL() {
     emit FrustumCameraChanged(scene->camera);
 
     glViewport(scene->camera->vp.pmin[0], scene->camera->vp.pmin[1], scene->camera->vp.a, scene->camera->vp.h);
-
     // TODO: aquestes crides nomes per check que es fa be, treure un cop es faci merge amb pas 1!!!
-    scene->setAmbientToGPU(this->program);
-    scene->lightsToGPU(this->program);
-
-
+    if (!scene->CUBEMAP_ACTIVATED)
+        sendLightsToGPU();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -69,6 +67,27 @@ void GLWidget::initializeGL() {
  */
 void GLWidget::paintGL() {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+    qDebug() << "paintGL";
+
+    if (scene->CUBEMAP_ACTIVATED) {
+        loadShader("CubeMap");
+        if (!textureSet) {
+           scene->cub->setTexture();
+           textureSet = true;
+        }
+        scene->camera->toGPU(program);
+        scene->cub->toGPU(program);
+        scene->cub->draw();
+        loadShader(blinnPhongShader);
+        scene->toGPU(program);
+        // Nomes enviem les llums una vegada
+        if(!lightsSent) {
+            sendLightsToGPU();
+            lightsSent = true;
+        }
+    }
+
     scene->camera->toGPU(program);
     scene->draw();
 }
@@ -96,9 +115,11 @@ void GLWidget::initShadersGPU(){
     createShadersGPU("://resources/vshaderGouraud.glsl", "://resources/fshaderGouraud.glsl");
     createShadersGPU("://resources/vshaderPhong.glsl", "://resources/fshaderPhong.glsl");
     createShadersGPU("://resources/vshaderToon.glsl", "://resources/fshaderToon.glsl");
+    createShadersGPU("://resources/vshaderCubeMap.glsl", "://resources/fshaderCubeMap.glsl");
     createShadersGPU("://resources/vshaderMandelbrot.glsl", "://resources/fshaderMandelbrot.glsl");
-    //Queden guardats al map shaderPrograms amb els noms Gouraud | Phong | Toon | Mandelbrot
-    loadShader("Gouraud");
+    //Queden guardats al map shaderPrograms amb els noms Gouraud | Phong | Toon | CubeMap | Mandelbrot
+    if (!scene->CUBEMAP_ACTIVATED)
+        loadShader("Gouraud");
 }
 
 bool GLWidget::createShadersGPU(QString vShaderFile, QString fShaderFile){
@@ -150,12 +171,15 @@ bool GLWidget::loadShaderAndRefresh(QString shader){ //updateShader
 
     // Enviem nou shader a GPU
     scene->toGPU(program);
-    //
 
-    //TODO: UpdateShaderTexture
     updateGL();
 
     return true;
+}
+
+void GLWidget::sendLightsToGPU() {
+    scene->setAmbientToGPU(this->program);
+    scene->lightsToGPU(this->program);
 }
 
 QSize GLWidget::minimumSizeHint() const {
@@ -243,12 +267,14 @@ void GLWidget::saveAnimation() {
 void GLWidget::activaToonShader() {
     //A implementar a la fase 1 de la practica 2
     loadShaderAndRefresh("Toon");
+    blinnPhongShader = "Toon";
     qDebug()<<"Estic a Toon";
 }
 
 void GLWidget::activaPhongShader() {
     //Opcional: A implementar a la fase 1 de la practica 2
     loadShaderAndRefresh("Phong");
+    blinnPhongShader = "Phong";
     qDebug()<<"Estic a Phong";
 
 }
@@ -256,6 +282,7 @@ void GLWidget::activaPhongShader() {
 void GLWidget::activaGouraudShader() {
     //A implementar a la fase 1 de la practica 2
     loadShaderAndRefresh("Gouraud");
+    blinnPhongShader = "Gouraud";
     qDebug()<<"Estic a Gouraud";
 }
 

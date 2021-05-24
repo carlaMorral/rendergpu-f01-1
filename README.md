@@ -32,17 +32,17 @@ Segona pràctica de GiVD 2020-21
 
 - Fase 2 (OPT)
     - [X] Toon-shading: *Albert*
-    - [X] Implementació càrrega paleta (.gpl) *Albert*
-    - [X] Llegir material .mtl *Albert*
+    - [X] Implementació càrrega paleta (.gpl): *Albert*
+    - [X] Llegir material .mtl: *Albert*
     - [ ] Èmfasi de siluetes
     - [X] Mapping indirecte de textures: *Carla, Martí*
     - [ ] Animacions amb dades temporals
     - [ ] Normal mapping
-    - [ ] Entorn amb textures
+    - [X] Entorn amb textures: *Carla*
     - [ ] Reflexions
-    - [ ] Transparencias via objectes.
-    - [ ] Transparencias via environmental mapping.
-    - [X] Mandelbrot shader *Albert*
+    - [ ] Transparencies via objectes.
+    - [ ] Transparencies via environmental mapping.
+    - [X] Mandelbrot shader: *Albert*
 
 ## Extensions
 
@@ -197,6 +197,20 @@ A continuació es mostren tres imatges de resultats que hem obtingut. A l'esquer
 La Terra amb Gouraud        |  La Terra amb Phong  |  La Terra sense el problema de mapping (Gouraud)
 :-------------------------:|:-------------------------:|:-------------------------:
 ![gouraud_v1](readmeFiles/fase2-textures-indirectes/terra-gouraud.png)  |  ![gouraud_v2](readmeFiles/fase2-textures-indirectes/terra-phong.png) |  ![phong_v1](readmeFiles/fase2-textures-indirectes/terra-no-error.png)
+
+
+### Entorn amb textures
+
+Aquesta extensió ha consistit en la implementació del CubeMap per tal de tenir un background amb textures. El que hem hagut de fer és primer de tot, crear la classe Cub i allà crear els mètodes adients per tal de visualitzar el cub. La particularitat que té és que només té cares interiors. Per tant, si "surts" del cub es veu la textura de la cara oposada, fet que ens ha fet dubtar de la nostra implementació. Seguidament hem implementat els shaders, el vertex shader interpola les coordenades de textura com les coordenades de posició, ja que les coordenades de textura son 3D en aquest cas. En el fragment shader, simplement es calcula la textura amb la funció ```texture()``` usant el ```samplerCube``` que li hem passat. Finalment hem hagut de modificar el mètode paintGL perquè necessitem 2 parells de shaders per fer visualitzacions, els del cub i els de la resta de l'escena. A continuació es mostren alguns resultats del CubeMap.
+
+Star Wars X-wing        |  El Sistema Solar 
+:-------------------------:|:-------------------------:
+![gouraud_v1](readmeFiles/fase2-cubemap/nau.png)  |  ![gouraud_v2](readmeFiles/fase2-cubemap/espai.png)
+
+CubeMap + Toon        |  Ferrari al camp
+:-------------------------:|:-------------------------:
+![gouraud_v1](readmeFiles/fase2-cubemap/toon.png)  |  ![phong_v1](readmeFiles/fase2-cubemap/ferrari.png)
+
 
 ### Mandelbrot shader
 Per realitzar aquest shader ens hem basat en una sèrie de videos del canal de youtube [The Art of Code](https://www.youtube.com/channel/UCcAlTqd9zID6aNX3TzwxJXg), que inclou molts tutorials relacionats amb shaders. Aquest shader es pot afegir fent Alt+4 o des del menú de shaders, i funcionarà per tots aquells objectes que incloguin shaders. Si l'opcional de Mapeig Indirecte està activat, també funcionarà.
