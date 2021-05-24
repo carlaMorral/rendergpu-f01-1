@@ -159,6 +159,15 @@ La Terra amb Gouraud        |  La Terra amb Phong  |  La Terra sense el problema
 :-------------------------:|:-------------------------:|:-------------------------:
 ![gouraud_v1](readmeFiles/fase2-textures-indirectes/terra-gouraud.png)  |  ![gouraud_v2](readmeFiles/fase2-textures-indirectes/terra-phong.png) |  ![phong_v1](readmeFiles/fase2-textures-indirectes/terra-no-error.png)
 
+### Entorn amb textures
+
+Aquesta extensió ha consistit en la implementació del CubeMap per tal de tenir un background amb textures. El que hem hagut de fer és primer de tot, crear la classe Cub i allà crear els mètodes adients per tal de visualitzar el cub. La particularitat que té és que només té cares interiors. Per tant, si "surts" del cub es veu la textura de la cara oposada, fet que ens ha fet dubtar de la nostra implementació. Seguidament hem implementat els shaders, el vertex shader interpola les coordenades de textura com les coordenades de posició, ja que les coordenades de textura son 3D en aquest cas. En el fragment shader, simplement es calcula la textura amb la funció ```texture()``` usant el ```samplerCube``` que li hem passat. Finalment hem hagut de modificar el mètode paintGL perquè necessitem 2 parells de shaders per fer visualitzacions, els del cub i els de la resta de l'escena. A continuació es mostren alguns resultats del CubeMap.
+
+La Terra amb Gouraud        |  La Terra amb Phong  |  La Terra sense el problema de mapping (Gouraud)
+:-------------------------:|:-------------------------:|:-------------------------:
+![gouraud_v1](readmeFiles/fase2-textures-indirectes/terra-gouraud.png)  |  ![gouraud_v2](readmeFiles/fase2-textures-indirectes/terra-phong.png) |  ![phong_v1](readmeFiles/fase2-textures-indirectes/terra-no-error.png)
+
+
 ## Screenshots
 
 *(NOTA: Per a cada pas de l'enunciat (del 1 al 6), incloure captures de pantalla de les proves que heu fet per a demostrar la funcionalitat de la vostra pràctica amb explicacions de la seva configuració i com les heu aconseguides)*
