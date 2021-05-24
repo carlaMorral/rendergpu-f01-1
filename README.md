@@ -3,11 +3,9 @@ Segona pràctica de GiVD 2020-21
     
 **Abstract**
 
-*(NOTA: Petit resum del què heu fet, no més de 200 paraules)*
+Aquesta pràctica consisteix en adaptar algunes de les funcionalitats de la pràctica anterior de Raytracing usant mètodes projectius a la GPU (ZBuffer). Hem implementat la visualització d'objectes representats amb malles triangulars amb materials lambertians i amb textures (directes i indirectes). A més a més, hem creat un fons de textura, i un conjunt ampli de llums que permeten crear unes escenes d'alta fidelitat i molt realistes. De forma addicional hem desenvolupat algunes parts optatives de la pràctica, com ara lectura de les característiques del material o la textura per fitxer, llum tipus spotlight, toon shading o un nou shader del conjunt de mandelbrot.
 
 **Features**
-
-*(NOTA: Quines parts heu desenvolupat i qui ho ha fet de l'equip. Editeu la llista que teniu a continuació afegint darrera de cada punt, la/es persona/es que ha treballat en aquell punt.)*
 
 - Fase 1
     - Adaptació a la lectura de fitxers de dades: *Carla, Albert*
@@ -28,7 +26,6 @@ Segona pràctica de GiVD 2020-21
         - [X] Textura com material en un objecte
         - [X] Textura al pla base
 
-        
 
 - Fase 2 (OPT)
     - [X] Toon-shading: *Albert*
@@ -46,11 +43,9 @@ Segona pràctica de GiVD 2020-21
 
 ## Extensions
 
-*(NOTA: Les extensions de la pràctica que heu fet i que no surten a la llista anterior)*
+Algunes extensions que no apareixien a la llista, però que les hem inclòs, són el Mandelbrot shader o la lecutra de la textura i el material des de fitxer.
 
 ## Memòria
-
-*(NOTA: Explicació només dels diferents punts que heu desenvolupat i funcionen, detallant les estratègies que heu fet servir)*
 
 ### Pas 1
 Aquest pas es tractava de reutilitzar el codi de la pràctica 1 per poder llegir els escenes de ```VirtualWorld``` o ```RealWorld```. Hem reutilitzat les classes ```Mapping```, ```ConfigMappingReader```, ```VirtualWorldReader```, ```RealDataReader```, i hem utilitzat el ```Builder``` com a classe que s'encarrega d'instanciar-les, segons les calls que ens arriben des de ```MainWindow```.
@@ -222,9 +217,7 @@ complexos z_{n+1} = (z_n)^2 + c, on c és un nombre complex. Per a diferents val
 
 ## Screenshots
 
-*(NOTA: Per a cada pas de l'enunciat (del 1 al 6), incloure captures de pantalla de les proves que heu fet per a demostrar la funcionalitat de la vostra pràctica amb explicacions de la seva configuració i com les heu aconseguides)*
-
-*(NOTA2: Breu explicació, si cal, de com replicar els vostres resultats)*
+A l'apartat anterior hem inclòs captures de pantalla on podem comprovar que la funcionalitat a implementar funciona correctament. A més a més, adjuntem captures de pantalla complementàries en aquesta secció.
 
 Mapa amb SpotLight (gif)
 :-------------------------:
@@ -233,8 +226,6 @@ Mapa amb SpotLight (gif)
 **Fractal Mandelbrot més bònic:**
 
 Es pot jugar amb els diferents valors per tal d'obtenir representacions més boniques. En la següent imatge, tenint en compte un màxim d'iteracions que farem per cada punt, dividim el nombre d'iteracions que es triga a tenir mòdul major a 2 començant amb aquest c pel nombre màxim d'iteracions. Després, fem un quadrat de la imatge per tal de suavitzar el resultat. Podem jugar encara més, fent que el color estigui basat en el color obtingut anteriorment, però aplicant funcions lineals acotades entre 0 i 1, com és la funció de (sin(x) + 1) / 2 = sin(x)*0.5 + 0.5. Podem també afegir aquest shader a objectes com esfères, utilitzant el mapeig indirecte.
-
-
 
 
 Mandelbrot millorat       |  Mandelbrot a color  | Mandelbrot mapeig indirecte (gif)
