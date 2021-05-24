@@ -3,7 +3,7 @@ Segona pràctica de GiVD 2020-21
     
 **Abstract**
 
-Aquesta pràctica consisteix en adaptar algunes de les funcionalitats de la pràctica anterior de Raytracing usant mètodes projectius a la GPU (ZBuffer). Hem implementat la visualització d'objectes representats amb malles triangulars amb materials lambertians i amb textures (directes i indirectes). A més a més, hem creat un fons de textura, i un conjunt ampli de llums que permeten crear unes escenes d'alta fidelitat i molt realistes. De forma addicional hem desenvolupat algunes parts optatives de la pràctica, com ara lectura de les característiques del material o la textura per fitxer, llum tipus spotlight, toon shading o un nou shader del conjunt de mandelbrot.
+Aquesta pràctica consisteix a adaptar algunes de les funcionalitats de la pràctica anterior de Raytracing usant mètodes projectius a la GPU (ZBuffer). Hem implementat la visualització d'objectes representats amb malles triangulars amb materials lambertians i amb textures (directes i indirectes). A més a més, hem creat un fons de textura, i un conjunt ampli de llums que permeten crear unes escenes d'alta fidelitat i molt realistes. De forma addicional hem desenvolupat algunes parts optatives de la pràctica, com ara lectura de les característiques del material o la textura per fitxer, llum tipus spotlight, toon shading o un nou shader del conjunt de mandelbrot.
 
 **Features**
 
@@ -43,14 +43,14 @@ Aquesta pràctica consisteix en adaptar algunes de les funcionalitats de la prà
 
 ## Extensions
 
-Algunes extensions que no apareixien a la llista, però que les hem inclòs, són el Mandelbrot shader o la lecutra de la textura i el material des de fitxer.
+Algunes extensions que no apareixien a la llista, però que les hem inclòs, són el Mandelbrot shader o la lectura de la textura i el material des de fitxer.
 
 ## Memòria
 
 ### Pas 1
-Aquest pas es tractava de reutilitzar el codi de la pràctica 1 per poder llegir els escenes de ```VirtualWorld``` o ```RealWorld```. Hem reutilitzat les classes ```Mapping```, ```ConfigMappingReader```, ```VirtualWorldReader```, ```RealDataReader```, i hem utilitzat el ```Builder``` com a classe que s'encarrega d'instanciar-les, segons les calls que ens arriben des de ```MainWindow```.
-Algunes variacions respecte el codi de la primera pràctica són que, en aquesta pràctica, tots els objectes son del mateix tipus, BoundaryObjects (formats per malles de triangles), per la naturalesa dels mètodes projectius. En les nostres escenes virtuals, a més, permetem indicar la posició de l'objecte i la escala. Per tal de posicionar l'objecte a la posició desitjada i escalar-lo, primer obtenim la capsa mínima i el centre d'aquesta capsa, després movem tots els vertexs segons la distància entre l'origen i el centre de la capsa, per tal de centrar l'objecte. Després, aprofitem i fem l'escalat (multipliquem tots els vèrtex). Un cop fet, seguirà estant centrat, així que simplement traslladem tots els vèrtexs a la posició desitjada. 
-A més, hem decidit que l'escala dels objectes no és relativa al propi objecte carregat, si no absoluta: primer escalem la capsa contenedora per tal que el seu costat més gran tingui longitud 1, i després apliquem el factor d'escalat.
+Aquest pas es tractava de reutilitzar el codi de la pràctica 1 per poder llegir les escenes de ```VirtualWorld``` o ```RealWorld```. Hem reutilitzat les classes ```Mapping```, ```ConfigMappingReader```, ```VirtualWorldReader```, ```RealDataReader```, i hem utilitzat el ```Builder``` com a classe que s'encarrega d'instanciar-les, segons les calls que ens arriben des de ```MainWindow```.
+Algunes variacions respecte del codi de la primera pràctica són que, en aquesta pràctica, tots els objectes son del mateix tipus, BoundaryObjects (formats per malles de triangles), per la naturalesa dels mètodes projectius. En les nostres escenes virtuals, a més, permetem indicar la posició de l'objecte i l'escala. Per tal de posicionar l'objecte a la posició desitjada i escalar-lo, primer obtenim la capsa mínima i el centre d'aquesta capsa, després movem tots els vèrtexs segons la distància entre l'origen i el centre de la capsa, per tal de centrar l'objecte. Després, aprofitem i fem l'escalat (multipliquem tots els vèrtexs). Un cop fet, seguirà estant centrat, així que simplement traslladem tots els vèrtexs a la posició desitjada. 
+A més, hem decidit que l'escala dels objectes no és relativa al propi objecte carregat, sinó absoluta: primer escalem la capsa contenidora per tal que el seu costat més gran tingui longitud 1, i després apliquem el factor d'escalat.
 
 
 Aquí tenim un exemple, on tots els objectes son ```sphere0.obj```, que hem modificat en la nostra escena per tenir posicions i mides diferents (veure ```VW_ScenePas1.txt```):
@@ -58,7 +58,7 @@ Aquí tenim un exemple, on tots els objectes son ```sphere0.obj```, que hem modi
 ![posicions](readmeFiles/fase1-pas1/posicions.png)
 
 
-Seguidament, hem creat el pla ```FittedPlane```, el pla on estan els objectes que representaran dades reals. Per crear la classe esmentada hem fet que hereti d'```Object``` i donades unes x, z mínimes i màximes hem construit els vèrtexs del pla i les seves quatre cares, dos triangles pel davant i dos pel darrera. Per tant, dues cares tenen com a normal el vector (0,1,0) i les altres dues, el vector (0,-1,0). Al final del constructor cridem al mètode ```make()``` (que es cridarà el de la classe ```Object```) per tal de generar la geometria del ```FittedPlane```.
+Seguidament, hem creat el pla ```FittedPlane```, el pla on estan els objectes que representaran dades reals. Per crear la classe esmentada hem fet que hereti d'```Object``` i donades unes x, z mínimes i màximes hem construït els vèrtexs del pla i les seves quatre cares, dos triangles pel davant i dos pel darrere. Per tant, dues cares tenen com a normal el vector (0,1,0) i les altres dues, el vector (0,-1,0). Al final del constructor cridem al mètode ```make()``` (que es cridarà el de la classe ```Object```) per tal de generar la geometria del ```FittedPlane```.
 
 En la següent imatge, es pot veure com les dades del món real es carreguen correctament (```RW_Scene1.txt```):
 ![mon real pas 1](readmeFiles/fase1-pas1/realWorld.png)
@@ -90,7 +90,7 @@ Per a comprovar que el pas de les característiques del material de la CPU a la 
 
 Hem implementat l'enviament d'informació a la GPU pel cas de les llums, als mètodes `lightsToGpu` i `setAmbientToGPU` seguint els passos del guió.
 
-Al igual que al cas anterior, hem realitzat comprovacions passant atributs arbitraris de les llums a la GPU i visualitzant-los directament com a colors. En aquest cas, hem utilitzat la interfície gràfica on podem fàcilment modificar valors per les comprovacions necessàries. En les imatges que es mostren a configuració, estem utilitzant `color = vec4(lights[0].specular,1)` com a color de sortida del vertex shader.
+Igual que en el cas anterior, hem realitzat comprovacions passant atributs arbitraris de les llums a la GPU i visualitzant-los directament com a colors. En aquest cas, hem utilitzat la interfície gràfica on podem fàcilment modificar valors per les comprovacions necessàries. En les imatges que es mostren a configuració, estem utilitzant `color = vec4(lights[0].specular,1)` com a color de sortida del vertex shader.
 
 `specular = (1, 0, 0)`        |  `specular = (0, 1, 0)`   |  `specular = (0, 0, 1)`  
 :-------------------------:|:-------------------------:|:-------------------------:
@@ -102,7 +102,7 @@ Al pas 4 mostrarem les diferents llums implementades als shaders.
 
 ### Pas 4
 
-El pas 4 d'aquesta pràctica consistia en implementar shaders de Gouraud i Phong a la GPU. Els dos són similars, ja que per tots dos utilitzarem el mètode de Blinn-Phong pel càlcul del color. La diferència entre els dos és que a Gouraud Blinn-Phong es calcula al vertex shader i s'interpola (suavitza) el color en rasteritzar, mentre que en el cas de Phong, al vertex shader retorna la normal i és aquesta la que s'interpola (suavitza) per després calcular a cada pixel el color amb Blinn-Phong, utilitzant aquesta normal suavitzada.
+El pas 4 d'aquesta pràctica consistia a implementar shaders de Gouraud i Phong a la GPU. Els dos són similars, ja que per tots dos utilitzarem el mètode de Blinn-Phong pel càlcul del color. La diferència entre els dos és que a Gouraud Blinn-Phong es calcula al vertex shader i s'interpola (suavitza) el color en rasteritzar, mentre que en el cas de Phong, al vertex shader retorna la normal i és aquesta la que s'interpola (suavitza) per després calcular a cada píxel el color amb Blinn-Phong, utilitzant aquesta normal suavitzada.
 
 El procediment per implementar Gouraud i Phong, per tant, ha estat molt similar. Ens hem basat en el codi de Blinn-Phong que vam fer a la pràctica 1 de Raytracing, amb les adaptacions necessàries. A continuació mostrem l'escena de test proposada amb els paràmetres indicats.
 
@@ -112,32 +112,32 @@ El procediment per implementar Gouraud i Phong, per tant, ha estat molt similar.
 
 Es pot apreciar lleugerament la diferència, sobretot en la part més il·luminada, on Phong aconsegueix un efecte més suavitzat que Gouraud.
 
-També hem provat amb diferents tipus de llum: PointLight i DirectionalLight. Hem inclòs una opció per escollir entre PointLight i DirectionalLight directament des de interfície gràfica per poder realitzar fàcilment aquestes visualitzacions. 
+També hem provat amb diferents tipus de llum: PointLight i DirectionalLight. Hem inclòs una opció per escollir entre PointLight i DirectionalLight directament des de l'interfície gràfica per poder realitzar fàcilment aquestes visualitzacions. 
 
 `PointLight pos=(-1,0,0)`        |  `DirectionalLight dir=(1,0,0)`    |  `PointLight pos=(-100,0,0)`   
 :-------------------------:|:-------------------------:|:-------------------------:
 ![pos1](readmeFiles/fase1-pas4/pos1.png)  |  ![dir1](readmeFiles/fase1-pas4/dir1.png) |  ![pos100](readmeFiles/fase1-pas4/pos100.png)
 
-Com podem veure a les imatges, la segona i la tercera són pràcticament idèntiques, com era d'esperar, ja que posant una pointlight a la posició (-100,0,0) sense atenuació estem simulant una llum direccional, ja que els rajos de llum venen gairebé paral·lels, ja que esta a una posició molt allunyada (passa com la llum del sol, que a efectes pràctics la podem considerar direccional). En canvi, la primera imatge és una PointLight en la posició (-1,0,0), molt propera a la esfera, i tot i ser similar a les altres, es veu clarament l'efecte punt de llum.
+Com podem veure a les imatges, la segona i la tercera són pràcticament idèntiques, com era d'esperar, ja que posant una pointlight a la posició (-100,0,0) sense atenuació estem simulant una llum direccional, ja que els rajos de llum venen gairebé paral·lels, ja que està a una posició molt allunyada (passa com la llum del sol, que a efectes pràctics la podem considerar direccional). En canvi, la primera imatge és una PointLight en la posició (-1,0,0), molt propera a l'esfera, i tot i ser similar a les altres, es veu clarament l'efecte punt de llum.
 
 #### OPT: Spotlight
 
 Per implementar el spotlight hem seguit les indicacions del recurs proporcionat (http://math.hws.edu/graphicsbook/c7/s2.html). 
 
-A part dels atributs direcció i angle que es proposaven al guió, hem implementat un atribut *sharpness*, que al link anterior anomenen *spot exponent*, que regula com de suau es la frontera de la llum. Tant per l'angle com per la sharpness hem afegit sliders a la per tal que sigui més fàcil jugar amb la spotlight des de la interfície gràfica.
+A part dels atributs direcció i angle que es proposaven al guió, hem implementat un atribut *sharpness*, que al link anterior anomenen *spot exponent*, que regula com de suau és la frontera de la llum. Tant per l'angle com per la sharpness hem afegit sliders a la per tal que sigui més fàcil jugar amb la spotlight des de la interfície gràfica.
 
-A continuació mostrem tres exemples d'una Spotlight apuntant cap a una esfera, amb diferents configuracions d'angle i sharpness. Al tercer exemple, que és una spotlight amb angle gran, on la "frontera" del con de llum no es veu a la esfera, obtenim exactamente el mateix efecte que amb una PointLight.
+A continuació mostrem tres exemples d'una Spotlight apuntant cap a una esfera, amb diferents configuracions d'angle i sharpness. Al tercer exemple, que és una spotlight amb angle gran, on la "frontera" del con de llum no es veu a l'esfera, obtenim exactament el mateix efecte que amb una PointLight.
 
 `SpotLight angle petit, sharpness alta`        |  `SpotLight angle petit, sharpness baixa`    |  `SpotLight angle gran`   
 :-------------------------:|:-------------------------:|:-------------------------:
 ![spot1](readmeFiles/fase1-pas4/spot1.png)  |  ![spot2](readmeFiles/fase1-pas4/spot2.png) |  ![spot3](readmeFiles/fase1-pas4/spot3.png)
 
-*Nota: Una Spotlight conceptualment hauria de tenir una posició, ja que s'ha de tenir una posició des de la qual es projecta el con de llum. Per simplificar la implementació, només li posem una direcció, i la posició serà -direcció. És a dir, si posem spotlight amb direcció (1,0,0), projectarem el con de llum des de (-1,0,0). Si volguessim el con més lluny, hauríem d'ajustar el mòdul del vector direcció que escollim. És com si projectessim des d'una esfera de radi = |direcció| apuntant cap a l'origen de coordenades.*
+*Nota: Una Spotlight conceptualment hauria de tenir una posició, ja que s'ha de tenir una posició des de la qual es projecta el con de llum. Per simplificar la implementació, només li posem una direcció, i la posició serà -direcció. És a dir, si posem spotlight amb direcció (1,0,0), projectarem el con de llum des de (-1,0,0). Si volguéssim el con més lluny, hauríem d'ajustar el mòdul del vector direcció que escollim. És com si projectéssim des d'una esfera de radi = |direcció| apuntant cap a l'origen de coordenades.*
 
 
 ### Pas 5
 
-Hem implementat la lectura de textures per aquells objectes que tenen coordenades de textura. Per a fer-ho, hem creat dos atributs a la classe Object.cpp que indiquen si un objecte pot tenir textura (`canHaveTexture`) i si realment té textura (`hasTexture`). Hem implementat les textures tant a gouraud com a phong i a toon shading. En el cas de gouraud hem provat d'implementar el color de textura directament al vertex, com a component difusa, però després en extrapolar el color final al fragment queda poc detallat. Després hem provat de posar un 75% del color final segons la textura al fragment, i el 25% restant corresponent al color rebut de gouraud (on la component difosa també és la textura). Finalment, hem implementat la textura en phong, on fem que el color de la textura sigui la component difosa. A continuació es poden veure les diferències en un cas particular.
+Hem implementat la lectura de textures per aquells objectes que tenen coordenades de textura. Per a fer-ho, hem creat dos atributs a la classe Object.cpp que indiquen si un objecte pot tenir textura (`canHaveTexture`) i si realment té textura (`hasTexture`). Hem implementat les textures tant a gouraud com a phong i a toon shading. En el cas de gouraud hem provat d'implementar el color de textura directament al vèrtex, com a component difusa, però després en extrapolar el color final al fragment queda poc detallat. Després hem provat de posar un 75% del color final segons la textura al fragment, i el 25% restant corresponent al color rebut de gouraud (on la component difosa també és la textura). Finalment, hem implementat la textura en phong, on fem que el color de la textura sigui la component difosa. A continuació es poden veure les diferències en un cas particular.
 
 Gouraud textura vertex        |  Gouraud textura a fragment 75%  |  Phong
 :-------------------------:|:-------------------------:|:-------------------------:
@@ -146,7 +146,7 @@ Gouraud textura vertex        |  Gouraud textura a fragment 75%  |  Phong
 
 ## Opcionals
 ### Toon Shading
-El toon shading consisteix en fer que els objectes tinguin un estil que s'assembli al d'un còmic. La implementació realitzada varia una mica respecte la proposada a l'enunciat. En el nostre cas, un cop tenim el producte escalar entre la normal i el vector de la llum, separem aquest resultat en esglaons (0-0.25 -> 0, 0.25-0.5 -> 0.25, 0.5-0.75 -> 0.5, 0.75-1 -> 0.75). Després, transformem el color que ens dona la component difosa del material de l'objecte, de rgb a hsv. En hsv, multipliquem el valor de v pel factor obtingut anteriorment, i transformem de nou a rgb. hsv ens permet que aquests transformació sigui lineal, al contrari de rgb. Aquí tenim un parell d'exemples on es pot veure els resultats: 
+El toon shading consisteix a fer que els objectes tinguin un estil que s'assembli al d'un còmic. La implementació realitzada varia una mica respecte a la proposada a l'enunciat. En el nostre cas, un cop tenim el producte escalar entre la normal i el vector de la llum, separem aquest resultat en esglaons (0-0.25 -> 0, 0.25-0.5 -> 0.25, 0.5-0.75 -> 0.5, 0.75-1 -> 0.75). Després, transformem el color que ens dona la component difosa del material de l'objecte, de rgb a hsv. En hsv, multipliquem el valor de v pel factor obtingut anteriorment, i transformem de nou a rgb. hsv ens permet que aquesta transformació sigui lineal, al contrari de rgb. Aquí tenim un parell d'exemples on es pot veure els resultats: 
 
 `sphere0.obj`        |  `cruiser.obj`  
 :-------------------------:|:-------------------------:
@@ -157,13 +157,13 @@ Podem obtenir diferens resultats si modifiquem els esglaons per tenir diferents 
 ![sphere0.obj toon shader variacio](readmeFiles/opcionals/toon_1_var.png)
 
 ### Parseig fitxers .gpl i .mtl
-Aquests opcionals són molt similars ja que consisteixen en parsejar fitxers. Primerament, per poder tenir diferents materials i textures per objecte, realitzem l'enviament del material i la textura de cada objecte en el mètode draw de cada objecte, abans de realitzar totes les altres accions.
+Aquests opcionals són molt similars, ja que consisteixen en parsejar fitxers. Primerament, per poder tenir diferents materials i textures per objecte, realitzem l'enviament del material i la textura de cada objecte en el mètode draw de cada objecte, abans de realitzar totes les altres accions.
 
 **.mtl**
 
-En cas dels fitxers .mtl, hem fet servir les indicacions de http://paulbourke.net/dataformats/mtl/ . En el nostre cas, nomes llegim les 3 components ambient (Ka), especular (Ks) i difosa (Kd), i la shinininess (Ns). També llegim la component transparent (Kt), per si en algun opcional es volia jugar amb aquesta component, tot i ser conscients de que la transparencia funciona indicant un únic valor de transparència (alfa) a la quarta posició del vector de color en el fragment shader. En el codi, hem posat que el fitxer .mtl es llegeixi de cada material segons el seu nom, substituïnt .obj per .mtl (`sphere0.obj` -> `sphere0.mtl`). A més, en cas de no existir aquest fitxer o algun dels components en el fitxer, es carreguen uns valors per defecte.
+En cas dels fitxers .mtl, hem fet servir les indicacions de http://paulbourke.net/dataformats/mtl/ . En el nostre cas, només llegim les 3 components ambient (Ka), especular (Ks) i difosa (Kd), i la shinininess (Ns). També llegim la component transparent (Kt), per si en algun opcional es volia jugar amb aquesta component, tot i ser conscients que la transparència funciona indicant un únic valor de transparència (alfa) a la quarta posició del vector de color en el fragment shader. En el codi, hem posat que el fitxer .mtl es llegeixi de cada material segons el seu nom, substituïnt .obj per .mtl (`sphere0.obj` -> `sphere0.mtl`). A més, en cas de no existir aquest fitxer o algun dels components en el fitxer, es carreguen uns valors per defecte.
 Aquí un exemple, on carreguem diferents objectes amb diferents materials:
-`sphere0.obj` i `cruiser.obj` tenen el seu fitxer `.mtl` associat, mentres que `suzzane.obj` està utilitzant els valors per defecte ja que no té el fitxer `.mtl` associat. A més, com havíem configurat que es puguessin tenir diferents posicions i escala, hem posat les posicions per tal que estiguin alineats, i tots ells amb escala 1, és a dir, la capsa que els conté té el seu costat més gran de longitud 1 (escena ```VW_Scene_MTL.txt```):
+`sphere0.obj` i `cruiser.obj` tenen el seu fitxer `.mtl` associat, mentre que `suzzane.obj` està utilitzant els valors per defecte, ja que no té el fitxer `.mtl` associat. A més, com havíem configurat que es poguessin tenir diferents posicions i escala, hem posat les posicions per tal que estiguin alineats, i tots ells amb escala 1, és a dir, la capsa que els conté té el seu costat més gran de longitud 1 (escena ```VW_Scene_MTL.txt```):
 
 ![diferents materials en objectes](readmeFiles/opcionals/scene_mtl.png)
 
@@ -196,7 +196,7 @@ La Terra amb Gouraud        |  La Terra amb Phong  |  La Terra sense el problema
 
 ### Entorn amb textures
 
-Aquesta extensió ha consistit en la implementació del CubeMap per tal de tenir un background amb textures. El que hem hagut de fer és primer de tot, crear la classe Cub i allà crear els mètodes adients per tal de visualitzar el cub. La particularitat que té és que només té cares interiors. Per tant, si "surts" del cub es veu la textura de la cara oposada, fet que ens ha fet dubtar de la nostra implementació. Seguidament hem implementat els shaders, el vertex shader interpola les coordenades de textura com les coordenades de posició, ja que les coordenades de textura son 3D en aquest cas. En el fragment shader, simplement es calcula la textura amb la funció ```texture()``` usant el ```samplerCube``` que li hem passat. Finalment hem hagut de modificar el mètode paintGL perquè necessitem 2 parells de shaders per fer visualitzacions, els del cub i els de la resta de l'escena. A continuació es mostren alguns resultats del CubeMap.
+Aquesta extensió ha consistit en la implementació del CubeMap per tal de tenir un background amb textures. El que hem hagut de fer és primer de tot, crear la classe Cub i allà crear els mètodes adients per tal de visualitzar el cub. La particularitat que té és que només té cares interiors. Per tant, si "surts" del cub es veu la textura de la cara oposada, fet que ens ha fet dubtar de la nostra implementació. Seguidament hem implementat els shaders, el vertex shader interpola les coordenades de textura com les coordenades de posició, ja que les coordenades de textura són 3D en aquest cas. En el fragment shader, simplement es calcula la textura amb la funció ```texture()``` usant el ```samplerCube``` que li hem passat. Finalment hem hagut de modificar el mètode paintGL perquè necessitem 2 parells de shaders per fer visualitzacions, els del cub i els de la resta de l'escena. A continuació es mostren alguns resultats del CubeMap.
 
 Star Wars X-wing        |  El Sistema Solar 
 :-------------------------:|:-------------------------:
@@ -208,9 +208,9 @@ CubeMap + Toon        |  Ferrari al camp
 
 
 ### Mandelbrot shader
-Per realitzar aquest shader ens hem basat en una sèrie de videos del canal de youtube [The Art of Code](https://www.youtube.com/channel/UCcAlTqd9zID6aNX3TzwxJXg), que inclou molts tutorials relacionats amb shaders. Aquest shader es pot afegir fent Alt+4 o des del menú de shaders, i funcionarà per tots aquells objectes que incloguin shaders. Si l'opcional de Mapeig Indirecte està activat, també funcionarà.
+Per realitzar aquest shader ens hem basat en una sèrie de vídeos del canal de youtube [The Art of Code](https://www.youtube.com/channel/UCcAlTqd9zID6aNX3TzwxJXg), que inclou molts tutorials relacionats amb shaders. Aquest shader es pot afegir fent Alt+4 o des del menú de shaders, i funcionarà per tots aquells objectes que incloguin shaders. Si l'opcional de Mapeig Indirecte està activat, també funcionarà.
 La implementació bàsica del fractal de Mandelbrot és molt més senzilla del que sembla. Consisteix en la successió de nombres
-complexos z_{n+1} = (z_n)^2 + c, on c és un nombre complex. Per a diferents valors de c, aquesta successió serà acotada o no. El dibuix del fractal de mandelbrot, consisteix, en posar un pla on cada punt correspondrà a un possible valor de c, i veure si per aquest c la successió convergeix o no. Hi ha un criteri que ens diu que si el mòdul de c es major a 2, aleshores la successió és no acotada i divergent. Per tant, si en la nostra iteració arribem a aquest punt, ja estem. Pintem aleshores de color blanc o negre segons si la successió convergeix o divergeix per a aquell valor de c, obtenint (escena amb un ```FittedPlane```, utilitzant el MandelBrot Shader):
+complexos z_{n+1} = (z_n)^2 + c, on c és un nombre complex. Per a diferents valors de c, aquesta successió serà acotada o no. El dibuix del fractal de mandelbrot, consisteix, en posar un pla on cada punt correspondrà a un possible valor de c, i veure si per aquest c la successió convergeix o no. Hi ha un criteri que ens diu que si el mòdul de c és major a 2, aleshores la successió és no acotada i divergent. Per tant, si en la nostra iteració arribem a aquest punt, ja estem. Pintem aleshores de color blanc o negre segons si la successió convergeix o divergeix per a aquell valor de c, obtenint (escena amb un ```FittedPlane```, utilitzant el MandelBrot Shader):
 
 ![mandelbrot](readmeFiles/opcionals/Fractal_1.png)
 
@@ -225,7 +225,7 @@ Mapa amb SpotLight (gif)
 
 **Fractal Mandelbrot més bònic:**
 
-Es pot jugar amb els diferents valors per tal d'obtenir representacions més boniques. En la següent imatge, tenint en compte un màxim d'iteracions que farem per cada punt, dividim el nombre d'iteracions que es triga a tenir mòdul major a 2 començant amb aquest c pel nombre màxim d'iteracions. Després, fem un quadrat de la imatge per tal de suavitzar el resultat. Podem jugar encara més, fent que el color estigui basat en el color obtingut anteriorment, però aplicant funcions lineals acotades entre 0 i 1, com és la funció de (sin(x) + 1) / 2 = sin(x)*0.5 + 0.5. Podem també afegir aquest shader a objectes com esfères, utilitzant el mapeig indirecte.
+Es pot jugar amb els diferents valors per tal d'obtenir representacions més boniques. En la següent imatge, tenint en compte un màxim d'iteracions que farem per cada punt, dividim el nombre d'iteracions que es triga a tenir mòdul major a 2 començant amb aquest c pel nombre màxim d'iteracions. Després, fem un quadrat de la imatge per tal de suavitzar el resultat. Podem jugar encara més, fent que el color estigui basat en el color obtingut anteriorment, però aplicant funcions lineals acotades entre 0 i 1, com és la funció de (sin(x) + 1) / 2 = sin(x)*0.5 + 0.5. Podem també afegir aquest shader a objectes com esferes, utilitzant el mapeig indirecte.
 
 
 Mandelbrot millorat       |  Mandelbrot a color  | Mandelbrot mapeig indirecte (gif)
@@ -234,12 +234,10 @@ Mandelbrot millorat       |  Mandelbrot a color  | Mandelbrot mapeig indirecte (
 
 ## Additional Information
 
-*(NOTA: Hores de dedicació i problemes que heu tingut fent la pràctica)*
+- *Albert*: unes 8-12 per setmana. Molts problemes dificils de debugar amb shaders. Vam tenir un problema amb el càlcul de Phong. Quan la shininess era 0, es veien malament els objectes. El problema va ser que els meus companys (utilitzen Mac o VM en Windows, jo Linux) ho veien bé sense problemes. Em vaig tirar hores debugant per veure en quin commit apareixia el problema, per després tirar-me més hores per adonar-me que el problema venia donat de la shininess. A més, el mapeig indirecte funciona bé en els ordinadors dels meus companys, però en el meu crasheja, per tant, no puc provar-lo. També és complicat saber d'on bé el problema quan no has fet tú el codi i ets l'únic que té el problema.
 
-- *Albert*: unes 8-12 per setmana. Molts problemes dificils de debugar amb shaders. Vam tenir un problema amb el càlcul de Phong. Quan la shininess era 0, es veien malament els objectes. El problema va ser que els meus companys (utilitzen Mac o VM en Windows, jo Linux) ho veien bé sense problemes. Em vaig tirar hores debugant per veure en quin commit apareixia el problema, per després tirar-me més hores per adonar-me que el problema venia donat de la shininess. A més, el mapeig indirecte funciona bé en els ordinadors dels meus companys, però en el meu crasheja, per tant, no puc probar-lo. També és complicat saber d'on bé el problema quan no has fet tú el codi i ets l'únic que té el problema.
+- *Arnau*: Aproximadament 8-10h de treball individual cada setmana. Unes 8-10h pel pas 3 (vaig tenir un error ja que em faltava codi al initializeGL en un primer moment), unes 6-8h per arribar a fer funcionar els shaders Gouraud i Phong i 4h per l'opcional Spotlight (vaig tenir diversos problemes d'implementació i l'Albert em va ajudar a la interfície gràfica). A aquestes, se sumen algunes hores d'organització del projecte amb la resta de l'equip o de revisió de Pull Requests.
 
-- *Arnau*: Aproximadament 8-10h de treball individual cada setmana. Unes 8-10h pel pas 3 (vaig tenir un error ja que em faltava codi al initializeGL en un primer moment), unes 6-8h per arribar a fer funcionar els shaders Gouraud i Phong i 4h per l'opcional Spotlight (vaig tenir diversos problemes d'implementació i l'Albert em va ajudar a la intefície gràfica). A aquestes, se sumen algunes hores d'organització del projecte amb la resta de l'equip o de revisió de Pull Requests.
+- *Martí*: Aproximadament unes 6 hores de treball individual per setmana. És difícil debugar amb shaders, i més quan cada un dels integrants del grup tenim compiladors diferents. Vaig estar bastantes hores fent que funcionés la pràctica a la VM de Windows. Un cop solucionat això, de tant en quant no compilava bé, i havia de tancar el projecte i tornar a obrir algunes vegades fins que podia fer el build. També m'he trobat amb una violació de segment que aparentment només em passava a mi a l'hora de crear el CubeMap, cosa que va fer que finalment no pogués acabar de desenvolupar aquesta funcionalitat.
 
-- *Martí*: Aproximadament unes 6 hores de treball individual per setmana. És difícil debugar amb shaders, i més quan cada un dels integrants del grup tenim compiladors diferents. Vaig estar bastantes hores fent que funcionés la pràcitca a la VM de Windows. Un cop solucionat això, de tant en quant no compilava bé, i havia de tancar el projecte i tornar a obrir algunes vegades fins que podia fer el build. També m'he trobat amb una violació de segment que aparentment només em passava a mi a l'hora de crear el CubeMap, cosa que va fer que finalment no pogués acabar de desenvolupar aquesta funcionalitat.
-
-- *Carla*: Aproximadament unes 10 hores de treball de mitjana a la setmana. La fase 1 va ser complicada perquè hi havia molts errors que no sabíem d'on venien, vem estar moltes hores per completar-la. També m'ha costat l'opcional del CubeMap, ja que s'havien d'editar molts fitxers i tenir en compte dos parells de shaders. 
+- *Carla*: Aproximadament unes 10 hores de treball de mitjana a la setmana. La fase 1 va ser complicada perquè hi havia molts errors que no sabíem d'on venien, vam estar moltes hores per completar-la. També m'ha costat l'opcional del CubeMap, ja que s'havien d'editar molts fitxers i tenir en compte dos parells de shaders. 
