@@ -113,5 +113,6 @@ private:
     void sendLightsToGPU();
     bool lightsSent = false;
     bool textureSet = false;
+    QString blinnPhongShader = "Gouraud";
 };
 

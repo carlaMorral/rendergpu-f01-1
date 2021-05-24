@@ -79,7 +79,7 @@ void GLWidget::paintGL() {
         scene->camera->toGPU(program);
         scene->cub->toGPU(program);
         scene->cub->draw();
-        loadShader("Gouraud");
+        loadShader(blinnPhongShader);
         scene->toGPU(program);
         // Nomes enviem les llums una vegada
         if(!lightsSent) {
@@ -266,12 +266,14 @@ void GLWidget::saveAnimation() {
 void GLWidget::activaToonShader() {
     //A implementar a la fase 1 de la practica 2
     loadShaderAndRefresh("Toon");
+    blinnPhongShader = "Toon";
     qDebug()<<"Estic a Toon";
 }
 
 void GLWidget::activaPhongShader() {
     //Opcional: A implementar a la fase 1 de la practica 2
     loadShaderAndRefresh("Phong");
+    blinnPhongShader = "Phong";
     qDebug()<<"Estic a Phong";
 
 }
@@ -279,6 +281,7 @@ void GLWidget::activaPhongShader() {
 void GLWidget::activaGouraudShader() {
     //A implementar a la fase 1 de la practica 2
     loadShaderAndRefresh("Gouraud");
+    blinnPhongShader = "Gouraud";
     qDebug()<<"Estic a Gouraud";
 
 }
