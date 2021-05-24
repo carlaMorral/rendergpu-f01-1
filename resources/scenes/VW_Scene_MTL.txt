@@ -1,0 +1,3 @@
+://resources/models/sphere0.obj, 0, 0, 0, 1
+://resources/models/cruiser.obj, 1, 0, 0, 1
+://resources/models/suzanne.obj, 2, 0, 0, 1

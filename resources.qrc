@@ -26,5 +26,29 @@
         <file>resources/textures/skybox/top.jpg</file>
         <file>resources/vshaderCubeMap.glsl</file>
         <file>resources/fshaderCubeMap.glsl</file>
+        <file>resources/scenes/VW_Scene1_mapping.txt</file>
+        <file>resources/scenes/VW_Scene1.txt</file>
+        <file>resources/scenes/RW_Scene1.txt</file>
+        <file>resources/scenes/VW_Scene_Toon.txt</file>
+        <file>resources/scenes/VW_Scene_Toon_mapping.txt</file>
+        <file>resources/vshaderMandelbrot.glsl</file>
+        <file>resources/fshaderMandelbrot.glsl</file>
+        <file>resources/models/cruiser.obj</file>
+        <file>resources/scenes/VW_MultTex.txt</file>
+        <file>resources/scenes/VW_MultTex_mapping.txt</file>
+        <file>resources/textures/2k_sun.jpg</file>
+        <file>resources/scenes/RW_Mandelbrot.txt</file>
+        <file>resources/scenes/RW_Mandelbrot_mapping.txt</file>
+        <file>resources/scenes/VW_ScenePas1.txt</file>
+        <file>resources/scenes/VW_ScenePas1_mapping.txt</file>
+        <file>resources/scenes/RW_BCN.txt</file>
+        <file>resources/scenes/RW_BCN_mapping.txt</file>
+        <file>resources/textures/mapBCN.png</file>
+        <file>resources/models/capsule.obj</file>
+        <file>resources/models/suzanne.obj</file>
+        <file>resources/scenes/VW_Scene_MTL.txt</file>
+        <file>resources/scenes/VW_Scene_MTL_mapping.txt</file>
+        <file>resources/scenes/VW_Scene_TEX.txt</file>
+        <file>resources/scenes/VW_Scene_TEX_mapping.txt</file>
     </qresource>
 </RCC>

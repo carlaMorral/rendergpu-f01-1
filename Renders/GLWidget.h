@@ -47,6 +47,7 @@ public slots:
     void activaToonShader();
     void activaPhongShader();
     void activaGouraudShader();
+    void activaMandelbrotShader();
 
     void activaPhongTex();
     void activaBackground();

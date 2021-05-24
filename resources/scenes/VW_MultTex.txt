@@ -1,0 +1,2 @@
+://resources/models/sphere0.obj, 0, 0, 0, 3,://resources/textures/2k_sun.png
+://resources/models/sphere0.obj, 4.3, 0, 0, 0.7,://resources/textures/earth1.png

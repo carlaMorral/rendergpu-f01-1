@@ -116,7 +116,8 @@ void GLWidget::initShadersGPU(){
     createShadersGPU("://resources/vshaderPhong.glsl", "://resources/fshaderPhong.glsl");
     createShadersGPU("://resources/vshaderToon.glsl", "://resources/fshaderToon.glsl");
     createShadersGPU("://resources/vshaderCubeMap.glsl", "://resources/fshaderCubeMap.glsl");
-    //Queden guardats al map shaderPrograms amb els noms Gouraud | Phong | Toon | CubeMap
+    createShadersGPU("://resources/vshaderMandelbrot.glsl", "://resources/fshaderMandelbrot.glsl");
+    //Queden guardats al map shaderPrograms amb els noms Gouraud | Phong | Toon | CubeMap | Mandelbrot
     if (!scene->CUBEMAP_ACTIVATED)
         loadShader("Gouraud");
 }
@@ -283,6 +284,12 @@ void GLWidget::activaGouraudShader() {
     loadShaderAndRefresh("Gouraud");
     blinnPhongShader = "Gouraud";
     qDebug()<<"Estic a Gouraud";
+}
+
+void GLWidget::activaMandelbrotShader() {
+    //A implementar a la fase 1 de la practica 2
+    loadShaderAndRefresh("Mandelbrot");
+    qDebug()<<"Estic a Mandelbrot";
 
 }
 

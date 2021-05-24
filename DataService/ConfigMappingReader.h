@@ -45,7 +45,7 @@ public:
     float               VminDiff, RminDiff;
     vector<pair<double, double>> propLimits;
     vector<pair<QString, shared_ptr<Palette>>> props;
-
+    bool hasPlaBase;
 private:
     std::map<QString, shared_ptr<Palette>> usedPalettes;
 };

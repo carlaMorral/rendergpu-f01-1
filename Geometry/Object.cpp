@@ -193,7 +193,7 @@ void Object::toGPUTexture(shared_ptr<QGLShaderProgram> pr) {
 
     // TO DO: Cal implementar en la fase 1 de la practica 2
     // S'ha d'activar la textura i es passa a la GPU
-    if (hasTexture) {
+    if (hasTexture) { //canHaveTexture en comptes de hasTexture per tal que funcioni tambe amb MandelBrot Shader
         texture->bind(0);
         program->setUniformValue("texMap", 0);
     }

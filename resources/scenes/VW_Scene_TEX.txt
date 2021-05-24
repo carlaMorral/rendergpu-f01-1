@@ -1,0 +1,2 @@
+://resources/models/cruiser.obj, 1, 0, 0, 1,://resources/textures/2k_sun.jpg
+://resources/models/suzanne.obj, 2, 0, 0, 1,://resources/textures/earth1.png
